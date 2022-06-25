@@ -1,0 +1,14 @@
+--add-brackets
+--align-pointer=name
+--align-reference=type
+--break-blocks
+--fill-empty-lines
+--indent-col1-comments
+--indent-switches
+--indent=tab=4
+--lineend=windows
+--pad-header
+--pad-oper
+--style=break
+--suffix=none
+--unpad-paren
