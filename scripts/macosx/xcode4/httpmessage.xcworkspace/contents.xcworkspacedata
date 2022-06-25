@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Workspace
+	version = "1.0">
+	<FileRef
+		location = "group:httpmessage.xcodeproj">
+	</FileRef>
+	<FileRef
+		location = "group:httpmessage-parse.xcodeproj">
+	</FileRef>
+	<FileRef
+		location = "group:test-headers.xcodeproj">
+	</FileRef>
+	<FileRef
+		location = "group:test-messages.xcodeproj">
+	</FileRef>
+	<FileRef
+		location = "group:test-text.xcodeproj">
+	</FileRef>
+</Workspace>

@@ -1,0 +1,273 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		1A8F12BA4A20E1AC252E20FA /* headers.c in Sources */ = {isa = PBXBuildFile; fileRef = 44B18E42E79FB4F476C59482 /* headers.c */; };
+		C6BEF5962345FA08ABE8B3D6 /* libhttpmessage.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 149C5A5E2481869010F5109E /* libhttpmessage.a */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		4EE25D47AA23B0B97D7DFB87 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 35ACF4AA47D6D15C7BC7BAEA /* httpmessage.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 566DE994415A0F86893FD7D4;
+			remoteInfo = libhttpmessage.a;
+		};
+		A11CCFE0FC5E2352CFB86E20 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 35ACF4AA47D6D15C7BC7BAEA /* httpmessage.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 6994DEFA8FBB0EACF6C2053A;
+			remoteInfo = libhttpmessage.a;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		35ACF4AA47D6D15C7BC7BAEA /* libhttpmessage.a */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = "httpmessage.xcodeproj"; path = httpmessage.xcodeproj; sourceTree = SOURCE_ROOT; };
+		44B18E42E79FB4F476C59482 /* headers.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = headers.c; path = ../../../tests/headers.c; sourceTree = "<group>"; };
+		915903B2920C00A405EDD1F2 /* test-headers */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; name = "test-headers"; path = "test-headers"; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		EA08F02218AF441471F09E62 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C6BEF5962345FA08ABE8B3D6 /* libhttpmessage.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		65D0D10ED75BE980865D0F4E /* Embed Libraries */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+			);
+			name = "Embed Libraries";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXGroup section */
+		6BC0E9C91823A9FBD6AC2009 /* test-headers */ = {
+			isa = PBXGroup;
+			children = (
+				44B18E42E79FB4F476C59482 /* headers.c */,
+				A6C936B49B3FADE6EA134CF4 /* Products */,
+				9D968EAA920D05DCE0E0A4EA /* Projects */,
+			);
+			name = "test-headers";
+			sourceTree = "<group>";
+		};
+		9D968EAA920D05DCE0E0A4EA /* Projects */ = {
+			isa = PBXGroup;
+			children = (
+				35ACF4AA47D6D15C7BC7BAEA /* httpmessage.xcodeproj */,
+			);
+			name = Projects;
+			sourceTree = "<group>";
+		};
+		A6C936B49B3FADE6EA134CF4 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				915903B2920C00A405EDD1F2 /* test-headers */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		F067DDA712338AD94EE8B3E7 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				149C5A5E2481869010F5109E /* libhttpmessage.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		4C562D58EF44540A7E6A3398 /* test-headers */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D844388106EA8C73602BE6C1 /* Build configuration list for PBXNativeTarget "test-headers" */;
+			buildPhases = (
+				59F070C28896C4B4E1D81F02 /* Resources */,
+				C39D8A19F243DE0B4B853859 /* Sources */,
+				EA08F02218AF441471F09E62 /* Frameworks */,
+				65D0D10ED75BE980865D0F4E /* Embed Libraries */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				DE201AB0FFEBC7E23CA0F0F0 /* PBXTargetDependency */,
+			);
+			name = "test-headers";
+			productInstallPath = "$(HOME)/bin";
+			productName = "test-headers";
+			productReference = 915903B2920C00A405EDD1F2 /* test-headers */;
+			productType = "com.apple.product-type.tool";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		08FB7793FE84155DC02AAC07 /* Project object */ = {
+			isa = PBXProject;
+			buildConfigurationList = 1DEB928908733DD80010E9CD /* Build configuration list for PBXProject "test-headers" */;
+			compatibilityVersion = "Xcode 3.2";
+			hasScannedForEncodings = 1;
+			mainGroup = 6BC0E9C91823A9FBD6AC2009 /* test-headers */;
+			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = F067DDA712338AD94EE8B3E7 /* Products */;
+					ProjectRef = 35ACF4AA47D6D15C7BC7BAEA /* httpmessage.xcodeproj */;
+				},
+			);
+			projectRoot = "";
+			targets = (
+				4C562D58EF44540A7E6A3398 /* test-headers */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		149C5A5E2481869010F5109E /* libhttpmessage.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libhttpmessage.a;
+			remoteRef = 4EE25D47AA23B0B97D7DFB87 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
+
+/* Begin PBXResourcesBuildPhase section */
+		59F070C28896C4B4E1D81F02 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		C39D8A19F243DE0B4B853859 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1A8F12BA4A20E1AC252E20FA /* headers.c in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		DE201AB0FFEBC7E23CA0F0F0 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = libhttpmessage.a;
+			targetProxy = A11CCFE0FC5E2352CFB86E20 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		25406C7896CB84EA45CCAAB8 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(NATIVE_ARCH_ACTUAL)";
+				CONFIGURATION_BUILD_DIR = "$(SYMROOT)";
+				CONFIGURATION_TEMP_DIR = "$(OBJROOT)";
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				OBJROOT = "../../../dist/obj/Debug/test-headers";
+				ONLY_ACTIVE_ARCH = NO;
+				SYMROOT = ../../../dist/Debug/tests;
+				USER_HEADER_SEARCH_PATHS = (
+					../../../tests,
+					../../../include,
+				);
+			};
+			name = Debug;
+		};
+		6B7544B26C2841A4E00A12F2 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(NATIVE_ARCH_ACTUAL)";
+				CONFIGURATION_BUILD_DIR = "$(SYMROOT)";
+				CONFIGURATION_TEMP_DIR = "$(OBJROOT)";
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				OBJROOT = "../../../dist/obj/Release/test-headers";
+				ONLY_ACTIVE_ARCH = NO;
+				SYMROOT = ../../../dist/Release/tests;
+				USER_HEADER_SEARCH_PATHS = (
+					../../../tests,
+					../../../include,
+				);
+			};
+			name = Release;
+		};
+		6F0016C79E91E5B9799F2507 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CONFIGURATION_BUILD_DIR = ../../../dist/Debug/tests;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_DYNAMIC_NO_PIC = NO;
+				INSTALL_PATH = /usr/local/bin;
+				PRODUCT_NAME = "test-headers";
+			};
+			name = Debug;
+		};
+		7623FF81D16552F3A4BF9DC1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CONFIGURATION_BUILD_DIR = ../../../dist/Release/tests;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_DYNAMIC_NO_PIC = NO;
+				INSTALL_PATH = /usr/local/bin;
+				PRODUCT_NAME = "test-headers";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		1DEB928908733DD80010E9CD /* Build configuration list for PBXProject "test-headers" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				25406C7896CB84EA45CCAAB8 /* Debug */,
+				6B7544B26C2841A4E00A12F2 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		D844388106EA8C73602BE6C1 /* Build configuration list for PBXNativeTarget "test-headers" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6F0016C79E91E5B9799F2507 /* Debug */,
+				7623FF81D16552F3A4BF9DC1 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+};
+rootObject = 08FB7793FE84155DC02AAC07 /* Project object */;
+}

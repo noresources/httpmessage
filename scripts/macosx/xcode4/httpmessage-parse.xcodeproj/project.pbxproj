@@ -1,0 +1,279 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		A321F3DC450B8FCE3C32A21C /* httpmessage-parse.c in Sources */ = {isa = PBXBuildFile; fileRef = 15BFEE44E3E341F66AF19484 /* httpmessage-parse.c */; };
+		C6BEF5962345FA08ABE8B3D6 /* libhttpmessage.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 149C5A5E2481869010F5109E /* libhttpmessage.a */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		4EE25D47AA23B0B97D7DFB87 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 35ACF4AA47D6D15C7BC7BAEA /* httpmessage.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 566DE994415A0F86893FD7D4;
+			remoteInfo = libhttpmessage.a;
+		};
+		A11CCFE0FC5E2352CFB86E20 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 35ACF4AA47D6D15C7BC7BAEA /* httpmessage.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 6994DEFA8FBB0EACF6C2053A;
+			remoteInfo = libhttpmessage.a;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		15BFEE44E3E341F66AF19484 /* httpmessage-parse.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = "httpmessage-parse.c"; path = "../../../src/apps/httpmessage-parse.c"; sourceTree = "<group>"; };
+		35ACF4AA47D6D15C7BC7BAEA /* libhttpmessage.a */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = "httpmessage.xcodeproj"; path = httpmessage.xcodeproj; sourceTree = SOURCE_ROOT; };
+		609BFF76A90CE3A8EDABB5B6 /* httpmessage-parse */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; name = "httpmessage-parse"; path = "httpmessage-parse"; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		B63CA9E6CD4F4518BD6B4026 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C6BEF5962345FA08ABE8B3D6 /* libhttpmessage.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		0DDA0BD234003B849B073212 /* Embed Libraries */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+			);
+			name = "Embed Libraries";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXGroup section */
+		6E4FD80D7B0C877FEFF6F64D /* httpmessage-parse */ = {
+			isa = PBXGroup;
+			children = (
+				15BFEE44E3E341F66AF19484 /* httpmessage-parse.c */,
+				A6C936B49B3FADE6EA134CF4 /* Products */,
+				9D968EAA920D05DCE0E0A4EA /* Projects */,
+			);
+			name = "httpmessage-parse";
+			sourceTree = "<group>";
+		};
+		9D968EAA920D05DCE0E0A4EA /* Projects */ = {
+			isa = PBXGroup;
+			children = (
+				35ACF4AA47D6D15C7BC7BAEA /* httpmessage.xcodeproj */,
+			);
+			name = Projects;
+			sourceTree = "<group>";
+		};
+		A6C936B49B3FADE6EA134CF4 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				609BFF76A90CE3A8EDABB5B6 /* httpmessage-parse */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		F067DDA712338AD94EE8B3E7 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				149C5A5E2481869010F5109E /* libhttpmessage.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		F586C09CE072E68E2858AEDC /* httpmessage-parse */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A477F245BB8A8D77ABA68885 /* Build configuration list for PBXNativeTarget "httpmessage-parse" */;
+			buildPhases = (
+				26242A863D36C5B82D52C0C6 /* Resources */,
+				8FD143DDA6E3DF0F96FFDA1D /* Sources */,
+				B63CA9E6CD4F4518BD6B4026 /* Frameworks */,
+				0DDA0BD234003B849B073212 /* Embed Libraries */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				DE201AB0FFEBC7E23CA0F0F0 /* PBXTargetDependency */,
+			);
+			name = "httpmessage-parse";
+			productInstallPath = "$(HOME)/bin";
+			productName = "httpmessage-parse";
+			productReference = 609BFF76A90CE3A8EDABB5B6 /* httpmessage-parse */;
+			productType = "com.apple.product-type.tool";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		08FB7793FE84155DC02AAC07 /* Project object */ = {
+			isa = PBXProject;
+			buildConfigurationList = 1DEB928908733DD80010E9CD /* Build configuration list for PBXProject "httpmessage-parse" */;
+			compatibilityVersion = "Xcode 3.2";
+			hasScannedForEncodings = 1;
+			mainGroup = 6E4FD80D7B0C877FEFF6F64D /* httpmessage-parse */;
+			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = F067DDA712338AD94EE8B3E7 /* Products */;
+					ProjectRef = 35ACF4AA47D6D15C7BC7BAEA /* httpmessage.xcodeproj */;
+				},
+			);
+			projectRoot = "";
+			targets = (
+				F586C09CE072E68E2858AEDC /* httpmessage-parse */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		149C5A5E2481869010F5109E /* libhttpmessage.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libhttpmessage.a;
+			remoteRef = 4EE25D47AA23B0B97D7DFB87 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
+
+/* Begin PBXResourcesBuildPhase section */
+		26242A863D36C5B82D52C0C6 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		8FD143DDA6E3DF0F96FFDA1D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A321F3DC450B8FCE3C32A21C /* httpmessage-parse.c in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		DE201AB0FFEBC7E23CA0F0F0 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = libhttpmessage.a;
+			targetProxy = A11CCFE0FC5E2352CFB86E20 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		3AB84076832924A8C7C7F6B6 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(NATIVE_ARCH_ACTUAL)";
+				CONFIGURATION_BUILD_DIR = "$(SYMROOT)";
+				CONFIGURATION_TEMP_DIR = "$(OBJROOT)";
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					_POSIX_SOURCE,
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				OBJROOT = "../../../dist/obj/Release/httpmessage-parse";
+				ONLY_ACTIVE_ARCH = NO;
+				SYMROOT = ../../../dist/Release/bin;
+				USER_HEADER_SEARCH_PATHS = (
+					../../../include,
+				);
+				WARNING_CFLAGS = "-Weverything";
+			};
+			name = Release;
+		};
+		9254968BDFB78CBD55D68CCB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CONFIGURATION_BUILD_DIR = ../../../dist/Debug/bin;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_DYNAMIC_NO_PIC = NO;
+				INSTALL_PATH = /usr/local/bin;
+				PRODUCT_NAME = "httpmessage-parse";
+			};
+			name = Debug;
+		};
+		C0978045F290CAF76C700685 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CONFIGURATION_BUILD_DIR = ../../../dist/Release/bin;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_DYNAMIC_NO_PIC = NO;
+				INSTALL_PATH = /usr/local/bin;
+				PRODUCT_NAME = "httpmessage-parse";
+			};
+			name = Release;
+		};
+		CD49A73CF36FD6EE5A76CD7C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(NATIVE_ARCH_ACTUAL)";
+				CONFIGURATION_BUILD_DIR = "$(SYMROOT)";
+				CONFIGURATION_TEMP_DIR = "$(OBJROOT)";
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					_POSIX_SOURCE,
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				OBJROOT = "../../../dist/obj/Debug/httpmessage-parse";
+				ONLY_ACTIVE_ARCH = NO;
+				SYMROOT = ../../../dist/Debug/bin;
+				USER_HEADER_SEARCH_PATHS = (
+					../../../include,
+				);
+				WARNING_CFLAGS = "-Weverything";
+			};
+			name = Debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		1DEB928908733DD80010E9CD /* Build configuration list for PBXProject "httpmessage-parse" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CD49A73CF36FD6EE5A76CD7C /* Debug */,
+				3AB84076832924A8C7C7F6B6 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		A477F245BB8A8D77ABA68885 /* Build configuration list for PBXNativeTarget "httpmessage-parse" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9254968BDFB78CBD55D68CCB /* Debug */,
+				C0978045F290CAF76C700685 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+};
+rootObject = 08FB7793FE84155DC02AAC07 /* Project object */;
+}

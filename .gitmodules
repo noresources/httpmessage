@@ -1,0 +1,3 @@
+[submodule "scripts/premake/modules/doxygen"]
+	path = scripts/premake/modules/doxygen
+	url = https://github.com/noresources/premake-doxygen.git

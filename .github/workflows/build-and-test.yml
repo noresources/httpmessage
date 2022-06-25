@@ -1,0 +1,54 @@
+name: Build and test
+on:
+  push:
+    branches:
+    - master
+    - test
+jobs:
+  linux:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        config:
+        - Debug
+        - Release
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+    - id: configname
+      uses: ASzc/change-string-case-action@v2
+      with:
+        string: ${{ matrix.config }}
+    - name: Build ${{ github.job }} ${{ matrix.config }} (${{ steps.configname.outputs.lowercase }})
+      run: make -C scripts/${{ github.job }}/gmake2 config=${{ steps.configname.outputs.lowercase
+        }}
+    - name: Test text processing functions
+      run: dist/${{ matrix.config }}/tests/test-text
+    - name: Test header processing functions
+      run: dist/${{ matrix.config }}/tests/test-headers
+    - name: Test message processing functions
+      run: dist/${{ matrix.config }}/tests/test-messages
+  macosx:
+    runs-on: macos-latest
+    strategy:
+      matrix:
+        config:
+        - Debug
+        - Release
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+    - id: configname
+      uses: ASzc/change-string-case-action@v2
+      with:
+        string: ${{ matrix.config }}
+    - name: Build ${{ github.job }} ${{ matrix.config }} (${{ steps.configname.outputs.lowercase }})
+      run: make -C scripts/${{ github.job }}/gmake2 config=${{ steps.configname.outputs.lowercase
+        }}
+    - name: Test text processing functions
+      run: dist/${{ matrix.config }}/tests/test-text
+    - name: Test header processing functions
+      run: dist/${{ matrix.config }}/tests/test-headers
+    - name: Test message processing functions
+      run: dist/${{ matrix.config }}/tests/test-messages
+      
