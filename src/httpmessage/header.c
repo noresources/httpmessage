@@ -71,7 +71,8 @@ httpmessage_headervalue *httpmessage_headervalue_append_chunk(
     const char *text, size_t length)
 {
 	httpmessage_headervalue *o = (httpmessage_headervalue *)malloc(sizeof(httpmessage_headervalue));
-	httpmessage_stringview_assign(&o->chunk, text, length);
+	o->chunk.text = text;
+	o->chunk.length = length;
 	value->next_chunk = o;
 	return o;
 }
@@ -211,6 +212,70 @@ int httpmessage_headervalue_line_consume(
 	*value_length = vl;
 	
 	return consumed + (length ? 2 : 0); /* + CRLF */
+}
+
+ssize_t httpmessage_header_write_file(
+    FILE *file,
+    const httpmessage_header *header)
+{
+	ssize_t written = 0;
+	const httpmessage_headervalue *value = &header->value;
+	
+	if (!(file && header))
+	{
+		return HTTPMESSAGE_ERROR_INVALID_ARGUMENT;
+	}
+	
+	HTTPMESSAGE_STRING_WRITE_FILE(written, file, header->field)
+	HTTPMESSAGE_TEXT_WRITE_FILE(written, file, ":", 1)
+	
+	if (value->chunk.length == 0)
+	{
+		HTTPMESSAGE_TEXT_WRITE_FILE(written, file, "\r\n", 2)
+		return written;
+	}
+	
+	while (value && value->chunk.length)
+	{
+		HTTPMESSAGE_TEXT_WRITE_FILE(written, file, " ", 1)
+		HTTPMESSAGE_STRING_WRITE_FILE(written, file, value->chunk)
+		HTTPMESSAGE_TEXT_WRITE_FILE(written, file, "\r\n", 2)
+		value = value->next_chunk;
+	}
+	
+	return written;
+}
+
+HMAPI ssize_t httpmessage_header_write_buffer(
+    void *output, size_t output_size,
+    const httpmessage_header *header)
+{
+	const httpmessage_headervalue *value = &header->value;
+	char *o = (char *)output;
+	
+	if (!(output && output_size && header))
+	{
+		return HTTPMESSAGE_ERROR_INVALID_ARGUMENT;
+	}
+	
+	HTTPMESSAGE_STRING_WRITE_BUFFER(o, output_size, header->field)
+	HTTPMESSAGE_TEXT_WRITE_BUFFER(o, output_size, ":", 1)
+	
+	if (value->chunk.length == 0)
+	{
+		HTTPMESSAGE_TEXT_WRITE_BUFFER(o, output_size, "\r\n", 2)
+		return (o - (char *)output);
+	}
+	
+	while (value && value->chunk.length)
+	{
+		HTTPMESSAGE_TEXT_WRITE_BUFFER(o, output_size, " ", 1)
+		HTTPMESSAGE_STRING_WRITE_BUFFER(o, output_size, value->chunk)
+		HTTPMESSAGE_TEXT_WRITE_BUFFER(o, output_size, "\r\n", 2)
+		value = value->next_chunk;
+	}
+	
+	return (o - (char *)output);
 }
 
 void httpmessage_header_init(httpmessage_header *header)
@@ -443,4 +508,53 @@ int httpmessage_header_list_consume(
 	}
 	
 	return consumed;
+}
+
+HMAPI ssize_t httpmessage_header_list_write_file(
+    FILE *file,
+    const httpmessage_header *header_list)
+{
+	const httpmessage_header *header = header_list;
+	ssize_t written = 0;
+	ssize_t w = 0;
+	
+	while (header && header->field.length)
+	{
+		w = httpmessage_header_write_file(file, header);
+		
+		if (w < 0)
+		{
+			return w;
+		}
+		
+		written += w;
+		header = header->next_header;
+	}
+	
+	return written;
+}
+
+HMAPI ssize_t httpmessage_header_list_write_buffer(
+    void *output, size_t output_size,
+    const httpmessage_header *header_list)
+{
+	const httpmessage_header *header = header_list;
+	ssize_t w = 0;
+	char *o = (char *)output;
+	
+	while (header && header->field.length)
+	{
+		w = httpmessage_header_write_buffer(o, output_size, header);
+		
+		if (w < 0)
+		{
+			return w;
+		}
+		
+		o += w;
+		output_size -= (size_t)w;
+		header = header->next_header;
+	}
+	
+	return (o - (char *)output);
 }

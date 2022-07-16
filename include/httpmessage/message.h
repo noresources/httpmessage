@@ -49,7 +49,7 @@ typedef struct __httpmessage_message
 	HTTPMESSAGE_PAD64(__padding, 4) /**< structure padding */
 	
 	/** Header list */
-	httpmessage_header 	header_list;
+	httpmessage_header header_list;
 	/** Message body */
 	httpmessage_body 	body;
 } httpmessage_message;
@@ -77,6 +77,24 @@ HMAPI void httpmessage_message_init(httpmessage_message *message);
 HMAPI void httpmessage_message_clear(
     httpmessage_message *message,
     int option_flags);
+
+/**
+ * @ingroup message
+ * @brief Append a header to the given message.
+ *
+ * @param message Message to add the header to.
+ * @param name Header field name
+ * @param value Header value
+ * @param option_flags Option flags. Supported flags are
+ * - ::HTTPMESSAGE_CLEAR_NO_FREE
+ *
+ * @return HTTPMESSAGE_OK on success. One of httpmessage_result_code error codes on error.
+ */
+HMAPI int httpmessage_message_append_header(
+    httpmessage_message *message,
+    const char *name, const char *value,
+    int option_flags);
+
 /**
  * @ingroup message
  *
@@ -187,7 +205,7 @@ HMAPI void httpmessage_response_clear(
  * @param text Input text
  * @param length Input text lengh
  * @return On success, number of bytes consumed in @c text.
- * On error, one of @c httpmessage_result_code
+ * On error, one of httpmessage_result_code
  *
  * @see httpmessage_result_code
  */
@@ -241,7 +259,7 @@ HMAPI int httpmessage_request_request_uri_consume(
  * - ::HTTPMESSAGE_CONSUME_IGNORE_MISSING_CRLF
  *
  * @return On success, number of bytes consumed in @c text.
- * On error, on of @c httpmessage_reult_code.
+ * On error, on of httpmessage_reult_code.
  *
  * @see httpmessage_result_code
  * @see httpmessage_option_flags
@@ -321,7 +339,7 @@ HMAPI int httpmessage_message_get_type(
  * - ::HTTPMESSAGE_CONSUME_IGNORE_MISSING_CRLF
  *
  * @return On success, number of bytes consumed in @c text.
- * On error, one of @c httpmessage_result_code
+ * On error, one of httpmessage_result_code
  *
  * @see httpmessage_result_code
  * @see httpmessage_option_flags
@@ -330,6 +348,44 @@ HMAPI int httpmessage_message_content_consume(
     httpmessage_message *message,
     const char *text, size_t length,
     int option_flags);
+
+/**
+ * @ingroup message
+ *
+ * @brief Write message header and body to a file
+ *
+ * @param file Output file descriptor
+ * @param message HTTP message content to write
+ *
+ * @return On success, the number of bytes written.
+ * On error, one of httpmessage_result_type
+ *
+ * @see httpmessage_result_code
+ */
+HMAPI ssize_t httpmessage_message_content_write_file(
+    FILE *file,
+    const httpmessage_message *message);
+
+/**
+ * @ingroup message
+ *
+ * @brief Write message header and body to a buffer
+ *
+ * @param output Output buffer
+ * @param output_size Output buffer size
+ * @param message Message to write
+ *
+ * @attention NULL termination character may not be written at end of string
+ * if the buffer is too small.
+ *
+ * @return On success, the number of bytes written (excludint the null-termination character).
+ * On error, one of httpmessage_result_type
+ *
+ * @see httpmessage_result_code
+ */
+HMAPI ssize_t httpmessage_message_content_write_buffer(
+    void *output, size_t output_size,
+    const httpmessage_message *message);
 
 /**
  *  @ingroup message
@@ -342,7 +398,7 @@ HMAPI int httpmessage_message_content_consume(
  * - ::HTTPMESSAGE_CONSUME_IGNORE_MISSING_CRLF
  *
  * @return On success, number of bytes consumed in @c text.
- * On error, one of @c httpmessage_result_code
+ * On error, one of httpmessage_result_code
  *
  * @see httpmessage_result_code
  * @see httpmessage_option_flags
@@ -351,6 +407,43 @@ HMAPI int httpmessage_request_consume(
     httpmessage_request *request,
     const char *text, size_t length,
     int option_flags);
+
+/**
+ * @ingroup message
+ *
+ * @brief Write a HTTP request message to a file.
+ *
+ * @param file Output file
+ * @param request Request to write
+ *
+ * @return On success, the number of bytes written (excludint the null-termination character).
+ * On error, one of httpmessage_result_type
+ *
+ * @see httpmessage_result_code
+ */
+HMAPI ssize_t httpmessage_request_write_file(
+    FILE *file,
+    const httpmessage_request *request);
+
+/**
+ * @ingroup message
+ * @brief Write a HTTP request message to a buffer.
+ *
+ * @param output Output buffer
+ * @param output_size Output buffer size
+ * @param request Request to write
+ * @attention NULL termination character may not be written at end of string
+ * if the buffer is too small.
+ *
+ * @return On success, the number of bytes written (excludint the null-termination character).
+ * On error, one of httpmessage_result_type
+ *
+ * @see httpmessage_result_code
+ */
+HMAPI ssize_t httpmessage_request_write_buffer(
+    void *output, size_t output_size,
+    const httpmessage_request *request);
+
 
 /**
  *  @ingroup message
@@ -363,7 +456,7 @@ HMAPI int httpmessage_request_consume(
  * - ::HTTPMESSAGE_CONSUME_IGNORE_MISSING_CRLF
  *
  * @return On success, number of bytes consumed in @c text.
- * On error, one of @c httpmessage_result_code
+ * On error, one of httpmessage_result_code
  *
  * @see httpmessage_result_code
  * @see httpmessage_option_flags
@@ -372,6 +465,42 @@ HMAPI int httpmessage_response_consume(
     httpmessage_response *response,
     const char *text, size_t length,
     int option_flags);
+
+/**
+ * @ingroup message
+ * @brief Write a HTTP response to a file.
+ *
+ * @param file Output file.
+ * @param response Response to write
+ *
+ * @return On success, the number of bytes written (excludint the null-termination character).
+ * On error, one of httpmessage_result_type
+ *
+ * @see httpmessage_result_code
+ */
+HMAPI ssize_t httpmessage_response_write_file(
+    FILE *file,
+    const httpmessage_response *response);
+
+/**
+ * @ingroup message
+ * @brief Write a HTTP response to a buffer.
+ *
+ * @param output Output buffer
+ * @param output_size Output buffer size
+ * @param response Response to write
+ *
+ * @attention NULL termination character may not be written at end of string
+ * if the buffer is too small.
+ *
+ * @return On success, the number of bytes written (excludint the null-termination character).
+ * On error, one of httpmessage_result_type
+ *
+ * @see httpmessage_result_code
+ */
+HMAPI ssize_t httpmessage_response_write_buffer(
+    void *output, size_t output_size,
+    const httpmessage_response *response);
 
 HTTPMESSAGE_C_END
 

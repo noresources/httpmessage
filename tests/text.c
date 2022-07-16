@@ -97,10 +97,10 @@ typedef struct __quoted_string_test
 	const char *quoted_string;
 } quoted_string_test;
 
-int test_text_quoted_string(int argc, const char **argv)
+int test_quoted_string(int argc, const char **argv)
 {
 	int exitCode = EXIT_SUCCESS;
-	int a;
+	size_t a;
 	
 	static const quoted_string_test tests [] =
 	{
@@ -121,14 +121,14 @@ int test_text_quoted_string(int argc, const char **argv)
 	{
 		char quoted_string[512];
 		
-		for (a = 1; a < argc; ++a)
+		for (a = 1; a < (size_t)argc; ++a)
 		{
 			const char *text = argv[a];
 			int consumed;
 			ssize_t quoted_string_length;
 			size_t length = strlen(text);
 			
-			quoted_string_length = httpmessage_quoted_string_get_length(text, length);
+			quoted_string_length = httpmessage_quoted_string_length(text, length);
 			
 			if (quoted_string_length < 0)
 			{
@@ -172,7 +172,7 @@ int test_text_quoted_string(int argc, const char **argv)
 		fprintf(stdout, "-- '%s' ---------------------------------\n",
 		        text);
 		        
-		quoted_string_length = httpmessage_quoted_string_get_length(text, length);
+		quoted_string_length = httpmessage_quoted_string_length(text, length);
 		consumed_8 = httpmessage_quoted_string_consume(
 		                 output, (size_t)8,
 		                 text, length);
@@ -220,7 +220,7 @@ int test_text_quoted_string(int argc, const char **argv)
 		if (quoted_string_length >= 0
 		        && T->quoted_string_length == quoted_string_length)
 		{
-			if (strncmp(T->quoted_string, output, quoted_string_length))
+			if (strncmp(T->quoted_string, output, (size_t)quoted_string_length))
 			{
 				fprintf(stderr, "%-10.10s: EXPECTED <%s>\n",
 				        "String", T->quoted_string);
@@ -250,12 +250,10 @@ int test_text_quoted_string(int argc, const char **argv)
 
 int main(int argc, const char **argv)
 {
-	int exitCode = EXIT_SUCCESS;
-	
 	static const httpmessage_test tests[] =
 	{
 		{"text_compare", test_text_compare },
-		{"quoted_string", test_text_quoted_string }
+		{"quoted_string", test_quoted_string }
 	};
 	
 	return run_tests(tests, sizeof(tests) / sizeof(httpmessage_test),

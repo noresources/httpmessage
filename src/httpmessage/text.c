@@ -20,10 +20,10 @@ httpmessage_stringview *httpmessage_stringview_new(void)
 
 void httpmessage_stringview_assign(
     httpmessage_stringview *string,
-    const char *text, size_t length)
+    const char *text)
 {
 	string->text = text;
-	string->length = length;
+	string->length = strlen(text);
 }
 
 void httpmessage_stringview_clear(
@@ -54,7 +54,7 @@ int httpmessage_stringview_compare_text(const httpmessage_stringview *a,
 	
 	if (comparison == 0)
 	{
-		return (a->length - length);
+		return (int)(a->length - length);
 	}
 	
 	return comparison;
@@ -105,5 +105,5 @@ int httpmessage_stringview_caseless_compare_text(const httpmessage_stringview *v
 		return ca - cb;
 	}
 	
-	return v->length - length;
+	return (int)(v->length - length);
 }

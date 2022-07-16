@@ -109,7 +109,7 @@ int httpmessage_token_consume(const char **token,
 	return (int) * token_length;
 }
 
-ssize_t httpmessage_quoted_string_get_length(
+ssize_t httpmessage_quoted_string_length(
     const char *text,
     size_t length)
 {

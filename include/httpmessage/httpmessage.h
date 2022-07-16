@@ -29,11 +29,13 @@ HTTPMESSAGE_C_BEGIN
  */
 typedef enum __httpmessage_result_code
 {
-	HTTPMESSAGE_OK = 0,                     /**< Successful operation */
-	HTTPMESSAGE_ERROR_INVALID_ARGUMENT = -1,/**< One or more function arguments are invalid */
-	HTTPMESSAGE_ERROR_OVERFLOW = -2,        /**< Output buffer will overflow */
-	HTTPMESSAGE_ERROR_SYNTAX = -1000,        /**< The text given in argument does not match the expected syntax */
-	HTTPMESSAGE_ERROR_INCOMPLETE = -1001, 	/**< */
+	HTTPMESSAGE_OK = 0,                     	/**< Successful operation */
+	HTTPMESSAGE_ERROR_INVALID_ARGUMENT = -1000,	/**< One or more function arguments are invalid */
+	HTTPMESSAGE_ERROR_OVERFLOW = -1100,        	/**< Output buffer will overflow */
+	HTTPMESSAGE_ERROR_WRITE = -1101, 			/**< I/O Write error */
+	HTTPMESSAGE_ERROR_ALLOCATION = -1102,		/**< A object failed to be allocated due to memory issue or allocation option rules */
+	HTTPMESSAGE_ERROR_SYNTAX = -1200,        	/**< The text given in argument does not match the expected syntax */
+	HTTPMESSAGE_ERROR_INCOMPLETE = -1201, 		/**< */
 } httpmessage_result_code;
 
 /**

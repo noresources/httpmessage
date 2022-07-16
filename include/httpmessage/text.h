@@ -51,11 +51,10 @@ httpmessage_stringview *httpmessage_stringview_new(void);
  *
  * @param string String view
  * @param text Text
- * @param length Text length
  */
 HMAPI void httpmessage_stringview_assign(
     httpmessage_stringview *string,
-    const char *text, size_t length);
+    const char *text);
 
 /**
  * @ingroup text

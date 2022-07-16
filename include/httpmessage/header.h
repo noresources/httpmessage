@@ -20,6 +20,8 @@
 HTTPMESSAGE_C_BEGIN
 
 #include <stddef.h>
+#include <stdio.h>
+#include <unistd.h>
 
 
 /**
@@ -319,6 +321,45 @@ HMAPI int httpmessage_header_line_consume(
 
 /**
  * @ingroup header
+ * @brief Write a HTTP header line to a file
+ *
+ * @param file Output file
+ * @param header Header to write
+ *
+ * @attention NULL termination character may not be written at end of string
+ * if the buffer is too small.
+ *
+ * @return On success, the number of bytes written (excludint the null-termination character).
+ * On error, one of httpmessage_result_type
+ *
+ * @see httpmessage_result_code
+ */
+HMAPI ssize_t httpmessage_header_write_file(
+    FILE *file,
+    const httpmessage_header *header);
+
+/**
+ * @ingroup header
+ * @brief Write a HTTP header line to a buffer.
+ *
+ * @param output Output buffer
+ * @param output_size Output buffer size
+ * @param header Header to write
+ *
+ * @attention NULL termination character may not be written at end of string
+ * if the buffer is too small.
+ *
+ * @return On success, the number of bytes written (excludint the null-termination character).
+ * On error, one of httpmessage_result_type
+ *
+ * @see httpmessage_result_code
+ */
+HMAPI ssize_t httpmessage_header_write_buffer(
+    void *output, size_t output_size,
+    const httpmessage_header *header);
+
+/**
+ * @ingroup header
  * @brief Parse all headers in the given text
  *
  * Function stops when end of input is reached or if a leading CRLF  is found.
@@ -334,6 +375,42 @@ HMAPI int httpmessage_header_line_consume(
 HMAPI int httpmessage_header_list_consume(
     httpmessage_header *header_list,
     const char *text, size_t length);
+
+/**
+ * @ingroup header
+ * @brief Write HTTP headers to a file.
+ *
+ * @param file Output file
+ * @param header_list List of header to write
+ *
+ * @return On success, the number of bytes written (excludint the null-termination character).
+ * On error, one of httpmessage_result_type
+ *
+ * @see httpmessage_result_code
+ */
+HMAPI ssize_t httpmessage_header_list_write_file(
+    FILE *file,
+    const httpmessage_header *header_list);
+
+/**
+ * @ingroup header
+ * @brief Write a list of HTTP header to a buffer.
+ *
+ * @param output Output buffer
+ * @param output_size Output buffer size
+ * @param header_list List of headers to write.
+ *
+ * @attention NULL termination character may not be written at end of string
+ * if the buffer is too small.
+ *
+ * @return On success, the number of bytes written (excludint the null-termination character).
+ * On error, one of httpmessage_result_type
+ *
+ * @see httpmessage_result_code
+ */
+HMAPI ssize_t httpmessage_header_list_write_buffer(
+    void *output, size_t output_size,
+    const httpmessage_header *header_list);
 
 
 

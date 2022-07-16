@@ -227,7 +227,7 @@ HMAPI int httpmessage_token_consume(const char **token,
  *
  * @see httpmessage_result_code
  */
-HMAPI ssize_t httpmessage_quoted_string_get_length(
+HMAPI ssize_t httpmessage_quoted_string_length(
     const char *text,
     size_t length);
 
