@@ -63,7 +63,7 @@ int test_text_compare(int argc, const char **argv)
 		fprintf(stdout, "%-10.10s: %d",
 		        "Compared", compared);
 		        
-		if (T->compared != compared)
+		if (!same_sign(T->compared, compared))
 		{
 			++exitCode;
 			fprintf(stdout, " <=-> expected %d\n", T->compared);
@@ -74,7 +74,7 @@ int test_text_compare(int argc, const char **argv)
 		fprintf(stdout, "%-10.10s: %d",
 		        "Caseless", caseless_compared);
 		        
-		if (T->caseless_compared != caseless_compared)
+		if (!same_sign(T->caseless_compared, caseless_compared))
 		{
 			++exitCode;
 			fprintf(stdout, " <=-> expected %d\n", T->caseless_compared);

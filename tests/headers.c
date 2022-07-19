@@ -135,7 +135,7 @@ int test_header_consume(int argc, const char **argv)
 		}
 	}
 	
-	httpmessage_header_clear(&header, HTTPMESSAGE_CLEAR_NO_FREE);
+	httpmessage_header_clear(&header, 0);
 	
 	return exitCode;
 }

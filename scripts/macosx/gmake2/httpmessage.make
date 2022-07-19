@@ -31,8 +31,6 @@ DEFINES +=
 INCLUDES += -I../../../include
 FORCE_INCLUDE +=
 ALL_CPPFLAGS += $(CPPFLAGS) -MD -MP $(DEFINES) $(INCLUDES)
-ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -Weverything
-ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -Weverything
 ALL_RESFLAGS += $(RESFLAGS) $(DEFINES) $(INCLUDES)
 LIBS +=
 LDDEPS +=
@@ -49,11 +47,15 @@ ifeq ($(config),debug)
 TARGETDIR = ../../../dist/Debug/lib
 TARGET = $(TARGETDIR)/libhttpmessage.a
 OBJDIR = ../../../dist/obj/Debug/httpmessage
+ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -O0 -g -Wall -Wextra -mmacosx-version-min=10.11
+ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -O0 -g -Wall -Wextra -mmacosx-version-min=10.11
 
 else ifeq ($(config),release)
 TARGETDIR = ../../../dist/Release/lib
 TARGET = $(TARGETDIR)/libhttpmessage.a
 OBJDIR = ../../../dist/obj/Release/httpmessage
+ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -O3 -Wall -Wextra -mmacosx-version-min=10.11
+ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -O3 -Wall -Wextra -mmacosx-version-min=10.11
 
 endif
 

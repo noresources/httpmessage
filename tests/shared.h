@@ -18,6 +18,13 @@ typedef struct __httpmessage_test
 	int (*test)(int, const char **);
 } httpmessage_test;
 
+int same_sign(int a, int b)
+{
+	return (a ==  b)
+	       || (a < 0 && b < 0)
+	       || (a > 0 && b > 0);
+}
+
 void print_line(FILE *stream, const char *text, size_t length);
 
 int run_tests(const httpmessage_test *tests, size_t count,
@@ -56,6 +63,7 @@ int run_tests(const httpmessage_test *tests, size_t count,
 	int test_argc;
 	const char **test_argv;
 	int exitCode = EXIT_SUCCESS;
+	int testExitCode;
 	
 	for (t = 0; t < count; ++t)
 	{
@@ -79,7 +87,16 @@ int run_tests(const httpmessage_test *tests, size_t count,
 		
 run_tests_run_test:
 		fprintf(stdout, "## %s ################################\n", T->name);
-		exitCode += (*T->test)(test_argc, test_argv);
+		testExitCode = (*T->test)(test_argc, test_argv);
+		
+		if (testExitCode != 0)
+		{
+			fprintf(stderr,
+			        "## %s error %d ######################\n",
+			        T->name, testExitCode);
+		}
+		
+		exitCode += testExitCode;
 	}
 	
 	return exitCode;

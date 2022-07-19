@@ -9,11 +9,7 @@ local prj = project "httpmessage"
 	module.targetdir("lib")
 	kind "StaticLib"
 	language "C"
-	filter { "toolset:gcc" }
 	warnings "Extra"
-	filter { "toolset:clang" }
-	warnings "Everything"
-	filter { }
 	includedirs {
 		path.join (module.rootdir, "include")
 	}
