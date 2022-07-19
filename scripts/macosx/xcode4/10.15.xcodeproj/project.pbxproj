@@ -13,31 +13,6 @@
 		C79563170BE408894E0B4157 /* text.c in Sources */ = {isa = PBXBuildFile; fileRef = 0525617F26F10EB163A637BF /* text.c */; };
 /* End PBXBuildFile section */
 
-/* Begin PBXFileReference section */
-		0525617F26F10EB163A637BF /* text.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = text.c; path = ../../../src/httpmessage/text.c; sourceTree = "<group>"; };
-		083CAADF3A35F591B415311F /* message.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = message.c; path = ../../../src/httpmessage/message.c; sourceTree = "<group>"; };
-		1345D8E9E1692C9B68777F29 /* grammar.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = grammar.h; path = ../../../include/httpmessage/grammar.h; sourceTree = "<group>"; };
-		3EFADE6370F42915EAD364A3 /* grammar.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = grammar.c; path = ../../../src/httpmessage/grammar.c; sourceTree = "<group>"; };
-		566DE994415A0F86893FD7D4 /* libhttpmessage.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = libhttpmessage.a; path = libhttpmessage.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		609472A5ADF768D7241668E5 /* text.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = text.h; path = ../../../include/httpmessage/text.h; sourceTree = "<group>"; };
-		698BB0C737AF0479BEBD5707 /* version.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = version.h; path = ../../../include/httpmessage/version.h; sourceTree = "<group>"; };
-		6CEA66E94C07811B2810DD29 /* preprocessor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = preprocessor.h; path = ../../../include/httpmessage/preprocessor.h; sourceTree = "<group>"; };
-		76209BED0B975B1F7A33B22D /* header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = header.h; path = ../../../include/httpmessage/header.h; sourceTree = "<group>"; };
-		A93521E5418207976FC90825 /* httpmessage.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = httpmessage.h; path = ../../../include/httpmessage/httpmessage.h; sourceTree = "<group>"; };
-		B47AC465829E181709AC6AA5 /* message.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = message.h; path = ../../../include/httpmessage/message.h; sourceTree = "<group>"; };
-		FD374C874A9A42B9C0B942C7 /* header.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = header.c; path = ../../../src/httpmessage/header.c; sourceTree = "<group>"; };
-/* End PBXFileReference section */
-
-/* Begin PBXFrameworksBuildPhase section */
-		6C2235046CD531F6E0B70344 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXFrameworksBuildPhase section */
-
 /* Begin PBXCopyFilesBuildPhase section */
 		D34ED670CCB4D7E2C05034B0 /* Embed Libraries */ = {
 			isa = PBXCopyFilesBuildPhase;
@@ -50,6 +25,31 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		0525617F26F10EB163A637BF /* text.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = text.c; path = /Volumes/Data/projects/vendors/httpmessage/src/httpmessage/text.c; sourceTree = "<group>"; };
+		083CAADF3A35F591B415311F /* message.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = message.c; path = /Volumes/Data/projects/vendors/httpmessage/src/httpmessage/message.c; sourceTree = "<group>"; };
+		1345D8E9E1692C9B68777F29 /* grammar.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = grammar.h; path = /Volumes/Data/projects/vendors/httpmessage/include/httpmessage/grammar.h; sourceTree = "<group>"; };
+		3EFADE6370F42915EAD364A3 /* grammar.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = grammar.c; path = /Volumes/Data/projects/vendors/httpmessage/src/httpmessage/grammar.c; sourceTree = "<group>"; };
+		566DE994415A0F86893FD7D4 /* libhttpmessage.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libhttpmessage.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		609472A5ADF768D7241668E5 /* text.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = text.h; path = /Volumes/Data/projects/vendors/httpmessage/include/httpmessage/text.h; sourceTree = "<group>"; };
+		698BB0C737AF0479BEBD5707 /* version.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = version.h; path = /Volumes/Data/projects/vendors/httpmessage/include/httpmessage/version.h; sourceTree = "<group>"; };
+		6CEA66E94C07811B2810DD29 /* preprocessor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = preprocessor.h; path = /Volumes/Data/projects/vendors/httpmessage/include/httpmessage/preprocessor.h; sourceTree = "<group>"; };
+		76209BED0B975B1F7A33B22D /* header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = header.h; path = /Volumes/Data/projects/vendors/httpmessage/include/httpmessage/header.h; sourceTree = "<group>"; };
+		A93521E5418207976FC90825 /* httpmessage.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = httpmessage.h; path = /Volumes/Data/projects/vendors/httpmessage/include/httpmessage/httpmessage.h; sourceTree = "<group>"; };
+		B47AC465829E181709AC6AA5 /* message.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = message.h; path = /Volumes/Data/projects/vendors/httpmessage/include/httpmessage/message.h; sourceTree = "<group>"; };
+		FD374C874A9A42B9C0B942C7 /* header.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = header.c; path = /Volumes/Data/projects/vendors/httpmessage/src/httpmessage/header.c; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		6C2235046CD531F6E0B70344 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
 		5775D4184366DFCA959E7A58 /* src */ = {
@@ -137,14 +137,21 @@
 /* Begin PBXProject section */
 		08FB7793FE84155DC02AAC07 /* Project object */ = {
 			isa = PBXProject;
-			buildConfigurationList = 1DEB928908733DD80010E9CD /* Build configuration list for PBXProject "httpmessage" */;
+			attributes = {
+			};
+			buildConfigurationList = 1DEB928908733DD80010E9CD /* Build configuration list for PBXProject "10.15" */;
 			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = en;
 			hasScannedForEncodings = 1;
+			knownRegions = (
+				en,
+				Base,
+			);
 			mainGroup = 5E8B98A5C89E1A9761C906E5 /* httpmessage */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				6994DEFA8FBB0EACF6C2053A /* libhttpmessage.a */,
+				6994DEFA8FBB0EACF6C2053A /* httpmessage */,
 			);
 		};
 /* End PBXProject section */
@@ -173,9 +180,6 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
-/* Begin PBXVariantGroup section */
-/* End PBXVariantGroup section */
-
 /* Begin XCBuildConfiguration section */
 		2F05BEA95FE9B69B7301ECE9 /* Debug */ = {
 			isa = XCBuildConfiguration;
@@ -185,7 +189,6 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				GCC_DYNAMIC_NO_PIC = NO;
 				INSTALL_PATH = /usr/local/lib;
-				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				PRODUCT_NAME = httpmessage;
 			};
 			name = Debug;
@@ -200,13 +203,15 @@
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
 				OBJROOT = ../../../dist/obj/Release/httpmessage;
 				ONLY_ACTIVE_ARCH = NO;
 				SYMROOT = ../../../dist/Release/lib;
-				USER_HEADER_SEARCH_PATHS = (
-					../../../include,
+				USER_HEADER_SEARCH_PATHS = /Volumes/Data/projects/vendors/httpmessage/include;
+				WARNING_CFLAGS = (
+					"-Wall",
+					"-Wextra",
 				);
-				WARNING_CFLAGS = "-Wall -Wextra";
 			};
 			name = Release;
 		};
@@ -217,7 +222,6 @@
 				CONFIGURATION_BUILD_DIR = ../../../dist/Release/lib;
 				GCC_DYNAMIC_NO_PIC = NO;
 				INSTALL_PATH = /usr/local/lib;
-				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				PRODUCT_NAME = httpmessage;
 			};
 			name = Release;
@@ -234,20 +238,22 @@
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
 				OBJROOT = ../../../dist/obj/Debug/httpmessage;
 				ONLY_ACTIVE_ARCH = YES;
 				SYMROOT = ../../../dist/Debug/lib;
-				USER_HEADER_SEARCH_PATHS = (
-					../../../include,
+				USER_HEADER_SEARCH_PATHS = /Volumes/Data/projects/vendors/httpmessage/include;
+				WARNING_CFLAGS = (
+					"-Wall",
+					"-Wextra",
 				);
-				WARNING_CFLAGS = "-Wall -Wextra";
 			};
 			name = Debug;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		1DEB928908733DD80010E9CD /* Build configuration list for PBXProject "httpmessage" */ = {
+		1DEB928908733DD80010E9CD /* Build configuration list for PBXProject "10.15" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				830392D48674650607E10914 /* Debug */,
@@ -256,7 +262,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
 		};
-		5A5D7D635B107A55CEF24BA3 /* Build configuration list for PBXNativeTarget "libhttpmessage.a" */ = {
+		5A5D7D635B107A55CEF24BA3 /* Build configuration list for PBXNativeTarget "httpmessage" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				2F05BEA95FE9B69B7301ECE9 /* Debug */,
@@ -266,6 +272,6 @@
 			defaultConfigurationName = Debug;
 		};
 /* End XCConfigurationList section */
-};
-rootObject = 08FB7793FE84155DC02AAC07 /* Project object */;
+	};
+	rootObject = 08FB7793FE84155DC02AAC07 /* Project object */;
 }

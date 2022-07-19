@@ -31,8 +31,6 @@ DEFINES +=
 INCLUDES += -I../../../tests -I../../../include
 FORCE_INCLUDE +=
 ALL_CPPFLAGS += $(CPPFLAGS) -MD -MP $(DEFINES) $(INCLUDES)
-ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS)
-ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS)
 ALL_RESFLAGS += $(RESFLAGS) $(DEFINES) $(INCLUDES)
 ALL_LDFLAGS += $(LDFLAGS)
 LINKCMD = $(CC) -o "$@" $(OBJECTS) $(RESOURCES) $(ALL_LDFLAGS) $(LIBS)
@@ -47,6 +45,8 @@ ifeq ($(config),debug)
 TARGETDIR = ../../../dist/Debug/tests
 TARGET = $(TARGETDIR)/test-headers
 OBJDIR = ../../../dist/obj/Debug/test-headers
+ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -O0 -g -mmacosx-version-min=10.11
+ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -O0 -g -mmacosx-version-min=10.11
 LIBS += ../../../dist/Debug/lib/libhttpmessage.a
 LDDEPS += ../../../dist/Debug/lib/libhttpmessage.a
 
@@ -54,6 +54,8 @@ else ifeq ($(config),release)
 TARGETDIR = ../../../dist/Release/tests
 TARGET = $(TARGETDIR)/test-headers
 OBJDIR = ../../../dist/obj/Release/test-headers
+ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -O3 -mmacosx-version-min=10.11
+ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -O3 -mmacosx-version-min=10.11
 LIBS += ../../../dist/Release/lib/libhttpmessage.a
 LDDEPS += ../../../dist/Release/lib/libhttpmessage.a
 

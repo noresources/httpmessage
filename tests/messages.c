@@ -386,14 +386,6 @@ int test_first_line(int argc, const char **argv)
 
 int main(int argc, const char **argv)
 {
-	int exitCode = EXIT_SUCCESS;
-	
-	exitCode += test_http_version(argc, argv);
-	exitCode += test_request_line(argc, argv);
-	exitCode += test_status_line(argc, argv);
-	exitCode += test_first_line(argc, argv);
-	exitCode += test_line_type(argc, argv);
-	
 	static const httpmessage_test tests[] =
 	{
 		{"http_version", test_http_version },

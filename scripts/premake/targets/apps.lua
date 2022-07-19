@@ -13,9 +13,6 @@ do
 		kind "ConsoleApp"
 		language "C"
 		warnings "Extra"
-		filter { "toolset:clang" }
-			warnings "Everything"
-		filter { }
 		defines {
 			"_POSIX_SOURCE" -- fileno()
 		}

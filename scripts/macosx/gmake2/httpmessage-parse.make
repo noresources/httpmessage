@@ -31,8 +31,6 @@ DEFINES += -D_POSIX_SOURCE
 INCLUDES += -I../../../include
 FORCE_INCLUDE +=
 ALL_CPPFLAGS += $(CPPFLAGS) -MD -MP $(DEFINES) $(INCLUDES)
-ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -Weverything
-ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -Weverything
 ALL_RESFLAGS += $(RESFLAGS) $(DEFINES) $(INCLUDES)
 ALL_LDFLAGS += $(LDFLAGS)
 LINKCMD = $(CC) -o "$@" $(OBJECTS) $(RESOURCES) $(ALL_LDFLAGS) $(LIBS)
@@ -47,6 +45,8 @@ ifeq ($(config),debug)
 TARGETDIR = ../../../dist/Debug/bin
 TARGET = $(TARGETDIR)/httpmessage-parse
 OBJDIR = ../../../dist/obj/Debug/httpmessage-parse
+ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -O0 -g -Wall -Wextra -mmacosx-version-min=10.11
+ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -O0 -g -Wall -Wextra -mmacosx-version-min=10.11
 LIBS += ../../../dist/Debug/lib/libhttpmessage.a
 LDDEPS += ../../../dist/Debug/lib/libhttpmessage.a
 
@@ -54,6 +54,8 @@ else ifeq ($(config),release)
 TARGETDIR = ../../../dist/Release/bin
 TARGET = $(TARGETDIR)/httpmessage-parse
 OBJDIR = ../../../dist/obj/Release/httpmessage-parse
+ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -O3 -Wall -Wextra -mmacosx-version-min=10.11
+ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -O3 -Wall -Wextra -mmacosx-version-min=10.11
 LIBS += ../../../dist/Release/lib/libhttpmessage.a
 LDDEPS += ../../../dist/Release/lib/libhttpmessage.a
 
