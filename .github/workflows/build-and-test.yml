@@ -28,6 +28,8 @@ jobs:
       run: dist/${{ matrix.config }}/tests/test-headers
     - name: Test message processing functions
       run: dist/${{ matrix.config }}/tests/test-messages
+    - name: Build and test using Address Sanitizer
+      run: ./scripts/tests/test-with-clang-sanitizer.sh
   macosx:
     runs-on: macos-latest
     strategy:
@@ -51,4 +53,6 @@ jobs:
       run: dist/${{ matrix.config }}/tests/test-headers
     - name: Test message processing functions
       run: dist/${{ matrix.config }}/tests/test-messages
+    - name: Build and test using Address Sanitizer
+      run: ./scripts/tests/test-with-clang-sanitizer.sh
       
