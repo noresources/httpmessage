@@ -380,7 +380,7 @@ void httpmessage_message_clear(
 {
 	httpmessage_header_clear(&message->header_list, option_flags);
 	httpmessage_stringview_clear(&message->body);
-	message->major_version = message->minor_version = 0;
+	message->major_version = message->minor_version = 1;
 }
 
 int httpmessage_message_append_header(
