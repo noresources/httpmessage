@@ -722,3 +722,71 @@ int httpmessage_response_consume(
 	
 	return consumed + result;
 }
+
+ssize_t httpmessage_response_write_file(
+    FILE *file,
+    const httpmessage_response *response)
+{
+	ssize_t written = 0;
+	ssize_t w;
+	
+	if (!(file && response))
+	{
+		return HTTPMESSAGE_ERROR_INVALID_ARGUMENT;
+	}
+	
+	/* Status line */
+	
+	HTTPMESSAGE_PRINTF_FILE(written, file, "HTTP/%d.%d %d",
+	                        response->message.major_version, response->message.minor_version,
+	                        response->status_code)
+	HTTPMESSAGE_TEXT_WRITE_FILE(written, file, " ", 1)
+	HTTPMESSAGE_STRING_WRITE_FILE(written, file, response->reason_phrase)
+	HTTPMESSAGE_TEXT_WRITE_FILE(written, file, "\r\n", 2)
+	
+	w = httpmessage_message_content_write_file(file, &response->message);
+	
+	if (w < 0)
+	{
+		return w;
+	}
+	
+	written += w;
+	
+	return written;
+}
+
+ssize_t httpmessage_response_write_buffer(
+    void *output, size_t output_size,
+    const httpmessage_response *response)
+{
+	char *o = (char *)output;
+	ssize_t w;
+	
+	if (!(output && output_size && response))
+	{
+		return HTTPMESSAGE_ERROR_INVALID_ARGUMENT;
+	}
+	
+	/* Request line */
+	HTTPMESSAGE_PRINTF_BUFFER(o, output_size, "HTTP/%d.%d %d",
+	                          response->message.major_version, response->message.minor_version,
+	                          response->status_code)
+	HTTPMESSAGE_TEXT_WRITE_BUFFER(o, output_size, " ", 1)
+	HTTPMESSAGE_STRING_WRITE_BUFFER(o, output_size, response->reason_phrase)
+	HTTPMESSAGE_TEXT_WRITE_BUFFER(o, output_size, "\r\n", 2)
+	
+	w = httpmessage_message_content_write_buffer(o, output_size,
+	        &response->message);
+	        
+	if (w < 0)
+	{
+		return w;
+	}
+	
+	o += w;
+	output_size -= (size_t)w;
+	
+	return (o - (char *)output);
+}
+
