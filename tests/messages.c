@@ -320,7 +320,6 @@ int test_line_type(int argc, const char **argv)
 	(void) argv;
 	int exitCode = EXIT_SUCCESS;
 	size_t a;
-	static const int noCRLF = HTTPMESSAGE_CONSUME_IGNORE_MISSING_CRLF;
 	static const line_type_test tests[] =
 	{
 		{ "Bleh!", 0, HTTPMESSAGE_TYPE_UNKNOWN },
@@ -328,13 +327,13 @@ int test_line_type(int argc, const char **argv)
 		{ "GET request HTTP/1.2", 0, HTTPMESSAGE_TYPE_UNKNOWN },
 		{ "HTTP/3.14 314 Pi!\r\n", 0, HTTPMESSAGE_TYPE_RESPONSE },
 		
-		{ "Bleh!", noCRLF, HTTPMESSAGE_TYPE_UNKNOWN },
-		{ "GET request HTTP/1.2\r\n", noCRLF, HTTPMESSAGE_TYPE_REQUEST },
-		{ "HTTP/3.14 314 Pi!\r\n", noCRLF, HTTPMESSAGE_TYPE_RESPONSE },
+		{ "Bleh!", HTTPMESSAGE_CONSUME_IGNORE_MISSING_CRLF, HTTPMESSAGE_TYPE_UNKNOWN },
+		{ "GET request HTTP/1.2\r\n", HTTPMESSAGE_CONSUME_IGNORE_MISSING_CRLF, HTTPMESSAGE_TYPE_REQUEST },
+		{ "HTTP/3.14 314 Pi!\r\n", HTTPMESSAGE_CONSUME_IGNORE_MISSING_CRLF, HTTPMESSAGE_TYPE_RESPONSE },
 		
-		{ "Bleh!", noCRLF, HTTPMESSAGE_TYPE_UNKNOWN },
-		{ "GET request HTTP/1.2", noCRLF, HTTPMESSAGE_TYPE_REQUEST },
-		{ "HTTP/3.14 314 Pi!", noCRLF, HTTPMESSAGE_TYPE_RESPONSE }
+		{ "Bleh!", HTTPMESSAGE_CONSUME_IGNORE_MISSING_CRLF, -1 },
+		{ "GET request HTTP/1.2", HTTPMESSAGE_CONSUME_IGNORE_MISSING_CRLF, 'q' },
+		{ "HTTP/3.14 314 Pi!", HTTPMESSAGE_CONSUME_IGNORE_MISSING_CRLF, 'r' }
 	};
 	
 	fprintf(stdout, "## %s ##############################\n",

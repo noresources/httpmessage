@@ -185,7 +185,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				GCC_DYNAMIC_NO_PIC = NO;
 				INSTALL_PATH = /usr/local/lib;
-				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				PRODUCT_NAME = httpmessage;
 			};
 			name = Debug;
@@ -217,7 +217,7 @@
 				CONFIGURATION_BUILD_DIR = ../../../dist/Release/lib;
 				GCC_DYNAMIC_NO_PIC = NO;
 				INSTALL_PATH = /usr/local/lib;
-				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				PRODUCT_NAME = httpmessage;
 			};
 			name = Release;

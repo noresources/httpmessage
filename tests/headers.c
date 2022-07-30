@@ -46,7 +46,6 @@ int test_header_consume(int argc, const char **argv)
 	httpmessage_header *current_header = &header;
 	httpmessage_header *new_header = NULL;
 	
-	static const int noCRLF = HTTPMESSAGE_CONSUME_IGNORE_MISSING_CRLF;
 	
 	static const header_test tests[] =
 	{
@@ -59,16 +58,16 @@ int test_header_consume(int argc, const char **argv)
 		{ " Bar\r\n", 0, 6, "Foo", "Bar" },
 		{ " 	Baz \r\n", 0, 8, "Foo", "Bar Baz" },
 		
-		{"Foo: Bar\r\n", noCRLF, 10, "Foo", "Bar"},
-		{ "Foo : Bar\r\n", noCRLF, HTTPMESSAGE_ERROR_SYNTAX, "", "" },
-		{ "Content-Type: text/fun\r\n", noCRLF, 24, "Content-Type", "text/fun" },
-		{ "Foo:\r\n", noCRLF,  6, "Foo", "" },
+		{"Foo: Bar\r\n", HTTPMESSAGE_CONSUME_IGNORE_MISSING_CRLF, 10, "Foo", "Bar"},
+		{ "Foo : Bar\r\n", HTTPMESSAGE_CONSUME_IGNORE_MISSING_CRLF, HTTPMESSAGE_ERROR_SYNTAX, "", "" },
+		{ "Content-Type: text/fun\r\n", HTTPMESSAGE_CONSUME_IGNORE_MISSING_CRLF, 24, "Content-Type", "text/fun" },
+		{ "Foo:\r\n", HTTPMESSAGE_CONSUME_IGNORE_MISSING_CRLF,  6, "Foo", "" },
 		{ "Foo:\r\n", 0, 6, "Foo", "" },
-		{ " Bar\r\n", noCRLF, 6, "Foo", "Bar" },
-		{ " 	Baz \r\n", noCRLF, 8, "Foo", "Bar Baz" },
-		{ "A:", noCRLF, 2, "A", "" },
-		{ "A: B ", noCRLF, 5, "A", "B" },
-		{ "\tC ", noCRLF, 3, "A", "B C" }
+		{ " Bar\r\n", HTTPMESSAGE_CONSUME_IGNORE_MISSING_CRLF, 6, "Foo", "Bar" },
+		{ " 	Baz \r\n", HTTPMESSAGE_CONSUME_IGNORE_MISSING_CRLF, 8, "Foo", "Bar Baz" },
+		{ "A:", HTTPMESSAGE_CONSUME_IGNORE_MISSING_CRLF, 2, "A", "" },
+		{ "A: B ", HTTPMESSAGE_CONSUME_IGNORE_MISSING_CRLF, 5, "A", "B" },
+		{ "\tC ", HTTPMESSAGE_CONSUME_IGNORE_MISSING_CRLF, 3, "A", "B C" }
 	};
 	
 	for (a = 0; a < sizeof(tests) / sizeof(header_test); ++a)
@@ -147,8 +146,6 @@ int test_value_consume(int argc, const char **argv)
 	size_t a = 0;
 	int exitCode = EXIT_SUCCESS;
 	
-	static const int noCRLF = HTTPMESSAGE_CONSUME_IGNORE_MISSING_CRLF;
-	
 	static const value_line_test tests[] =
 	{
 		{"foo\r\n", 0, 5, "foo", 3},
@@ -161,10 +158,10 @@ int test_value_consume(int argc, const char **argv)
 		{ "  Foo\r\n", 0, 7, "Foo", 3 },
 		{ "Foo 	\r\n", 0, 7, "Foo", 3 },
 		
-		{"foo\r\n", noCRLF, 5, "foo", 3},
-		{"foo", noCRLF, 3, "foo", 3},
-		{"foo bar\r\n", noCRLF, 9, "foo bar", 7},
-		{ "Foo\r\nBar", noCRLF, 5, "Foo", 3 }
+		{"foo\r\n", HTTPMESSAGE_CONSUME_IGNORE_MISSING_CRLF, 5, "foo", 3},
+		{"foo", HTTPMESSAGE_CONSUME_IGNORE_MISSING_CRLF, 3, "foo", 3},
+		{"foo bar\r\n", HTTPMESSAGE_CONSUME_IGNORE_MISSING_CRLF, 9, "foo bar", 7},
+		{ "Foo\r\nBar", HTTPMESSAGE_CONSUME_IGNORE_MISSING_CRLF, 5, "Foo", 3 }
 	};
 	
 	for (a = 0; a < sizeof(tests) / sizeof(value_line_test); ++a)

@@ -24,7 +24,7 @@ do
 	filter {}
 	
 	filter { "system:" .. premake.MACOSX }
-		systemversion "10.11"
+		systemversion "10.6"
 	filter {}
 	
 	if type(doxyfile) == "function" then
