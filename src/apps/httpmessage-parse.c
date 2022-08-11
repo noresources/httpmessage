@@ -97,7 +97,6 @@ int parse_response_text(const char *text, size_t length)
 		return EXIT_FAILURE;
 	}
 	
-	fprintf(stderr, "DEBUG Print response\n");
 	print_response(stdout, &response);
 	
 	return EXIT_SUCCESS;
@@ -118,15 +117,13 @@ int parse_request_text(const char *text, size_t length)
 		return EXIT_FAILURE;
 	}
 	
+	print_request(stdout, &request);
 	return EXIT_SUCCESS;
 }
 
 int parse_text(const char *text, size_t length)
 {
-	fprintf(stderr, "DEBUG Get type\n");
 	int type = httpmessage_message_get_type(text, length, 0);
-	
-	fprintf(stderr, "DEBUG type %c\n", type);
 	
 	switch (type)
 	{
@@ -170,7 +167,6 @@ int parse_file(FILE *file)
 	
 	if (length)
 	{
-		fprintf(stderr, "DEBUG Tetx\n%.*s", (int)length, &text[0]);
 		return parse_text(&text[0], length);
 	}
 	
