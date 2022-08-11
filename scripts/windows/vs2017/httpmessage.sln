@@ -9,6 +9,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "test-headers", "test-header
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "test-messages", "test-messages.vcxproj", "{CA59B9F6-361A-352D-FF54-7EAA6BD47909}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "test-preprocessor", "test-preprocessor.vcxproj", "{99A055D9-05B7-536F-4E2E-DF90BA8324F7}"
+EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "test-text", "test-text.vcxproj", "{B717E896-2382-9C0D-6CC0-4DB3D8697A62}"
 EndProject
 Global
@@ -33,6 +35,10 @@ Global
 		{CA59B9F6-361A-352D-FF54-7EAA6BD47909}.Debug|Win32.Build.0 = Debug|Win32
 		{CA59B9F6-361A-352D-FF54-7EAA6BD47909}.Release|Win32.ActiveCfg = Release|Win32
 		{CA59B9F6-361A-352D-FF54-7EAA6BD47909}.Release|Win32.Build.0 = Release|Win32
+		{99A055D9-05B7-536F-4E2E-DF90BA8324F7}.Debug|Win32.ActiveCfg = Debug|Win32
+		{99A055D9-05B7-536F-4E2E-DF90BA8324F7}.Debug|Win32.Build.0 = Debug|Win32
+		{99A055D9-05B7-536F-4E2E-DF90BA8324F7}.Release|Win32.ActiveCfg = Release|Win32
+		{99A055D9-05B7-536F-4E2E-DF90BA8324F7}.Release|Win32.Build.0 = Release|Win32
 		{B717E896-2382-9C0D-6CC0-4DB3D8697A62}.Debug|Win32.ActiveCfg = Debug|Win32
 		{B717E896-2382-9C0D-6CC0-4DB3D8697A62}.Debug|Win32.Build.0 = Debug|Win32
 		{B717E896-2382-9C0D-6CC0-4DB3D8697A62}.Release|Win32.ActiveCfg = Release|Win32

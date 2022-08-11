@@ -1,0 +1,276 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		988A7450DCD919C21F005290 /* preprocessor.c in Sources */ = {isa = PBXBuildFile; fileRef = 52BFEC78748B99AAB140C2B8 /* preprocessor.c */; };
+		C6BEF5962345FA08ABE8B3D6 /* libhttpmessage.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 149C5A5E2481869010F5109E /* libhttpmessage.a */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		4EE25D47AA23B0B97D7DFB87 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 35ACF4AA47D6D15C7BC7BAEA /* httpmessage.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 566DE994415A0F86893FD7D4;
+			remoteInfo = libhttpmessage.a;
+		};
+		A11CCFE0FC5E2352CFB86E20 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 35ACF4AA47D6D15C7BC7BAEA /* httpmessage.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 6994DEFA8FBB0EACF6C2053A;
+			remoteInfo = libhttpmessage.a;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		35ACF4AA47D6D15C7BC7BAEA /* libhttpmessage.a */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = "httpmessage.xcodeproj"; path = httpmessage.xcodeproj; sourceTree = SOURCE_ROOT; };
+		52BFEC78748B99AAB140C2B8 /* preprocessor.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = preprocessor.c; path = ../../../tests/preprocessor.c; sourceTree = "<group>"; };
+		AF99B25DF80A968F3CA9689D /* test-preprocessor */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; name = "test-preprocessor"; path = "test-preprocessor"; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		769F014D8DB19C7F7DCD978D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C6BEF5962345FA08ABE8B3D6 /* libhttpmessage.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		702FD8F9965608ABFD5CFF39 /* Embed Libraries */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+			);
+			name = "Embed Libraries";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXGroup section */
+		9D968EAA920D05DCE0E0A4EA /* Projects */ = {
+			isa = PBXGroup;
+			children = (
+				35ACF4AA47D6D15C7BC7BAEA /* httpmessage.xcodeproj */,
+			);
+			name = Projects;
+			sourceTree = "<group>";
+		};
+		A6C936B49B3FADE6EA134CF4 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				AF99B25DF80A968F3CA9689D /* test-preprocessor */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		EBDCC554F89974C66D83E394 /* test-preprocessor */ = {
+			isa = PBXGroup;
+			children = (
+				52BFEC78748B99AAB140C2B8 /* preprocessor.c */,
+				A6C936B49B3FADE6EA134CF4 /* Products */,
+				9D968EAA920D05DCE0E0A4EA /* Projects */,
+			);
+			name = "test-preprocessor";
+			sourceTree = "<group>";
+		};
+		F067DDA712338AD94EE8B3E7 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				149C5A5E2481869010F5109E /* libhttpmessage.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		A29632A38D825895D56820E3 /* test-preprocessor */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 64DA49AC7BECE4DE6C08DFEC /* Build configuration list for PBXNativeTarget "test-preprocessor" */;
+			buildPhases = (
+				E68681EDFD991D1FEDB5182D /* Resources */,
+				50339B446746367657623184 /* Sources */,
+				769F014D8DB19C7F7DCD978D /* Frameworks */,
+				702FD8F9965608ABFD5CFF39 /* Embed Libraries */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				DE201AB0FFEBC7E23CA0F0F0 /* PBXTargetDependency */,
+			);
+			name = "test-preprocessor";
+			productInstallPath = "$(HOME)/bin";
+			productName = "test-preprocessor";
+			productReference = AF99B25DF80A968F3CA9689D /* test-preprocessor */;
+			productType = "com.apple.product-type.tool";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		08FB7793FE84155DC02AAC07 /* Project object */ = {
+			isa = PBXProject;
+			buildConfigurationList = 1DEB928908733DD80010E9CD /* Build configuration list for PBXProject "test-preprocessor" */;
+			compatibilityVersion = "Xcode 3.2";
+			hasScannedForEncodings = 1;
+			mainGroup = EBDCC554F89974C66D83E394 /* test-preprocessor */;
+			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = F067DDA712338AD94EE8B3E7 /* Products */;
+					ProjectRef = 35ACF4AA47D6D15C7BC7BAEA /* httpmessage.xcodeproj */;
+				},
+			);
+			projectRoot = "";
+			targets = (
+				A29632A38D825895D56820E3 /* test-preprocessor */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		149C5A5E2481869010F5109E /* libhttpmessage.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libhttpmessage.a;
+			remoteRef = 4EE25D47AA23B0B97D7DFB87 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
+
+/* Begin PBXResourcesBuildPhase section */
+		E68681EDFD991D1FEDB5182D /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		50339B446746367657623184 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				988A7450DCD919C21F005290 /* preprocessor.c in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		DE201AB0FFEBC7E23CA0F0F0 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = libhttpmessage.a;
+			targetProxy = A11CCFE0FC5E2352CFB86E20 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		2F9F746355C5A415BCCC9AA3 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(NATIVE_ARCH_ACTUAL)";
+				CONFIGURATION_BUILD_DIR = "$(SYMROOT)";
+				CONFIGURATION_TEMP_DIR = "$(OBJROOT)";
+				COPY_PHASE_STRIP = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				OBJROOT = "../../../dist/obj/Debug/test-preprocessor";
+				ONLY_ACTIVE_ARCH = YES;
+				SYMROOT = ../../../dist/Debug/tests;
+				USER_HEADER_SEARCH_PATHS = (
+					../../../tests,
+					../../../include,
+				);
+			};
+			name = Debug;
+		};
+		312E40727E9136A4F4B036B2 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CONFIGURATION_BUILD_DIR = ../../../dist/Debug/tests;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_DYNAMIC_NO_PIC = NO;
+				INSTALL_PATH = /usr/local/bin;
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				PRODUCT_NAME = "test-preprocessor";
+			};
+			name = Debug;
+		};
+		7C833FECAE7C8A9E285BC62C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CONFIGURATION_BUILD_DIR = ../../../dist/Release/tests;
+				GCC_DYNAMIC_NO_PIC = NO;
+				INSTALL_PATH = /usr/local/bin;
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				PRODUCT_NAME = "test-preprocessor";
+			};
+			name = Release;
+		};
+		89B5F35DD226D78F16C5A99D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(NATIVE_ARCH_ACTUAL)";
+				CONFIGURATION_BUILD_DIR = "$(SYMROOT)";
+				CONFIGURATION_TEMP_DIR = "$(OBJROOT)";
+				GCC_OPTIMIZATION_LEVEL = 3;
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				OBJROOT = "../../../dist/obj/Release/test-preprocessor";
+				ONLY_ACTIVE_ARCH = NO;
+				SYMROOT = ../../../dist/Release/tests;
+				USER_HEADER_SEARCH_PATHS = (
+					../../../tests,
+					../../../include,
+				);
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		1DEB928908733DD80010E9CD /* Build configuration list for PBXProject "test-preprocessor" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2F9F746355C5A415BCCC9AA3 /* Debug */,
+				89B5F35DD226D78F16C5A99D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		64DA49AC7BECE4DE6C08DFEC /* Build configuration list for PBXNativeTarget "test-preprocessor" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				312E40727E9136A4F4B036B2 /* Debug */,
+				7C833FECAE7C8A9E285BC62C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+};
+rootObject = 08FB7793FE84155DC02AAC07 /* Project object */;
+}

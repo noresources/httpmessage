@@ -12,6 +12,7 @@ ifeq ($(config),debug)
   httpmessage_config = debug
   httpmessage_parse_config = debug
   test_messages_config = debug
+  test_preprocessor_config = debug
   test_headers_config = debug
   test_text_config = debug
 
@@ -19,6 +20,7 @@ else ifeq ($(config),release)
   httpmessage_config = release
   httpmessage_parse_config = release
   test_messages_config = release
+  test_preprocessor_config = release
   test_headers_config = release
   test_text_config = release
 
@@ -26,7 +28,7 @@ else
   $(error "invalid configuration $(config)")
 endif
 
-PROJECTS := httpmessage httpmessage-parse test-messages test-headers test-text
+PROJECTS := httpmessage httpmessage-parse test-messages test-preprocessor test-headers test-text
 
 .PHONY: all clean help $(PROJECTS) 
 
@@ -50,6 +52,12 @@ ifneq (,$(test_messages_config))
 	@${MAKE} --no-print-directory -C . -f test-messages.make config=$(test_messages_config)
 endif
 
+test-preprocessor: httpmessage
+ifneq (,$(test_preprocessor_config))
+	@echo "==== Building test-preprocessor ($(test_preprocessor_config)) ===="
+	@${MAKE} --no-print-directory -C . -f test-preprocessor.make config=$(test_preprocessor_config)
+endif
+
 test-headers: httpmessage
 ifneq (,$(test_headers_config))
 	@echo "==== Building test-headers ($(test_headers_config)) ===="
@@ -66,6 +74,7 @@ clean:
 	@${MAKE} --no-print-directory -C . -f httpmessage.make clean
 	@${MAKE} --no-print-directory -C . -f httpmessage-parse.make clean
 	@${MAKE} --no-print-directory -C . -f test-messages.make clean
+	@${MAKE} --no-print-directory -C . -f test-preprocessor.make clean
 	@${MAKE} --no-print-directory -C . -f test-headers.make clean
 	@${MAKE} --no-print-directory -C . -f test-text.make clean
 
@@ -82,6 +91,7 @@ help:
 	@echo "   httpmessage"
 	@echo "   httpmessage-parse"
 	@echo "   test-messages"
+	@echo "   test-preprocessor"
 	@echo "   test-headers"
 	@echo "   test-text"
 	@echo ""

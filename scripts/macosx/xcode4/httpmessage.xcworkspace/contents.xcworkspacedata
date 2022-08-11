@@ -14,6 +14,9 @@
 		location = "group:test-messages.xcodeproj">
 	</FileRef>
 	<FileRef
+		location = "group:test-preprocessor.xcodeproj">
+	</FileRef>
+	<FileRef
 		location = "group:test-text.xcodeproj">
 	</FileRef>
 </Workspace>

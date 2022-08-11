@@ -44,14 +44,38 @@
 #	define HTTPMESSAGE_C_END
 #endif
 
-#if !defined(__SIZEOF_POINTER__)
-#	error "__SIZEOF_POINTER__ not defined"
+#if !defined (HTTPMESSAGE_POINTER_SIZE)
+#	if defined(__SIZEOF_POINTER__)
+#		define HTTPMESSAGE_POINTER_SIZE (__SIZEOF_POINTER__)
+#	elif (defined(_WIN64))
+|| (defined(__arm64__)&& (__arm64__))
+|| (defined(_LP64)&& _LP64))
+|| (defined(__x86_64)&& (__x86_64))
+|| (defined(__x86_64__)&& (__x86_64__))
+#		define HTTPMESSAGE_POINTER_SIZE 8
+#	elif defined (__ARMEL__) && (__ARMEL__)
+#		if defined(__ARM_ARCH_ISA_A64) && __ARM_ARCH_ISA_A64
+#			define HTTPMESSAGE_POINTER_SIZE 8
+#		else
+#			define HTTPMESSAGE_POINTER_SIZE 4
+#		endif
+#	elif (defined (__i386) && (__i386))
+|| (defined(__i386__)&& (__i386__))
+|| (defined(__i486)&& (__i486))
+|| (defined(__i486__)&& (__i486__))
+|| (defined(__i686)&& (__i686))
+|| (defined(__i686__)&& (__i686__))
+|| defined(_WIN32)
+#		define HTTPMESSAGE_POINTER_SIZE 4
+#	else
+#		error "Unable to detect pointer size"
+#	endif
 #endif
 
-#if (__SIZEOF_POINTER__ == 8)
+#if (HTTPMESSAGE_POINTER_SIZE == 8)
 #	define HTTPMESSAGE_PAD64(variable, size) char variable[size];
 #	define HTTPMESSAGE_PAD32(variable, size)
-#elif (__SIZEOF_POINTER__ == 4)
+#elif (HTTPMESSAGE_POINTER_SIZE == 4)
 #	define HTTPMESSAGE_PAD64(variable, size)
 #	define HTTPMESSAGE_PAD32(variable, size) char variable[size];
 #else

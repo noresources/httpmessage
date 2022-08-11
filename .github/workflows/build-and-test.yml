@@ -22,6 +22,8 @@ jobs:
     - name: Build ${{ github.job }} ${{ matrix.config }} (${{ steps.configname.outputs.lowercase }})
       run: make -C scripts/${{ github.job }}/gmake2 config=${{ steps.configname.outputs.lowercase
         }}
+    - name: Test configuration and platform detection
+      run: dist/${{ matrix.config }}/tests/test-preprocessor
     - name: Test text processing functions
       run: dist/${{ matrix.config }}/tests/test-text
     - name: Test header processing functions
