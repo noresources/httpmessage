@@ -401,6 +401,11 @@ int httpmessage_message_append_header(
 		goto httpmessage_message_append_header_ok;
 	}
 	
+	if (option_flags & HTTPMESSAGE_NO_ALLOCATION)
+	{
+		return HTTPMESSAGE_ERROR_ALLOCATION;
+	}
+	
 	header->next_header = httpmessage_header_new();
 	
 	if (!header->next_header)

@@ -304,8 +304,9 @@ HMAPI  size_t httpmessage_header_count(httpmessage_header *header_list);
  * @param text Input text
  * @param length Input text length
  * @param option_flags Option flags. Supported flags are:
- * - @c ::HTTPMESSAGE_CONSUME_IGNORE_MISSING_CRLF
- * - @c ::HTTPMESSAGE_CLEAR_NO_FREE
+ * - ::HTTPMESSAGE_CONSUME_IGNORE_MISSING_CRLF
+ * - ::HTTPMESSAGE_CLEAR_NO_FREE
+ * - ::HTTPMESSAGE_NO_ALLOCATION
  *
  * @return On success, the numbre of bytes consumed (the current line length).
  * On error, one of httpmessage_result_code

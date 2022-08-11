@@ -87,6 +87,7 @@ HMAPI void httpmessage_message_clear(
  * @param value Header value
  * @param option_flags Option flags. Supported flags are
  * - ::HTTPMESSAGE_CLEAR_NO_FREE
+ * - ::HTTPMESSAGE_NO_ALLOCATION
  *
  * @return HTTPMESSAGE_OK on success. One of httpmessage_result_code error codes on error.
  */
