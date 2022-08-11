@@ -404,15 +404,16 @@ int httpmessage_header_line_consume(
 		}
 		
 		result = httpmessage_headervalue_line_consume(
-		           &headervalue->chunk.text,
-		           &headervalue->chunk.length,
-		           text, length,
-		           option_flags);
+		             &headervalue->chunk.text,
+		             &headervalue->chunk.length,
+		             text, length,
+		             option_flags);
+		             
 		if (result <= 0)
 		{
 			return result;
 		}
-
+		
 		return (consumed + (size_t)result);
 	}
 	

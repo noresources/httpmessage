@@ -142,6 +142,10 @@ HMAPI void httpmessage_request_clear(
     httpmessage_request *request,
     int option_flags);
 
+HMAPI httpmessage_request *httpmessage_request_storage_new(
+    size_t max_header_count,
+    size_t max_chunk_per_header_value);
+
 /**
  * @ingroup message
  *
@@ -189,6 +193,10 @@ HMAPI void httpmessage_response_clear(
     httpmessage_response *response,
     int option_flags
 );
+
+HMAPI httpmessage_response *httpmessage_response_storage_new(
+    size_t max_header_count,
+    size_t max_chunk_per_header_value);
 
 /**
  * @ingroup message
