@@ -1,0 +1,7 @@
+GET /lucky HTTP/1.1
+Content-Type: text/plain
+X-Lyrics: I'm a poor lonesome cowboy.
+ I'm a long long way from home.
+Host: west.us
+
+This is not Daft Punk!

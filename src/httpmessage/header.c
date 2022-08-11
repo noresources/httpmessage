@@ -386,6 +386,7 @@ int httpmessage_header_line_consume(
 	{
 		++text;
 		--length;
+		++consumed;
 		*header = current_header;
 		httpmessage_headervalue *headervalue = &current_header->value;
 		
@@ -401,12 +402,17 @@ int httpmessage_header_line_consume(
 			headervalue = headervalue->next_chunk;
 		}
 		
-		return httpmessage_headervalue_line_consume(
+		result = httpmessage_headervalue_line_consume(
 		           &headervalue->chunk.text,
 		           &headervalue->chunk.length,
 		           text, length,
 		           option_flags);
-		           
+		if (result <= 0)
+		{
+			return result;
+		}
+
+		return (consumed + (size_t)result);
 	}
 	
 	/* Header field name */
