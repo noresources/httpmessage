@@ -60,8 +60,6 @@ httpmessage_headervalue *httpmessage_headervalue_new(void)
 	}
 	
 	httpmessage_headervalue_init(value);
-	httpmessage_stringview_clear(&value->chunk);
-	value->next_chunk = NULL;
 	return value;
 }
 
