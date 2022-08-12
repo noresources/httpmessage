@@ -450,7 +450,7 @@ int test_storage(int argc, const char **argv)
 		{
 			fprintf(stderr, "warning: failed to read %s\n",
 			        T->input_file);
-			continue;
+			goto test_storage_test_loop_end;
 		}
 		
 		type = httpmessage_message_get_type(text, text_length, 0);
@@ -461,6 +461,8 @@ int test_storage(int argc, const char **argv)
 			        "TYPE",
 			        4, (const char *)&type,
 			        4, (const char *)&T->type);
+			++exitCode;
+			goto test_storage_test_loop_end;
 		}
 		
 		if (type == HTTPMESSAGE_TYPE_REQUEST)
@@ -564,7 +566,7 @@ int test_storage(int argc, const char **argv)
 		
 		if (result <= 0)
 		{
-			continue;
+			goto test_storage_test_loop_end;
 		}
 		
 		if (type == HTTPMESSAGE_TYPE_REQUEST)
