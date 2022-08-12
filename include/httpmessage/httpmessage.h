@@ -38,6 +38,8 @@ typedef enum __httpmessage_result_code
 	HTTPMESSAGE_ERROR_INCOMPLETE = -1201, 		/**< */
 } httpmessage_result_code;
 
+HMAPI const char *httpmessage_result_get_text(int code);
+
 /**
  * @ingroup base
  *

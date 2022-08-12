@@ -488,7 +488,7 @@ int httpmessage_header_line_consume(
 int httpmessage_header_list_consume(
     httpmessage_header *header_list,
     const char *text, size_t length,
-	int option_flags)
+    int option_flags)
 {
 	int consumed = 0;
 	httpmessage_header *new_header = NULL;

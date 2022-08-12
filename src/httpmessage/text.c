@@ -107,3 +107,28 @@ int httpmessage_stringview_caseless_compare_text(const httpmessage_stringview *v
 	
 	return (int)(v->length - length);
 }
+
+
+const char *httpmessage_result_get_text(int code)
+{
+#define DFLT(_suffix) \
+	case HTTPMESSAGE_ ## _suffix: \
+		return #_suffix;
+
+
+	switch (code)
+	{
+			DFLT(OK)
+			DFLT(ERROR_INVALID_ARGUMENT)
+			DFLT(ERROR_OVERFLOW)
+			DFLT(ERROR_WRITE)
+			DFLT(ERROR_ALLOCATION)
+			DFLT(ERROR_SYNTAX)
+			DFLT(ERROR_INCOMPLETE)
+			
+	}
+	
+#undef DFLT
+	return "Unknown result code";
+	
+}
