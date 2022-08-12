@@ -375,6 +375,48 @@ int httpmessage_message_get_type(
 	return HTTPMESSAGE_TYPE_UNKNOWN;
 }
 
+HMAPI int httpmessage_message_get_storage_infos(
+    size_t *max_header_count,
+    size_t *max_chunk_per_value,
+    const httpmessage_message *message)
+{
+	size_t chunk_count = 0;
+	const httpmessage_header *header;
+	const httpmessage_headervalue *value;
+	*max_header_count = 0;
+	*max_chunk_per_value = 0;
+	
+	if (!message)
+	{
+		return HTTPMESSAGE_ERROR_INVALID_ARGUMENT;
+	}
+	
+	header = &message->header_list;
+	
+	while (header)
+	{
+		++(*max_header_count);
+		value = &header->value;
+		chunk_count = 1;
+		
+		while (value->next_chunk)
+		{
+			++chunk_count;
+			value = value->next_chunk;
+		}
+		
+		if (chunk_count > *max_chunk_per_value)
+		{
+			*max_chunk_per_value = chunk_count;
+		}
+		
+		header = header->next_header;
+	}
+	
+	
+	return HTTPMESSAGE_OK;
+}
+
 void httpmessage_message_init(httpmessage_message *message)
 {
 	httpmessage_header_init(&message->header_list);

@@ -96,6 +96,11 @@ HMAPI int httpmessage_message_append_header(
     const char *name, const char *value,
     int option_flags);
 
+HMAPI int httpmessage_message_get_storage_infos(
+    size_t *max_header_count,
+    size_t *max_chunk_per_value,
+    const httpmessage_message *message);
+
 /**
  * @ingroup message
  *
