@@ -439,6 +439,15 @@ int httpmessage_message_content_consume(
 	             
 	if (result < 0)
 	{
+		switch (result)
+		{
+			case HTTPMESSAGE_ERROR_ALLOCATION:
+				return result;
+				
+			default:
+				break;
+		}
+		
 		return HTTPMESSAGE_ERROR_SYNTAX;
 	}
 	
@@ -589,6 +598,14 @@ int httpmessage_request_consume(
 	             
 	if (result < 0)
 	{
+		switch (result)
+				{
+					case HTTPMESSAGE_ERROR_ALLOCATION:
+						return result;
+
+					default:
+						break;
+				}
 		return HTTPMESSAGE_ERROR_SYNTAX;
 	}
 	
@@ -717,6 +734,14 @@ int httpmessage_response_consume(
 	             
 	if (result < 0)
 	{
+		switch (result)
+				{
+					case HTTPMESSAGE_ERROR_ALLOCATION:
+						return result;
+
+					default:
+						break;
+				}
 		return HTTPMESSAGE_ERROR_SYNTAX;
 	}
 	
