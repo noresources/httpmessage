@@ -429,7 +429,8 @@ int httpmessage_message_content_consume(
 	/* Headers */
 	result = httpmessage_header_list_consume(
 	             &message->header_list,
-	             text, length);
+	             text, length,
+				 option_flags);
 	             
 	if (result < 0)
 	{

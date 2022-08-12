@@ -374,7 +374,8 @@ HMAPI ssize_t httpmessage_header_write_buffer(
  */
 HMAPI int httpmessage_header_list_consume(
     httpmessage_header *header_list,
-    const char *text, size_t length);
+    const char *text, size_t length,
+	int option_flags);
 
 /**
  * @ingroup header
