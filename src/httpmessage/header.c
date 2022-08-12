@@ -44,7 +44,6 @@ void httpmessage_headervalue_clear(
 	if (option_flags & HTTPMESSAGE_CLEAR_NO_FREE)
 	{
 		httpmessage_headervalue_clear(value->next_chunk, option_flags);
-		value->next_chunk = NULL;
 		return;
 	}
 	
@@ -323,7 +322,6 @@ void httpmessage_header_clear(
 	if (option_flags & HTTPMESSAGE_CLEAR_NO_FREE)
 	{
 		httpmessage_header_clear(header->next_header, option_flags);
-		header->next_header = NULL;
 		return;
 	}
 	

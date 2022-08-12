@@ -397,7 +397,7 @@ int httpmessage_message_append_header(
 	
 	if (header->field.length == 0)
 	{
-		httpmessage_headervalue_clear(&header->value,  option_flags);
+		httpmessage_headervalue_clear(&header->value, option_flags);
 		goto httpmessage_message_append_header_ok;
 	}
 	
@@ -423,8 +423,7 @@ int httpmessage_message_content_consume(
 {
 	int consumed = 0;
 	int result = 0;
-	httpmessage_header_clear(&message->header_list,
-	                         /* HTTPMESSAGE_CLEAR_NO_FREE */	0);
+	httpmessage_header_clear(&message->header_list, option_flags);
 	httpmessage_stringview_clear(&message->body);
 	
 	/* Headers */
