@@ -412,20 +412,26 @@ int httpmessage_header_line_consume(
 		
 		if (headervalue->chunk.length > 0)
 		{
+			if (option_flags & HTTPMESSAGE_NO_ALLOCATION)
+			{
+				return HTTPMESSAGE_ERROR_ALLOCATION;
+			}
+			
 			headervalue->next_chunk = httpmessage_headervalue_new();
 			headervalue = headervalue->next_chunk;
 		}
 		
 		result = httpmessage_headervalue_line_consume(
-		           &headervalue->chunk.text,
-		           &headervalue->chunk.length,
-		           text, length,
-		           option_flags);
+		             &headervalue->chunk.text,
+		             &headervalue->chunk.length,
+		             text, length,
+		             option_flags);
+		             
 		if (result <= 0)
 		{
 			return result;
 		}
-
+		
 		return (consumed + (size_t)result);
 	}
 	
@@ -480,6 +486,11 @@ int httpmessage_header_line_consume(
 	
 	if ((*header)->field.length)
 	{
+		if (option_flags & HTTPMESSAGE_NO_ALLOCATION)
+		{
+			return HTTPMESSAGE_ERROR_ALLOCATION;
+		}
+		
 		(*header)->next_header = httpmessage_header_new();
 		*header = (*header)->next_header;
 	}

@@ -9,6 +9,14 @@
 #include "httpmessage/httpmessage.h"
 #include <string.h>
 #include <stdio.h>
+#include <stdlib.h>
+#include <inttypes.h>
+
+void httpmessage_message_storage_init(
+    httpmessage_message *message,
+    uint8_t *storage,
+    size_t max_header_count,
+    size_t max_chunk_per_header_value);
 
 int httpmessage_message_http_version_consume(
     int *major_version,
@@ -367,6 +375,48 @@ int httpmessage_message_get_type(
 	return HTTPMESSAGE_TYPE_UNKNOWN;
 }
 
+HMAPI int httpmessage_message_get_storage_infos(
+    size_t *max_header_count,
+    size_t *max_chunk_per_value,
+    const httpmessage_message *message)
+{
+	size_t chunk_count = 0;
+	const httpmessage_header *header;
+	const httpmessage_headervalue *value;
+	*max_header_count = 0;
+	*max_chunk_per_value = 0;
+	
+	if (!message)
+	{
+		return HTTPMESSAGE_ERROR_INVALID_ARGUMENT;
+	}
+	
+	header = &message->header_list;
+	
+	while (header)
+	{
+		++(*max_header_count);
+		value = &header->value;
+		chunk_count = 1;
+		
+		while (value->next_chunk)
+		{
+			++chunk_count;
+			value = value->next_chunk;
+		}
+		
+		if (chunk_count > *max_chunk_per_value)
+		{
+			*max_chunk_per_value = chunk_count;
+		}
+		
+		header = header->next_header;
+	}
+	
+	
+	return HTTPMESSAGE_OK;
+}
+
 void httpmessage_message_init(httpmessage_message *message)
 {
 	httpmessage_header_init(&message->header_list);
@@ -399,6 +449,11 @@ int httpmessage_message_append_header(
 	{
 		httpmessage_headervalue_clear(&header->value, option_flags);
 		goto httpmessage_message_append_header_ok;
+	}
+	
+	if (option_flags & HTTPMESSAGE_NO_ALLOCATION)
+	{
+		return HTTPMESSAGE_ERROR_ALLOCATION;
 	}
 	
 	header->next_header = httpmessage_header_new();
@@ -434,6 +489,15 @@ int httpmessage_message_content_consume(
 	             
 	if (result < 0)
 	{
+		switch (result)
+		{
+			case HTTPMESSAGE_ERROR_ALLOCATION:
+				return result;
+				
+			default:
+				break;
+		}
+		
 		return HTTPMESSAGE_ERROR_SYNTAX;
 	}
 	
@@ -548,6 +612,91 @@ void httpmessage_request_clear(
 	httpmessage_stringview_clear(&request->request_uri);
 }
 
+void httpmessage_message_storage_init(
+    httpmessage_message *message,
+    uint8_t *storage,
+    size_t max_header_count,
+    size_t max_chunk_per_header_value)
+{
+	httpmessage_header *header;
+	httpmessage_headervalue *value;
+	uint8_t *p;
+	size_t a, b;
+	
+	--max_header_count;
+	--max_chunk_per_header_value;
+	
+	p = storage;
+	
+	header = &message->header_list;
+	
+	for (a = 0; a < max_header_count; ++a)
+	{
+		value = &header->value;
+		
+		for (b = 0; b < max_chunk_per_header_value; ++b)
+		{
+			value->next_chunk = (httpmessage_headervalue *)p;
+			value = value->next_chunk;
+			httpmessage_headervalue_init(value);
+			p += sizeof(httpmessage_headervalue);
+		}
+		
+		header->next_header = (httpmessage_header *)p;
+		header = header->next_header;
+		httpmessage_header_init(header);
+		p += sizeof(httpmessage_header);
+	}
+}
+
+httpmessage_request *httpmessage_request_storage_new(
+    size_t max_header_count,
+    size_t max_chunk_per_header_value)
+{
+	size_t storage_size = sizeof(httpmessage_request)
+	                      + ((max_header_count - 1) * sizeof(httpmessage_header)
+	                         + ((max_chunk_per_header_value - 1) * max_header_count * sizeof(httpmessage_headervalue))
+	                        );
+	httpmessage_request *storage = (httpmessage_request *)malloc(storage_size);
+	
+	if (!storage)
+	{
+		return storage;
+	}
+	
+	httpmessage_request_init(storage);
+	httpmessage_message_storage_init(
+	    &storage->message,
+	    (uint8_t *)(storage + 1),
+	    max_header_count, max_chunk_per_header_value);
+	    
+	return storage;
+}
+
+httpmessage_response *httpmessage_response_storage_new(
+    size_t max_header_count,
+    size_t max_chunk_per_header_value)
+{
+	size_t storage_size = sizeof(httpmessage_response)
+	                      + ((max_header_count - 1) * sizeof(httpmessage_header)
+	                         + ((max_chunk_per_header_value - 1) * max_header_count * sizeof(httpmessage_headervalue))
+	                        );
+	httpmessage_response *storage = (httpmessage_response *)malloc(storage_size);
+	
+	if (!storage)
+	{
+		return storage;
+	}
+	
+	httpmessage_response_init(storage);
+	httpmessage_message_storage_init(
+	    &storage->message,
+	    (uint8_t *)(storage + 1),
+	    max_header_count, max_chunk_per_header_value);
+	    
+	return storage;
+}
+
 int httpmessage_request_consume(
     httpmessage_request *request,
     const char *text, size_t length,
@@ -584,6 +733,15 @@ int httpmessage_request_consume(
 	             
 	if (result < 0)
 	{
+		switch (result)
+		{
+			case HTTPMESSAGE_ERROR_ALLOCATION:
+				return result;
+				
+			default:
+				break;
+		}
+		
 		return HTTPMESSAGE_ERROR_SYNTAX;
 	}
 	
@@ -712,6 +870,15 @@ int httpmessage_response_consume(
 	             
 	if (result < 0)
 	{
+		switch (result)
+		{
+			case HTTPMESSAGE_ERROR_ALLOCATION:
+				return result;
+				
+			default:
+				break;
+		}
+		
 		return HTTPMESSAGE_ERROR_SYNTAX;
 	}
 	

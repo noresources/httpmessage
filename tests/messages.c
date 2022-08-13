@@ -27,6 +27,7 @@ int test_request_line(int argc, const char **argv);
 int test_status_line(int argc, const char **argv);
 int test_line_type(int argc, const char **argv);
 int test_first_line(int argc, const char **argv);
+int test_storage(int argc, const char **argv);
 
 int test_http_version(int argc, const char **argv)
 {
@@ -383,6 +384,299 @@ int test_first_line(int argc, const char **argv)
 	return exitCode;
 }
 
+/*******************************************************************/
+
+typedef struct __storage_test
+{
+	const char *input_file;
+	int type;
+	size_t max_header_count;
+	size_t max_chunk_per_value;
+	int result;
+	size_t header_count;
+	const char *field_name;
+	const char *field_value;
+} storage_test;
+
+int test_storage(int argc, const char **argv)
+{
+	(void) argc;
+	(void) argv;
+	int exitCode = EXIT_SUCCESS;
+	size_t a;
+	size_t text_length;
+	
+	static const storage_test tests[] =
+	{
+		{
+			"tests/data/get-lucky.request", HTTPMESSAGE_TYPE_REQUEST,
+			8, 2, 158, 3,
+			"X-Lyrics", "I'm a poor lonesome cowboy. I'm a long long way from home."
+		},
+		/** Failed because X-Lyrics header value is multipline */
+		{
+			"tests/data/get-lucky.request", HTTPMESSAGE_TYPE_REQUEST,
+			8, 1, HTTPMESSAGE_ERROR_ALLOCATION, 3, NULL, NULL
+		},
+		{
+			"tests/data/head-slash.response", HTTPMESSAGE_TYPE_RESPONSE,
+			8, 2,
+			161, 4, NULL, NULL,
+		},
+		{
+			"tests/data/head-slash.response", HTTPMESSAGE_TYPE_RESPONSE,
+			4, 2,
+			161, 4,
+			"content-type", "text/html; charset=iso-8859-1",
+		},
+		/* No enough header fields */
+		{
+			"tests/data/head-slash.response", HTTPMESSAGE_TYPE_RESPONSE,
+			2, 2,
+			HTTPMESSAGE_ERROR_ALLOCATION, 4,
+			NULL, NULL
+		}
+	};
+	
+	for (a = 0; a < (sizeof(tests) / sizeof(storage_test)); ++a)
+	{
+		const storage_test *T = &tests[a];
+		char text[4096];
+		void *storage;
+		httpmessage_request *request = NULL;
+		httpmessage_response *response = NULL;
+		httpmessage_message *message = NULL;
+		FILE *file = fopen(T->input_file, "rb");
+		int type;
+		int result;
+		int option_flags = (HTTPMESSAGE_CLEAR_NO_FREE | HTTPMESSAGE_NO_ALLOCATION);
+		size_t max_header_count;
+		size_t max_chunk_per_value;
+		size_t header_count;
+		
+		fprintf(stdout, "-- %s %d/%d ----------------------------------------\n",
+		        T->input_file, (int)T->max_header_count, (int)T->max_chunk_per_value);
+		        
+		if (!file)
+		{
+			fprintf(stderr, "warning: %s not found.\n", T->input_file);
+			continue;
+		}
+		
+		text_length = fread(text, 1, sizeof(text), file);
+		
+		if (!text_length)
+		{
+			fprintf(stderr, "warning: failed to read %s\n",
+			        T->input_file);
+			goto test_storage_test_loop_end;
+		}
+		
+		type = httpmessage_message_get_type(text, text_length, 0);
+		
+		if (type != T->type)
+		{
+			fprintf(stderr, "%15.15s: %.*s, expect %.*s\n",
+			        "TYPE",
+			        4, (const char *)&type,
+			        4, (const char *)&T->type);
+			++exitCode;
+			goto test_storage_test_loop_end;
+		}
+		
+		if (type == HTTPMESSAGE_TYPE_REQUEST)
+		{
+			request = httpmessage_request_storage_new(
+			              T->max_header_count,
+			              T->max_chunk_per_value);
+			storage = request;
+		}
+		else if (type == HTTPMESSAGE_TYPE_RESPONSE)
+		{
+			response = httpmessage_response_storage_new(
+			               T->max_header_count,
+			               T->max_chunk_per_value);
+			storage = response;
+		}
+		
+		if (!storage)
+		{
+			fprintf(stderr, "Failed to allocate storage %d/%d\n",
+			        (int)T->max_header_count, (int)T->max_chunk_per_value);
+			++exitCode;
+			goto test_storage_test_loop_end;
+		}
+		
+		if (type == HTTPMESSAGE_TYPE_REQUEST)
+		{
+			message = &request->message;
+		}
+		else if (type == HTTPMESSAGE_TYPE_RESPONSE)
+		{
+			message = &response->message;
+		}
+		
+		httpmessage_message_get_storage_infos(&max_header_count, &max_chunk_per_value, message);
+		
+		if (max_header_count != T->max_header_count)
+		{
+			fprintf(stderr, "%15.15s: %d, expect %d\n",
+			        "MAX HEADERS",
+			        (int)max_header_count, (int)T->max_header_count);
+			++exitCode;
+		}
+		
+		if (max_chunk_per_value != T->max_chunk_per_value)
+		{
+			fprintf(stderr, "%15.15s: %d, expect %d\n",
+			        "MAX CHUNKS",
+			        (int)max_chunk_per_value,
+			        (int)T->max_chunk_per_value);
+			++exitCode;
+		}
+		
+		if (type == HTTPMESSAGE_TYPE_REQUEST)
+		{
+			result = httpmessage_request_consume(request,
+			                                     text, text_length,
+			                                     option_flags);
+		}
+		else if (type == HTTPMESSAGE_TYPE_RESPONSE)
+		{
+			result = httpmessage_response_consume(response,
+			                                      text, text_length,
+			                                      option_flags);
+		}
+		
+		if (result == T->result)
+		{
+			fprintf(stdout, "%15.15s: %d %s\n",
+			        "RESULT",
+			        result,
+			        ((result <= 0) ? httpmessage_result_get_text(result) : ""));
+		}
+		else
+		{
+			fprintf(stderr, "%15.15s: %d %s, expect %d %s\n",
+			        "RESULT",
+			        result,
+			        ((result <= 0) ? httpmessage_result_get_text(result) : ""),
+			        T->result,
+			        ((T->result <= 0) ? httpmessage_result_get_text(T->result) : ""));
+			++exitCode;
+		}
+		
+		httpmessage_message_get_storage_infos(&max_header_count, &max_chunk_per_value, message);
+		
+		if (max_header_count != T->max_header_count)
+		{
+			fprintf(stderr, "%15.15s: %d, expect %d\n",
+			        "MAX HEADERS",
+			        (int)max_header_count, (int)T->max_header_count);
+			++exitCode;
+		}
+		
+		if (max_chunk_per_value != T->max_chunk_per_value)
+		{
+			fprintf(stderr, "%15.15s: %d, expect %d\n",
+			        "MAX CHUNKS",
+			        (int)max_chunk_per_value,
+			        (int)T->max_chunk_per_value);
+			++exitCode;
+		}
+		
+		if (result <= 0)
+		{
+			goto test_storage_test_loop_end;
+		}
+		
+		if (type == HTTPMESSAGE_TYPE_REQUEST)
+		{
+			message = &request->message;
+		}
+		else if (type == HTTPMESSAGE_TYPE_RESPONSE)
+		{
+			message = &response->message;
+		}
+		
+		header_count = httpmessage_header_count(&message->header_list);
+		
+		if (header_count == T->header_count)
+		{
+			fprintf(stdout, "%15.15s: %d\n",
+			        "HEADERS",
+			        (int) header_count);
+		}
+		else
+		{
+			fprintf(stderr, "%15.15s: %d, expect %d\n",
+			        "HEADERS",
+			        (int) header_count,
+			        (int) T->header_count);
+		}
+		
+		if (T->field_name)
+		{
+			size_t name_length = strlen(T->field_name);
+			httpmessage_header *header =
+			    httpmessage_header_find(&message->header_list,
+			                            T->field_name, name_length);
+			                            
+			if (!header)
+			{
+				fprintf(stderr, "%15.15s: %s NOT FOUND\n",
+				        "FIELD",
+				        T->field_name);
+				++exitCode;
+			}
+			
+			if (T->field_value && header)
+			{
+				size_t value_length = strlen(T->field_value);
+				char value[512];
+				int s = httpmessage_headervalue_merge_chunks(value, sizeof(value),
+				        &header->value);
+				        
+				if (s >= 0 && (size_t)s == value_length)
+				{
+					if (strncmp(value, T->field_value, value_length) == 0)
+					{
+						fprintf(stdout, "%.*s: %.*s\n",
+						        (int)header->field.length, header->field.text,
+						        (int)value_length, value);
+					}
+					else
+					{
+						++exitCode;
+					}
+				}
+				else
+				{
+					fprintf(stderr, "%15.15s: %d, expect %d\n",
+					        "VALUE LENGTH",
+					        s,
+					        (int) value_length);
+					++exitCode;
+				}
+			}
+		}
+		
+test_storage_test_loop_end:
+		free(request);
+		request = NULL;
+		free(response);
+		response = NULL;
+		
+		if (file)
+		{
+			fclose(file);
+		}
+	}
+	
+	
+	return exitCode;
+}
+
 int main(int argc, const char **argv)
 {
 	static const httpmessage_test tests[] =
@@ -391,7 +685,8 @@ int main(int argc, const char **argv)
 		{ "status_line", test_status_line },
 		{ "request_line", test_request_line },
 		{ "first_line", test_first_line },
-		{ "line_type", test_line_type }
+		{ "line_type", test_line_type },
+		{ "storage", test_storage }
 	};
 	
 	return run_tests(tests, sizeof(tests) / sizeof(httpmessage_test),

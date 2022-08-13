@@ -82,7 +82,16 @@ typedef enum
 	 *
 	 * Ex. Set header value subchunks length to zero.
 	 */
-	HTTPMESSAGE_CLEAR_NO_FREE = (1 << 1)
+	HTTPMESSAGE_CLEAR_NO_FREE = (1 << 1),
+	
+	/**
+	 * Do not allocate new objects during function process.
+	 *
+	 * If the function needs to allocate something,
+	 * a ::HTTPMESSAGE_ERROR_ALLOCATION error code
+	 * will be returned.
+	 */
+	HTTPMESSAGE_NO_ALLOCATION = (1 << 2)
 } httpmessage_option_flags;
 
 HTTPMESSAGE_C_END

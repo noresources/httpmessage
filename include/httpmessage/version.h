@@ -23,20 +23,20 @@
 /**
  * @brief httpmessage libaray minor version number
  */
-#define HTTPMESSAGE_VERSION_MINOR 2
+#define HTTPMESSAGE_VERSION_MINOR 3
 /**
  * @brief httpmessage libaray patch version number
  */
-#define HTTPMESSAGE_VERSION_PATCH 3
+#define HTTPMESSAGE_VERSION_PATCH 0
 /**
  * @brief httpmessage libaray version number
  * Computeed as @f[ (major * 10000) + (minor * 100) + patch @f]
  */
-#define HTTPMESSAGE_VERSION_NUMBER 203
+#define HTTPMESSAGE_VERSION_NUMBER 300
 /**
  * @brief httpmessage libaray version string
  */
-#define HTTPMESSAGE_VERSION_STRING "0.2.3"
+#define HTTPMESSAGE_VERSION_STRING "0.3.0"
 
 #endif /* LIBHTTPMESSAGGE_VERSION_H__ */
 
