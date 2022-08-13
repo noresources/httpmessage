@@ -1,3 +1,4 @@
+OUTPUT_DIRECTORY = /home/renaud/Projects/httpmessage/dist
 INPUT = /home/renaud/Projects/httpmessage/scripts/doxygen/doc/wiki/MemoryManagement.h \
 	/home/renaud/Projects/httpmessage/scripts/doxygen/doc/wiki/Building.h \
 	/home/renaud/Projects/httpmessage/scripts/doxygen/doc/wiki/Home.h \
@@ -12,11 +13,10 @@ INPUT = /home/renaud/Projects/httpmessage/scripts/doxygen/doc/wiki/MemoryManagem
 	/home/renaud/Projects/httpmessage/include/httpmessage/version.h \
 	/home/renaud/Projects/httpmessage/include/httpmessage/preprocessor.h
 IGNORE_PREFIX = httpmessage_
-PROJECT_NUMBER = 0.3.0
 EXAMPLE_PATH = /home/renaud/Projects/httpmessage/scripts/doxygen/doc/examples
-PROJECT_BRIEF = "HTTP message parsing library"
-OUTPUT_DIRECTORY = /home/renaud/Projects/httpmessage/dist
-TYPEDEF_HIDES_STRUCT = YES
 PROJECT_NAME = httpmessage
+PROJECT_NUMBER = 0.4.0
+TYPEDEF_HIDES_STRUCT = YES
 INCLUDE_PATH = /home/renaud/Projects/httpmessage/include \
 	/home/renaud/Projects/httpmessage/tests
+PROJECT_BRIEF = "HTTP message parsing library"

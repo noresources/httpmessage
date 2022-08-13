@@ -390,8 +390,8 @@ typedef struct __storage_test
 {
 	const char *input_file;
 	int type;
-	size_t max_header_count;
-	size_t max_chunk_per_value;
+	size_t max_headerfield_count;
+	size_t max_line_per_value;
 	int result;
 	size_t header_count;
 	const char *field_name;
@@ -450,12 +450,12 @@ int test_storage(int argc, const char **argv)
 		int type;
 		int result;
 		int option_flags = (HTTPMESSAGE_CLEAR_NO_FREE | HTTPMESSAGE_NO_ALLOCATION);
-		size_t max_header_count;
-		size_t max_chunk_per_value;
+		size_t max_headerfield_count;
+		size_t max_line_per_value;
 		size_t header_count;
 		
 		fprintf(stdout, "-- %s %d/%d ----------------------------------------\n",
-		        T->input_file, (int)T->max_header_count, (int)T->max_chunk_per_value);
+		        T->input_file, (int)T->max_headerfield_count, (int)T->max_line_per_value);
 		        
 		if (!file)
 		{
@@ -487,22 +487,22 @@ int test_storage(int argc, const char **argv)
 		if (type == HTTPMESSAGE_TYPE_REQUEST)
 		{
 			request = httpmessage_request_storage_new(
-			              T->max_header_count,
-			              T->max_chunk_per_value);
+			              T->max_headerfield_count,
+			              T->max_line_per_value);
 			storage = request;
 		}
 		else if (type == HTTPMESSAGE_TYPE_RESPONSE)
 		{
 			response = httpmessage_response_storage_new(
-			               T->max_header_count,
-			               T->max_chunk_per_value);
+			               T->max_headerfield_count,
+			               T->max_line_per_value);
 			storage = response;
 		}
 		
 		if (!storage)
 		{
 			fprintf(stderr, "Failed to allocate storage %d/%d\n",
-			        (int)T->max_header_count, (int)T->max_chunk_per_value);
+			        (int)T->max_headerfield_count, (int)T->max_line_per_value);
 			++exitCode;
 			goto test_storage_test_loop_end;
 		}
@@ -516,22 +516,22 @@ int test_storage(int argc, const char **argv)
 			message = &response->message;
 		}
 		
-		httpmessage_message_get_storage_infos(&max_header_count, &max_chunk_per_value, message);
+		httpmessage_message_get_storage_infos(&max_headerfield_count, &max_line_per_value, message);
 		
-		if (max_header_count != T->max_header_count)
+		if (max_headerfield_count != T->max_headerfield_count)
 		{
 			fprintf(stderr, "%15.15s: %d, expect %d\n",
 			        "MAX HEADERS",
-			        (int)max_header_count, (int)T->max_header_count);
+			        (int)max_headerfield_count, (int)T->max_headerfield_count);
 			++exitCode;
 		}
 		
-		if (max_chunk_per_value != T->max_chunk_per_value)
+		if (max_line_per_value != T->max_line_per_value)
 		{
 			fprintf(stderr, "%15.15s: %d, expect %d\n",
-			        "MAX CHUNKS",
-			        (int)max_chunk_per_value,
-			        (int)T->max_chunk_per_value);
+			        "MAX LINES",
+			        (int)max_line_per_value,
+			        (int)T->max_line_per_value);
 			++exitCode;
 		}
 		
@@ -566,22 +566,22 @@ int test_storage(int argc, const char **argv)
 			++exitCode;
 		}
 		
-		httpmessage_message_get_storage_infos(&max_header_count, &max_chunk_per_value, message);
+		httpmessage_message_get_storage_infos(&max_headerfield_count, &max_line_per_value, message);
 		
-		if (max_header_count != T->max_header_count)
+		if (max_headerfield_count != T->max_headerfield_count)
 		{
 			fprintf(stderr, "%15.15s: %d, expect %d\n",
 			        "MAX HEADERS",
-			        (int)max_header_count, (int)T->max_header_count);
+			        (int)max_headerfield_count, (int)T->max_headerfield_count);
 			++exitCode;
 		}
 		
-		if (max_chunk_per_value != T->max_chunk_per_value)
+		if (max_line_per_value != T->max_line_per_value)
 		{
 			fprintf(stderr, "%15.15s: %d, expect %d\n",
-			        "MAX CHUNKS",
-			        (int)max_chunk_per_value,
-			        (int)T->max_chunk_per_value);
+			        "MAX LINES",
+			        (int)max_line_per_value,
+			        (int)T->max_line_per_value);
 			++exitCode;
 		}
 		
@@ -599,7 +599,7 @@ int test_storage(int argc, const char **argv)
 			message = &response->message;
 		}
 		
-		header_count = httpmessage_header_count(&message->header_list);
+		header_count = httpmessage_headerfield_count(&message->field_list);
 		
 		if (header_count == T->header_count)
 		{
@@ -618,10 +618,10 @@ int test_storage(int argc, const char **argv)
 		if (T->field_name)
 		{
 			size_t name_length = strlen(T->field_name);
-			httpmessage_header *header =
-			    httpmessage_header_find(&message->header_list,
-			                            T->field_name, name_length);
-			                            
+			httpmessage_headerfield *header =
+			    httpmessage_headerfield_find(&message->field_list,
+			                                 T->field_name, name_length);
+			                                 
 			if (!header)
 			{
 				fprintf(stderr, "%15.15s: %s NOT FOUND\n",
@@ -634,7 +634,7 @@ int test_storage(int argc, const char **argv)
 			{
 				size_t value_length = strlen(T->field_value);
 				char value[512];
-				int s = httpmessage_headervalue_merge_chunks(value, sizeof(value),
+				int s = httpmessage_headerfield_value_merge_lines(value, sizeof(value),
 				        &header->value);
 				        
 				if (s >= 0 && (size_t)s == value_length)
@@ -642,7 +642,7 @@ int test_storage(int argc, const char **argv)
 					if (strncmp(value, T->field_value, value_length) == 0)
 					{
 						fprintf(stdout, "%.*s: %.*s\n",
-						        (int)header->field.length, header->field.text,
+						        (int)header->name.length, header->name.text,
 						        (int)value_length, value);
 					}
 					else

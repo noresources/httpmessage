@@ -80,7 +80,7 @@ typedef enum
 	 * Instead of freeing structure members,
 	 * set them to a value that mark them as unused.
 	 *
-	 * Ex. Set header value subchunks length to zero.
+	 * Ex. Set header value sublines length to zero.
 	 */
 	HTTPMESSAGE_CLEAR_NO_FREE = (1 << 1),
 	

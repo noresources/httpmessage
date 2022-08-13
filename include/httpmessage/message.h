@@ -49,7 +49,7 @@ typedef struct __httpmessage_message
 	HTTPMESSAGE_PAD64(__padding, 4) /**< structure padding */
 	
 	/** Header list */
-	httpmessage_header header_list;
+	httpmessage_headerfield field_list;
 	/** Message body */
 	httpmessage_body 	body;
 } httpmessage_message;
@@ -101,18 +101,18 @@ HMAPI int httpmessage_message_append_header(
  *
  * @brief Get message storage capabilities.
  *
- * @param max_header_count This argument will be filled with the number of header structure allocated in storage.
- * @param max_chunk_per_value This argument will be filled with the maximum number of header field value chunks per value that can be used in this storage.
+ * @param max_headerfield_count This argument will be filled with the number of header structure allocated in storage.
+ * @param max_line_per_value This argument will be filled with the maximum number of header field value lines per value that can be used in this storage.
  *
  * @param message Message storage to inspect.
  * If the storage was allocated with httpmessage_request_storage_new
  * or httpmessage_response_storage_new, the returned value is valid for
- * any header of the storage. Otherwise, some header fields may have a lower chunk count.
+ * any header of the storage. Otherwise, some header fields may have a lower line count.
  * @return ::HTTPMESSAGE_OK or ::HTTPMESSAGE_ERROR_INVALID_ARGUMENT
  */
 HMAPI int httpmessage_message_get_storage_infos(
-    size_t *max_header_count,
-    size_t *max_chunk_per_value,
+    size_t *max_headerfield_count,
+    size_t *max_line_per_value,
     const httpmessage_message *message);
 
 /**
@@ -184,8 +184,8 @@ HMAPI void httpmessage_request_free(httpmessage_request **request);
  * @brief Create a request message with pre-allocated header field storage
  * in a single memory block.
  *
- * @param max_header_count Number of header field to allocated
- * @param max_chunk_per_header_value Number of header field value chunk to allocate for each header field.
+ * @param max_headerfield_count Number of header field to allocated
+ * @param max_line_per_headerfield_value Number of header field value line to allocate for each header field.
  *
  * @return A request with pre-allocated header fields.
  *
@@ -195,8 +195,8 @@ HMAPI void httpmessage_request_free(httpmessage_request **request);
  * whenusing this object with @c *_consume or @c *_clear() functions
  */
 HMAPI httpmessage_request *httpmessage_request_storage_new(
-    size_t max_header_count,
-    size_t max_chunk_per_header_value);
+    size_t max_headerfield_count,
+    size_t max_line_per_headerfield_value);
 
 /**
  * @ingroup message
@@ -270,8 +270,8 @@ HMAPI void httpmessage_response_free(httpmessage_response **response);
  * @brief Create a response message with pre-allocated header field storage
  * in a single memory block.
  *
- * @param max_header_count Number of header field to allocated
- * @param max_chunk_per_header_value Number of header field value chunk to allocate for each header field.
+ * @param max_headerfield_count Number of header field to allocated
+ * @param max_line_per_headerfield_value Number of header field value line to allocate for each header field.
  *
  * @return A response with pre-allocated header fields.
  *
@@ -281,8 +281,8 @@ HMAPI void httpmessage_response_free(httpmessage_response **response);
  * whenusing this object with @c *_consume or @c *_clear() functions
  */
 HMAPI httpmessage_response *httpmessage_response_storage_new(
-    size_t max_header_count,
-    size_t max_chunk_per_header_value);
+    size_t max_headerfield_count,
+    size_t max_line_per_headerfield_value);
 
 /**
  * @ingroup message

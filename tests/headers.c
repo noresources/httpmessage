@@ -22,7 +22,7 @@ typedef struct _value_line_test
 	size_t value_length;
 } value_line_test;
 
-typedef struct __header_test
+typedef struct __headerfield_test
 {
 	const char *text;
 	int option_flags;
@@ -31,20 +31,20 @@ typedef struct __header_test
 	const char *value;
 } header_test;
 
-int test_header_consume(int argc, const char **argv);
+int test_headerfield_consume(int argc, const char **argv);
 int test_value_consume(int argc, const char **argv);
 
-int test_header_consume(int argc, const char **argv)
+int test_headerfield_consume(int argc, const char **argv)
 {
 	(void) argc;
 	(void) argv;
 	size_t a = 0;
 	int exitCode = EXIT_SUCCESS;
 	char value[512];
-	httpmessage_header header;
-	httpmessage_header_init(&header);
-	httpmessage_header *current_header = &header;
-	httpmessage_header *new_header = NULL;
+	httpmessage_headerfield header;
+	httpmessage_headerfield_init(&header);
+	httpmessage_headerfield *current_header = &header;
+	httpmessage_headerfield *new_header = NULL;
 	
 	
 	static const header_test tests[] =
@@ -80,7 +80,7 @@ int test_header_consume(int argc, const char **argv)
 		fprintf(stdout, "%-10.10s: %d\n", "with flags", T->option_flags);
 		
 		new_header = NULL;
-		result = httpmessage_header_line_consume(
+		result = httpmessage_headerfield_line_consume(
 		             &new_header,
 		             current_header,
 		             T->text, strlen(T->text),
@@ -105,7 +105,7 @@ int test_header_consume(int argc, const char **argv)
 			continue;
 		}
 		
-		result = httpmessage_headervalue_merge_chunks(
+		result = httpmessage_headerfield_value_merge_lines(
 		             value, sizeof(value),
 		             &current_header->value);
 		             
@@ -117,8 +117,8 @@ int test_header_consume(int argc, const char **argv)
 		
 		fprintf(stdout, "%10.10s: %.*s\n",
 		        "Field",
-		        (int)current_header->field.length,
-		        current_header->field.text);
+		        (int)current_header->name.length,
+		        current_header->name.text);
 		fprintf(stdout, "%10.10s: %.*s\n",
 		        "Value",
 		        (int) strlen(value),
@@ -134,7 +134,7 @@ int test_header_consume(int argc, const char **argv)
 		}
 	}
 	
-	httpmessage_header_clear(&header, 0);
+	httpmessage_headerfield_clear(&header, 0);
 	
 	return exitCode;
 }
@@ -174,7 +174,7 @@ int test_value_consume(int argc, const char **argv)
 		fprintf(stdout, "-- %d -------------------------\n", (int)a);
 		fprintf(stdout, "%-10.10s: ", "LINE");
 		print_line(stdout, T->text, strlen(T->text));
-		result = httpmessage_headervalue_line_consume(
+		result = httpmessage_headerfield_value_line_consume(
 		             &value, &length,
 		             T->text, strlen(T->text),
 		             T->option_flags);
@@ -215,7 +215,7 @@ int main(int argc, const char **argv)
 	static const httpmessage_test tests[] =
 	{
 		{ "value_consume", test_value_consume },
-		{"header_consume", test_header_consume }
+		{"header_consume", test_headerfield_consume }
 	};
 	
 	return run_tests(tests, sizeof(tests) / sizeof(httpmessage_test),

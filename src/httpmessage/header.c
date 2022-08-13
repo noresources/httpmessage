@@ -12,90 +12,90 @@
 #include <stdlib.h>
 #include <errno.h>
 
-int httpmessage_headerfield_consume(
-    const char **field,
-    size_t *field_length,
+int httpmessage_headerfield_name_consume(
+    const char **name,
+    size_t *name_length,
     const char *text,
     size_t length)
 {
 	return httpmessage_token_consume(
-	           field, field_length,
+	           name, name_length,
 	           text, length);
 }
 
-void httpmessage_headervalue_init(
-    httpmessage_headervalue *value)
+void httpmessage_headerfield_value_init(
+    httpmessage_headerfield_value *value)
 {
-	httpmessage_stringview_clear(&value->chunk);
-	value->next_chunk = NULL;
+	httpmessage_stringview_clear(&value->line);
+	value->next_line = NULL;
 }
 
-void httpmessage_headervalue_clear(
-    httpmessage_headervalue *value,
+void httpmessage_headerfield_value_clear(
+    httpmessage_headerfield_value *value,
     int option_flags)
 {
-	httpmessage_stringview_clear(&value->chunk);
+	httpmessage_stringview_clear(&value->line);
 	
-	if (!value->next_chunk)
+	if (!value->next_line)
 	{
 		return;
 	}
 	
 	if (option_flags & HTTPMESSAGE_CLEAR_NO_FREE)
 	{
-		httpmessage_headervalue_clear(value->next_chunk, option_flags);
+		httpmessage_headerfield_value_clear(value->next_line, option_flags);
 		return;
 	}
 	
-	httpmessage_headervalue_free(&value->next_chunk);
+	httpmessage_headerfield_value_free(&value->next_line);
 }
 
-httpmessage_headervalue *httpmessage_headervalue_new(void)
+httpmessage_headerfield_value *httpmessage_headerfield_value_new(void)
 {
-	httpmessage_headervalue *value = (httpmessage_headervalue *) malloc(sizeof(httpmessage_headervalue));
+	httpmessage_headerfield_value *value = (httpmessage_headerfield_value *) malloc(sizeof(httpmessage_headerfield_value));
 	
 	if (!value)
 	{
 		return NULL;
 	}
 	
-	httpmessage_headervalue_init(value);
+	httpmessage_headerfield_value_init(value);
 	return value;
 }
 
-httpmessage_headervalue *httpmessage_headervalue_append_chunk(
-    httpmessage_headervalue *value,
+httpmessage_headerfield_value *httpmessage_headerfield_value_append_line(
+    httpmessage_headerfield_value *value,
     const char *text, size_t length)
 {
-	httpmessage_headervalue *o = (httpmessage_headervalue *)malloc(sizeof(httpmessage_headervalue));
-	o->chunk.text = text;
-	o->chunk.length = length;
-	value->next_chunk = o;
+	httpmessage_headerfield_value *o = (httpmessage_headerfield_value *)malloc(sizeof(httpmessage_headerfield_value));
+	o->line.text = text;
+	o->line.length = length;
+	value->next_line = o;
 	return o;
 }
 
-size_t httpmessage_headervalue_total_length(const httpmessage_headervalue *value)
+size_t httpmessage_headerfield_value_total_length(const httpmessage_headerfield_value *value)
 {
 	size_t total = 0;
 	
 	while (value)
 	{
-		if (total && value->chunk.length)
+		if (total && value->line.length)
 		{
 			++total;
 		}
 		
-		total += value->chunk.length;
-		value = value->next_chunk;
+		total += value->line.length;
+		value = value->next_line;
 	}
 	
 	return total;
 }
 
-int httpmessage_headervalue_merge_chunks(
+int httpmessage_headerfield_value_merge_lines(
     char *output,
     size_t output_size,
-    const httpmessage_headervalue *value)
+    const httpmessage_headerfield_value *value)
 {
 	size_t copied = 0;
 	
@@ -106,7 +106,7 @@ int httpmessage_headervalue_merge_chunks(
 	
 	do
 	{
-		size_t required = value->chunk.length;
+		size_t required = value->line.length;
 		
 		if (copied)
 		{
@@ -128,11 +128,11 @@ int httpmessage_headervalue_merge_chunks(
 			++copied;
 		}
 		
-		memcpy(output, value->chunk.text, value->chunk.length);
-		output += value->chunk.length;
-		output_size -= value->chunk.length;
-		copied += value->chunk.length;
-		value = value->next_chunk;
+		memcpy(output, value->line.text, value->line.length);
+		output += value->line.length;
+		output_size -= value->line.length;
+		copied += value->line.length;
+		value = value->next_line;
 	}
 	while (value);
 	
@@ -140,20 +140,19 @@ int httpmessage_headervalue_merge_chunks(
 	return (int)copied;
 }
 
-void httpmessage_headervalue_free(
-    httpmessage_headervalue **value)
+void httpmessage_headerfield_value_free(
+    httpmessage_headerfield_value **value)
 {
-	if ((*value)->next_chunk)
+	if ((*value)->next_line)
 	{
-		httpmessage_headervalue_free(&(*value)->next_chunk);
+		httpmessage_headerfield_value_free(&(*value)->next_line);
 	}
 	
 	free(*value);
 	*value = NULL;
 }
 
-
-int httpmessage_headervalue_line_consume(
+int httpmessage_headerfield_value_line_consume(
     const char **value, size_t *value_length,
     const char *text, size_t length,
     int option_flags)
@@ -211,174 +210,174 @@ int httpmessage_headervalue_line_consume(
 	return consumed + (length ? 2 : 0); /* + CRLF */
 }
 
-ssize_t httpmessage_header_write_file(
+ssize_t httpmessage_headerfield_write_file(
     FILE *file,
-    const httpmessage_header *header)
+    const httpmessage_headerfield *field)
 {
 	ssize_t written = 0;
-	const httpmessage_headervalue *value = &header->value;
+	const httpmessage_headerfield_value *value = &field->value;
 	
-	if (!(file && header))
+	if (!(file && field))
 	{
 		return HTTPMESSAGE_ERROR_INVALID_ARGUMENT;
 	}
 	
-	HTTPMESSAGE_STRING_WRITE_FILE(written, file, header->field)
+	HTTPMESSAGE_STRING_WRITE_FILE(written, file, field->name)
 	HTTPMESSAGE_TEXT_WRITE_FILE(written, file, ":", 1)
 	
-	if (value->chunk.length == 0)
+	if (value->line.length == 0)
 	{
 		HTTPMESSAGE_TEXT_WRITE_FILE(written, file, "\r\n", 2)
 		return written;
 	}
 	
-	while (value && value->chunk.length)
+	while (value && value->line.length)
 	{
 		HTTPMESSAGE_TEXT_WRITE_FILE(written, file, " ", 1)
-		HTTPMESSAGE_STRING_WRITE_FILE(written, file, value->chunk)
+		HTTPMESSAGE_STRING_WRITE_FILE(written, file, value->line)
 		HTTPMESSAGE_TEXT_WRITE_FILE(written, file, "\r\n", 2)
-		value = value->next_chunk;
+		value = value->next_line;
 	}
 	
 	return written;
 }
 
-HMAPI ssize_t httpmessage_header_write_buffer(
+HMAPI ssize_t httpmessage_headerfield_write_buffer(
     void *output, size_t output_size,
-    const httpmessage_header *header)
+    const httpmessage_headerfield *field)
 {
-	const httpmessage_headervalue *value = &header->value;
+	const httpmessage_headerfield_value *value = &field->value;
 	char *o = (char *)output;
 	
-	if (!(output && output_size && header))
+	if (!(output && output_size && field))
 	{
 		return HTTPMESSAGE_ERROR_INVALID_ARGUMENT;
 	}
 	
-	HTTPMESSAGE_STRING_WRITE_BUFFER(o, output_size, header->field)
+	HTTPMESSAGE_STRING_WRITE_BUFFER(o, output_size, field->name)
 	HTTPMESSAGE_TEXT_WRITE_BUFFER(o, output_size, ":", 1)
 	
-	if (value->chunk.length == 0)
+	if (value->line.length == 0)
 	{
 		HTTPMESSAGE_TEXT_WRITE_BUFFER(o, output_size, "\r\n", 2)
 		return (o - (char *)output);
 	}
 	
-	while (value && value->chunk.length)
+	while (value && value->line.length)
 	{
 		HTTPMESSAGE_TEXT_WRITE_BUFFER(o, output_size, " ", 1)
-		HTTPMESSAGE_STRING_WRITE_BUFFER(o, output_size, value->chunk)
+		HTTPMESSAGE_STRING_WRITE_BUFFER(o, output_size, value->line)
 		HTTPMESSAGE_TEXT_WRITE_BUFFER(o, output_size, "\r\n", 2)
-		value = value->next_chunk;
+		value = value->next_line;
 	}
 	
 	return (o - (char *)output);
 }
 
-void httpmessage_header_init(httpmessage_header *header)
+void httpmessage_headerfield_init(httpmessage_headerfield *field)
 {
-	httpmessage_stringview_clear(&header->field);
-	httpmessage_headervalue_init(&header->value);
-	header->next_header = NULL;
+	httpmessage_stringview_clear(&field->name);
+	httpmessage_headerfield_value_init(&field->value);
+	field->next_field = NULL;
 }
 
-int httpmessage_header_is(const httpmessage_header *header,
-                          const char *name)
+int httpmessage_headerfield_is(const httpmessage_headerfield *field,
+                               const char *name)
 {
 	return httpmessage_stringview_caseless_compare_text(
-	           &header->field, name, strlen(name)) == 0;
+	           &field->name, name, strlen(name)) == 0;
 }
 
-void httpmessage_header_free(httpmessage_header **header)
+void httpmessage_headerfield_free(httpmessage_headerfield **field)
 {
-	if ((*header)->value.next_chunk)
+	if ((*field)->value.next_line)
 	{
-		httpmessage_headervalue_free(&(*header)->value.next_chunk);
+		httpmessage_headerfield_value_free(&(*field)->value.next_line);
 	}
 	
-	if ((*header)->next_header)
+	if ((*field)->next_field)
 	{
-		httpmessage_header_free(&(*header)->next_header);
+		httpmessage_headerfield_free(&(*field)->next_field);
 	}
 	
-	free(*header);
-	*header = NULL;
+	free(*field);
+	*field = NULL;
 }
 
-void httpmessage_header_clear(
-    httpmessage_header *header,
+void httpmessage_headerfield_clear(
+    httpmessage_headerfield *field,
     int option_flags)
 {
-	httpmessage_stringview_clear(&header->field);
-	httpmessage_headervalue_clear(&header->value, option_flags);
+	httpmessage_stringview_clear(&field->name);
+	httpmessage_headerfield_value_clear(&field->value, option_flags);
 	
-	if (!header->next_header)
+	if (!field->next_field)
 	{
 		return;
 	}
 	
 	if (option_flags & HTTPMESSAGE_CLEAR_NO_FREE)
 	{
-		httpmessage_header_clear(header->next_header, option_flags);
+		httpmessage_headerfield_clear(field->next_field, option_flags);
 		return;
 	}
 	
-	httpmessage_header_free(&header->next_header);
+	httpmessage_headerfield_free(&field->next_field);
 }
 
-httpmessage_header *httpmessage_header_new(void)
+httpmessage_headerfield *httpmessage_headerfield_new(void)
 {
-	httpmessage_header *header = (httpmessage_header *)malloc(sizeof(httpmessage_header));
+	httpmessage_headerfield *header = (httpmessage_headerfield *)malloc(sizeof(httpmessage_headerfield));
 	
 	if (!header)
 	{
 		return NULL;
 	}
 	
-	httpmessage_header_init(header);
+	httpmessage_headerfield_init(header);
 	return header;
 }
 
-size_t httpmessage_header_count(httpmessage_header *header_list)
+size_t httpmessage_headerfield_count(httpmessage_headerfield *headerfield_list)
 {
 	size_t c = 0;
-	httpmessage_header *header = header_list;
+	httpmessage_headerfield *header = headerfield_list;
 	
 	while (header)
 	{
-		if (header->field.length == 0)
+		if (header->name.length == 0)
 		{
 			break;
 		}
 		
 		++c;
-		header = header->next_header;
+		header = header->next_field;
 	}
 	
 	return c;
 }
 
-httpmessage_header *httpmessage_header_find(
-    httpmessage_header *header_list,
+httpmessage_headerfield *httpmessage_headerfield_find(
+    httpmessage_headerfield *headerfield_list,
     const char *name,
     size_t name_length)
 {
-	while (header_list)
+	while (headerfield_list)
 	{
-		if (httpmessage_stringview_caseless_compare_text(&header_list->field, name, name_length) == 0)
+		if (httpmessage_stringview_caseless_compare_text(&headerfield_list->name, name, name_length) == 0)
 		{
-			return header_list;
+			return headerfield_list;
 		}
 		
-		header_list = header_list->next_header;
+		headerfield_list = headerfield_list->next_field;
 	}
 	
 	return NULL;
 }
 
-int httpmessage_header_line_consume(
-    httpmessage_header **header,
-    httpmessage_header *current_header,
+int httpmessage_headerfield_line_consume(
+    httpmessage_headerfield **header,
+    httpmessage_headerfield *current_header,
     const char *text, size_t length,
     int option_flags)
 {
@@ -402,28 +401,28 @@ int httpmessage_header_line_consume(
 		--length;
 		++consumed;
 		*header = current_header;
-		httpmessage_headervalue *headervalue = &current_header->value;
+		httpmessage_headerfield_value *headerfield_value = &current_header->value;
 		
-		while (headervalue->next_chunk
-		        && headervalue->chunk.length)
+		while (headerfield_value->next_line
+		        && headerfield_value->line.length)
 		{
-			headervalue = headervalue->next_chunk;
+			headerfield_value = headerfield_value->next_line;
 		}
 		
-		if (headervalue->chunk.length > 0)
+		if (headerfield_value->line.length > 0)
 		{
 			if (option_flags & HTTPMESSAGE_NO_ALLOCATION)
 			{
 				return HTTPMESSAGE_ERROR_ALLOCATION;
 			}
 			
-			headervalue->next_chunk = httpmessage_headervalue_new();
-			headervalue = headervalue->next_chunk;
+			headerfield_value->next_line = httpmessage_headerfield_value_new();
+			headerfield_value = headerfield_value->next_line;
 		}
 		
-		result = httpmessage_headervalue_line_consume(
-		             &headervalue->chunk.text,
-		             &headervalue->chunk.length,
+		result = httpmessage_headerfield_value_line_consume(
+		             &headerfield_value->line.text,
+		             &headerfield_value->line.length,
 		             text, length,
 		             option_flags);
 		             
@@ -436,7 +435,7 @@ int httpmessage_header_line_consume(
 	}
 	
 	/* Header field name */
-	result = httpmessage_headerfield_consume(
+	result = httpmessage_headerfield_name_consume(
 	             &field, &field_length,
 	             text, length);
 	             
@@ -464,7 +463,7 @@ int httpmessage_header_line_consume(
 	--length;
 	
 	/* Value */
-	result = httpmessage_headervalue_line_consume(
+	result = httpmessage_headerfield_value_line_consume(
 	             &value, &value_length,
 	             text, length,
 	             option_flags);
@@ -478,46 +477,46 @@ int httpmessage_header_line_consume(
 	
 	*header = current_header;
 	
-	while ((*header)->next_header
-	        && (*header)->field.length)
+	while ((*header)->next_field
+	        && (*header)->name.length)
 	{
-		*header = (*header)->next_header;
+		*header = (*header)->next_field;
 	}
 	
-	if ((*header)->field.length)
+	if ((*header)->name.length)
 	{
 		if (option_flags & HTTPMESSAGE_NO_ALLOCATION)
 		{
 			return HTTPMESSAGE_ERROR_ALLOCATION;
 		}
 		
-		(*header)->next_header = httpmessage_header_new();
-		*header = (*header)->next_header;
+		(*header)->next_field = httpmessage_headerfield_new();
+		*header = (*header)->next_field;
 	}
 	
-	(*header)->field.text = field;
-	(*header)->field.length = field_length;
-	(*header)->value.chunk.text = value;
-	(*header)->value.chunk.length = value_length;
+	(*header)->name.text = field;
+	(*header)->name.length = field_length;
+	(*header)->value.line.text = value;
+	(*header)->value.line.length = value_length;
 	
 	return consumed;
 }
 
 
-int httpmessage_header_list_consume(
-    httpmessage_header *header_list,
+int httpmessage_headerfield_list_consume(
+    httpmessage_headerfield *headerfield_list,
     const char *text, size_t length,
     int option_flags)
 {
 	int consumed = 0;
-	httpmessage_header *new_header = NULL;
-	httpmessage_header *current_header = header_list;
-	httpmessage_header_clear(header_list,
-	                         HTTPMESSAGE_CLEAR_NO_FREE);
-	                         
+	httpmessage_headerfield *new_header = NULL;
+	httpmessage_headerfield *current_header = headerfield_list;
+	httpmessage_headerfield_clear(headerfield_list,
+	                              HTTPMESSAGE_CLEAR_NO_FREE);
+	                              
 	while (length && !httpmessage_text_is_CRLF(text, length))
 	{
-		int result = httpmessage_header_line_consume(
+		int result = httpmessage_headerfield_line_consume(
 		                 &new_header,
 		                 current_header,
 		                 text, length,
@@ -542,17 +541,17 @@ int httpmessage_header_list_consume(
 	return consumed;
 }
 
-HMAPI ssize_t httpmessage_header_list_write_file(
+HMAPI ssize_t httpmessage_headerfield_list_write_file(
     FILE *file,
-    const httpmessage_header *header_list)
+    const httpmessage_headerfield *headerfield_list)
 {
-	const httpmessage_header *header = header_list;
+	const httpmessage_headerfield *header = headerfield_list;
 	ssize_t written = 0;
 	ssize_t w = 0;
 	
-	while (header && header->field.length)
+	while (header && header->name.length)
 	{
-		w = httpmessage_header_write_file(file, header);
+		w = httpmessage_headerfield_write_file(file, header);
 		
 		if (w < 0)
 		{
@@ -560,23 +559,23 @@ HMAPI ssize_t httpmessage_header_list_write_file(
 		}
 		
 		written += w;
-		header = header->next_header;
+		header = header->next_field;
 	}
 	
 	return written;
 }
 
-HMAPI ssize_t httpmessage_header_list_write_buffer(
+HMAPI ssize_t httpmessage_headerfield_list_write_buffer(
     void *output, size_t output_size,
-    const httpmessage_header *header_list)
+    const httpmessage_headerfield *headerfield_list)
 {
-	const httpmessage_header *header = header_list;
+	const httpmessage_headerfield *header = headerfield_list;
 	ssize_t w = 0;
 	char *o = (char *)output;
 	
-	while (header && header->field.length)
+	while (header && header->name.length)
 	{
-		w = httpmessage_header_write_buffer(o, output_size, header);
+		w = httpmessage_headerfield_write_buffer(o, output_size, header);
 		
 		if (w < 0)
 		{
@@ -585,7 +584,7 @@ HMAPI ssize_t httpmessage_header_list_write_buffer(
 		
 		o += w;
 		output_size -= (size_t)w;
-		header = header->next_header;
+		header = header->next_field;
 	}
 	
 	return (o - (char *)output);

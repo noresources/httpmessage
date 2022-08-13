@@ -29,7 +29,7 @@ HTTPMESSAGE_C_BEGIN
  *
  * @brief Headef field name text reference
  */
-typedef httpmessage_stringview httpmessage_headerfield;
+typedef httpmessage_stringview httpmessage_headerfield_name;
 
 
 
@@ -40,8 +40,8 @@ typedef httpmessage_stringview httpmessage_headerfield;
  *
  * Alias of httpmessage_token_consume()
  *
- * @param field Output field
- * @param field_length Output field length
+ * @param name Output field
+ * @param name_length Output field length
  * @param text Input text
  * @param length Input text length
  *
@@ -50,9 +50,9 @@ typedef httpmessage_stringview httpmessage_headerfield;
  *
  * @see httpmessage_result_code
  */
-HMAPI int httpmessage_headerfield_consume(
-    const char **field,
-    size_t *field_length,
+HMAPI int httpmessage_headerfield_name_consume(
+    const char **name,
+    size_t *name_length,
     const char *text,
     size_t length);
 
@@ -64,19 +64,19 @@ HMAPI int httpmessage_headerfield_consume(
  * @extends httpmessage_stringview
  *
  * A headef value MAY be splittd on multiple line.
- * In this case, the @c next_chunk member of @c httpmessage_headervalue
- * will point on another httpmessage_headervalue representing
- * the next chunk of text for the value.
+ * In this case, the @c next_line member of @c httpmessage_headerfield_value
+ * will point on another httpmessage_headerfield_value representing
+ * the next line of text for the value.
  *
  */
-typedef struct __httpmessage_headervalue
+typedef struct __httpmessage_headerfield_value
 {
-	/** First chunk of value */
-	httpmessage_stringview chunk;
+	/** First line of value */
+	httpmessage_stringview line;
 	
-	/** Reference the the next header field value chunk */
-	struct __httpmessage_headervalue *next_chunk;
-} httpmessage_headervalue;
+	/** Reference the the next header field value line */
+	struct __httpmessage_headerfield_value *next_line;
+} httpmessage_headerfield_value;
 
 /**
  * @brief Initialize a header field value
@@ -90,8 +90,8 @@ typedef struct __httpmessage_headervalue
  *
  * @see httpmessage_option_flags
  */
-HMAPI void httpmessage_headervalue_clear(
-    httpmessage_headervalue *value,
+HMAPI void httpmessage_headerfield_value_clear(
+    httpmessage_headerfield_value *value,
     int option_flags);
 
 /**
@@ -101,7 +101,7 @@ HMAPI void httpmessage_headervalue_clear(
  *
  * @return The new header value or @c NULL on error
  */
-HMAPI httpmessage_headervalue *httpmessage_headervalue_new(void);
+HMAPI httpmessage_headerfield_value *httpmessage_headerfield_value_new(void);
 
 
 /**
@@ -110,21 +110,21 @@ HMAPI httpmessage_headervalue *httpmessage_headervalue_new(void);
  *
  * @param value Instance to initialize
  */
-HMAPI void httpmessage_headervalue_init(
-    httpmessage_headervalue *value);
+HMAPI void httpmessage_headerfield_value_init(
+    httpmessage_headerfield_value *value);
 
 /**
  * @ingroup header
  *
- * @brief Append a new chunk of data to the given header value
- * @param value Header value that will receive the chunk
+ * @brief Append a new line of data to the given header value
+ * @param value Header value that will receive the line
  * @param text Text to add
  * @param length Text length
  *
- * @return The newly created httpmessage_headervalue
+ * @return The newly created httpmessage_headerfield_value
  */
-HMAPI httpmessage_headervalue *httpmessage_headervalue_append_chunk(
-    httpmessage_headervalue *value,
+HMAPI httpmessage_headerfield_value *httpmessage_headerfield_value_append_line(
+    httpmessage_headerfield_value *value,
     const char *text, size_t length);
 
 /**
@@ -133,14 +133,14 @@ HMAPI httpmessage_headervalue *httpmessage_headervalue_append_chunk(
  * @brief Get the total length of the header value text
  *
  * @param value Header value
- * @return Sum of all header value chunk lenght
+ * @return Sum of all header value line lenght
  */
-HMAPI size_t httpmessage_headervalue_total_length(const httpmessage_headervalue *value);
+HMAPI size_t httpmessage_headerfield_value_total_length(const httpmessage_headerfield_value *value);
 
 /**
  * @ingroup header
  *
- * @brief Copy the referenced header value chunks to a contiguous text buffer.
+ * @brief Copy the referenced header value lines to a contiguous text buffer.
  *
  * @param output Output buffer
  * @param output_size Output buffer size
@@ -150,20 +150,20 @@ HMAPI size_t httpmessage_headervalue_total_length(const httpmessage_headervalue 
  *
  * @see httpmessage_result_code
  */
-HMAPI int httpmessage_headervalue_merge_chunks(
+HMAPI int httpmessage_headerfield_value_merge_lines(
     char *output,
     size_t output_size,
-    const httpmessage_headervalue *value);
+    const httpmessage_headerfield_value *value);
 
 /**
  * @ingroup header
  *
- * @brief Free header value and following chunks
+ * @brief Free header value and following lines
  *
  * @param value Header value to free
  */
-HMAPI void httpmessage_headervalue_free(
-    httpmessage_headervalue **value);
+HMAPI void httpmessage_headerfield_value_free(
+    httpmessage_headerfield_value **value);
 
 /**
  * @ingroup header
@@ -184,7 +184,7 @@ HMAPI void httpmessage_headervalue_free(
  * @see httpmessage_result_code
  * @see httpmessage_option_flags
  */
-HMAPI int httpmessage_headervalue_line_consume(
+HMAPI int httpmessage_headerfield_value_line_consume(
     const char **value, size_t *value_length,
     const char *text, size_t length,
     int option_flags);
@@ -195,16 +195,16 @@ HMAPI int httpmessage_headervalue_line_consume(
  * @brief HTTP header field and value
  *
  */
-typedef struct __httpmessage_header
+typedef struct __httpmessage_headerfield
 {
 	/** Header field name */
-	httpmessage_headerfield field;
+	httpmessage_headerfield_name name;
 	/** Header field value */
-	httpmessage_headervalue value;
+	httpmessage_headerfield_value value;
 	/** The following header */
-	struct __httpmessage_header *next_header;
+	struct __httpmessage_headerfield *next_field;
 	
-} httpmessage_header;
+} httpmessage_headerfield;
 
 
 /**
@@ -214,34 +214,34 @@ typedef struct __httpmessage_header
  *
  * @return The new header object or NULL on error.
  */
-HMAPI httpmessage_header *httpmessage_header_new(void);
+HMAPI httpmessage_headerfield *httpmessage_headerfield_new(void);
 
 /**
  * @ingroup header
  *
  * @brief Initialize header members
  *
- * @param header Header structure to initialize
+ * @param field Header structure to initialize
  */
-HMAPI void httpmessage_header_init(httpmessage_header *header);
+HMAPI void httpmessage_headerfield_init(httpmessage_headerfield *field);
 
 /**
  * @ingroup header
  *
  * @brief Free header memory
  *
- * @param header Header to free
+ * @param field Header to free
  */
-HMAPI void httpmessage_header_free(httpmessage_header **header);
+HMAPI void httpmessage_headerfield_free(httpmessage_headerfield **field);
 
 /**
  * @ingroup header
  *
  * @brief Initialize a header descriptor
  *
- * @param header Header descriptor instance
+ * @param field Header descriptor instance
  */
-HMAPI void httpmessage_header_init(httpmessage_header *header);
+HMAPI void httpmessage_headerfield_init(httpmessage_headerfield *field);
 
 
 /**
@@ -250,13 +250,13 @@ HMAPI void httpmessage_header_init(httpmessage_header *header);
  *
  * String comparison is case instensitive.
  *
- * @param header Header to test field name
+ * @param field Header to test field name
  * @param name Name to match. The string MUST be null-terminated
  *
  * @return Non-zero value if the header field name match @c name
  */
-HMAPI int httpmessage_header_is(const httpmessage_header *header,
-                                const char *name);
+HMAPI int httpmessage_headerfield_is(const httpmessage_headerfield *field,
+                                     const char *name);
 
 /**
  * @ingroup header
@@ -266,14 +266,14 @@ HMAPI int httpmessage_header_is(const httpmessage_header *header,
  * Except if @c ::HTTPMESSAGE_CLEAR_NO_FREE option is set,
  * all dynamically allocated members are freed.
  *
- * @param header Header to clear
+ * @param field Header to clear
  * @param option_flags Option flags. Supported flags are:
  * - @c ::HTTPMESSAGE_CLEAR_NO_FREE
  *
  * @see httpmessage_option_flags
  */
-HMAPI void httpmessage_header_clear(
-    httpmessage_header *header,
+HMAPI void httpmessage_headerfield_clear(
+    httpmessage_headerfield *field,
     int option_flags);
 
 /**
@@ -281,25 +281,25 @@ HMAPI void httpmessage_header_clear(
  *
  * @brief Get the number of valid headers in the given header list
  *
- * @param header_list Header list
- * @return Number of element in @c header_list
+ * @param headerfield_list Header list
+ * @return Number of element in @c headerfield_list
  */
-HMAPI  size_t httpmessage_header_count(httpmessage_header *header_list);
+HMAPI  size_t httpmessage_headerfield_count(httpmessage_headerfield *headerfield_list);
 
 /**
  * @ingroup header
  *
  * @brief Find the first header field matching the given field name.
  *
- * @param header_list Header field list.
+ * @param headerfield_list Header field list.
  * @param name Header field name to find.
  * @param name_length Header field name length.
  *
  * @return Pointer to the first header field with the given field name
  * or @c NULL if none of the header fields in the list have the exepected field name.
  */
-HMAPI httpmessage_header *httpmessage_header_find(
-    httpmessage_header *header_list,
+HMAPI httpmessage_headerfield *httpmessage_headerfield_find(
+    httpmessage_headerfield *headerfield_list,
     const char *name,
     size_t name_length);
 
@@ -316,7 +316,7 @@ HMAPI httpmessage_header *httpmessage_header_find(
  * line is added the the @c current_header value
  * and @c header will point to @c current_header
  *
- * @param header The new header
+ * @param field The new header
  * @param current_header The current header
  * @param text Input text
  * @param length Input text length
@@ -331,9 +331,9 @@ HMAPI httpmessage_header *httpmessage_header_find(
  *@see httpmessage_result_code
  * @see httpmessage_option_flags
  */
-HMAPI int httpmessage_header_line_consume(
-    httpmessage_header **header,
-    httpmessage_header *current_header,
+HMAPI int httpmessage_headerfield_line_consume(
+    httpmessage_headerfield **field,
+    httpmessage_headerfield *current_header,
     const char *text, size_t length,
     int option_flags);
 
@@ -342,7 +342,7 @@ HMAPI int httpmessage_header_line_consume(
  * @brief Write a HTTP header line to a file
  *
  * @param file Output file
- * @param header Header to write
+ * @param field Header to write
  *
  * @attention NULL termination character may not be written at end of string
  * if the buffer is too small.
@@ -352,9 +352,9 @@ HMAPI int httpmessage_header_line_consume(
  *
  * @see httpmessage_result_code
  */
-HMAPI ssize_t httpmessage_header_write_file(
+HMAPI ssize_t httpmessage_headerfield_write_file(
     FILE *file,
-    const httpmessage_header *header);
+    const httpmessage_headerfield *field);
 
 /**
  * @ingroup header
@@ -362,7 +362,7 @@ HMAPI ssize_t httpmessage_header_write_file(
  *
  * @param output Output buffer
  * @param output_size Output buffer size
- * @param header Header to write
+ * @param field Header to write
  *
  * @attention NULL termination character may not be written at end of string
  * if the buffer is too small.
@@ -372,9 +372,9 @@ HMAPI ssize_t httpmessage_header_write_file(
  *
  * @see httpmessage_result_code
  */
-HMAPI ssize_t httpmessage_header_write_buffer(
+HMAPI ssize_t httpmessage_headerfield_write_buffer(
     void *output, size_t output_size,
-    const httpmessage_header *header);
+    const httpmessage_headerfield *field);
 
 /**
  * @ingroup header
@@ -382,7 +382,7 @@ HMAPI ssize_t httpmessage_header_write_buffer(
  *
  * Function stops when end of input is reached or if a leading CRLF  is found.
  *
- * @param header_list Header list to populate
+ * @param headerfield_list Header list to populate
  * @param text Input text
  * @param length Input text length
  * @param option_flags Option flags. These flags are passed to httpmessage API functions called internally.
@@ -392,8 +392,8 @@ HMAPI ssize_t httpmessage_header_write_buffer(
  *
  * @see httpmessage_result_code
  */
-HMAPI int httpmessage_header_list_consume(
-    httpmessage_header *header_list,
+HMAPI int httpmessage_headerfield_list_consume(
+    httpmessage_headerfield *headerfield_list,
     const char *text, size_t length,
     int option_flags);
 
@@ -402,16 +402,16 @@ HMAPI int httpmessage_header_list_consume(
  * @brief Write HTTP headers to a file.
  *
  * @param file Output file
- * @param header_list List of header to write
+ * @param headerfield_list List of header to write
  *
  * @return On success, the number of bytes written (excludint the null-termination character).
  * On error, one of httpmessage_result_type
  *
  * @see httpmessage_result_code
  */
-HMAPI ssize_t httpmessage_header_list_write_file(
+HMAPI ssize_t httpmessage_headerfield_list_write_file(
     FILE *file,
-    const httpmessage_header *header_list);
+    const httpmessage_headerfield *headerfield_list);
 
 /**
  * @ingroup header
@@ -419,7 +419,7 @@ HMAPI ssize_t httpmessage_header_list_write_file(
  *
  * @param output Output buffer
  * @param output_size Output buffer size
- * @param header_list List of headers to write.
+ * @param headerfield_list List of headers to write.
  *
  * @attention NULL termination character may not be written at end of string
  * if the buffer is too small.
@@ -429,9 +429,9 @@ HMAPI ssize_t httpmessage_header_list_write_file(
  *
  * @see httpmessage_result_code
  */
-HMAPI ssize_t httpmessage_header_list_write_buffer(
+HMAPI ssize_t httpmessage_headerfield_list_write_buffer(
     void *output, size_t output_size,
-    const httpmessage_header *header_list);
+    const httpmessage_headerfield *headerfield_list);
 
 
 

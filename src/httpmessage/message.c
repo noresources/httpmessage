@@ -15,8 +15,8 @@
 void httpmessage_message_storage_init(
     httpmessage_message *message,
     uint8_t *storage,
-    size_t max_header_count,
-    size_t max_chunk_per_header_value);
+    size_t max_headerfield_count,
+    size_t max_line_per_headerfield_value);
 
 int httpmessage_message_http_version_consume(
     int *major_version,
@@ -376,41 +376,41 @@ int httpmessage_message_get_type(
 }
 
 HMAPI int httpmessage_message_get_storage_infos(
-    size_t *max_header_count,
-    size_t *max_chunk_per_value,
+    size_t *max_headerfield_count,
+    size_t *max_line_per_value,
     const httpmessage_message *message)
 {
-	size_t chunk_count = 0;
-	const httpmessage_header *header;
-	const httpmessage_headervalue *value;
-	*max_header_count = 0;
-	*max_chunk_per_value = 0;
+	size_t line_count = 0;
+	const httpmessage_headerfield *header;
+	const httpmessage_headerfield_value *value;
+	*max_headerfield_count = 0;
+	*max_line_per_value = 0;
 	
 	if (!message)
 	{
 		return HTTPMESSAGE_ERROR_INVALID_ARGUMENT;
 	}
 	
-	header = &message->header_list;
+	header = &message->field_list;
 	
 	while (header)
 	{
-		++(*max_header_count);
+		++(*max_headerfield_count);
 		value = &header->value;
-		chunk_count = 1;
+		line_count = 1;
 		
-		while (value->next_chunk)
+		while (value->next_line)
 		{
-			++chunk_count;
-			value = value->next_chunk;
+			++line_count;
+			value = value->next_line;
 		}
 		
-		if (chunk_count > *max_chunk_per_value)
+		if (line_count > *max_line_per_value)
 		{
-			*max_chunk_per_value = chunk_count;
+			*max_line_per_value = line_count;
 		}
 		
-		header = header->next_header;
+		header = header->next_field;
 	}
 	
 	
@@ -419,7 +419,7 @@ HMAPI int httpmessage_message_get_storage_infos(
 
 void httpmessage_message_init(httpmessage_message *message)
 {
-	httpmessage_header_init(&message->header_list);
+	httpmessage_headerfield_init(&message->field_list);
 	httpmessage_stringview_clear(&message->body);
 	message->major_version = message->minor_version = 1;
 }
@@ -428,7 +428,7 @@ void httpmessage_message_clear(
     httpmessage_message *message,
     int option_flags)
 {
-	httpmessage_header_clear(&message->header_list, option_flags);
+	httpmessage_headerfield_clear(&message->field_list, option_flags);
 	httpmessage_stringview_clear(&message->body);
 	message->major_version = message->minor_version = 1;
 }
@@ -438,17 +438,17 @@ int httpmessage_message_append_header(
     const char *name, const char *value,
     int option_flags)
 {
-	httpmessage_header *header = &message->header_list;
+	httpmessage_headerfield *header = &message->field_list;
 	
-	while (header->field.length && header->next_header)
+	while (header->name.length && header->next_field)
 	{
-		header = header->next_header;
+		header = header->next_field;
 	}
 	
-	if (header->field.length == 0)
+	if (header->name.length == 0)
 	{
-		httpmessage_headervalue_clear(&header->value, option_flags);
-		goto httpmessage_message_append_header_ok;
+		httpmessage_headerfield_value_clear(&header->value, option_flags);
+		goto httpmessage_message_append_headerfield_ok;
 	}
 	
 	if (option_flags & HTTPMESSAGE_NO_ALLOCATION)
@@ -456,18 +456,18 @@ int httpmessage_message_append_header(
 		return HTTPMESSAGE_ERROR_ALLOCATION;
 	}
 	
-	header->next_header = httpmessage_header_new();
+	header->next_field = httpmessage_headerfield_new();
 	
-	if (!header->next_header)
+	if (!header->next_field)
 	{
 		return HTTPMESSAGE_ERROR_ALLOCATION;
 	}
 	
-	header = header->next_header;
+	header = header->next_field;
 	
-httpmessage_message_append_header_ok:
-	httpmessage_stringview_assign(&header->field, name);
-	httpmessage_stringview_assign(&header->value.chunk, value);
+httpmessage_message_append_headerfield_ok:
+	httpmessage_stringview_assign(&header->name, name);
+	httpmessage_stringview_assign(&header->value.line, value);
 	return HTTPMESSAGE_OK;
 }
 
@@ -478,12 +478,12 @@ int httpmessage_message_content_consume(
 {
 	int consumed = 0;
 	int result = 0;
-	httpmessage_header_clear(&message->header_list, option_flags);
+	httpmessage_headerfield_clear(&message->field_list, option_flags);
 	httpmessage_stringview_clear(&message->body);
 	
 	/* Headers */
-	result = httpmessage_header_list_consume(
-	             &message->header_list,
+	result = httpmessage_headerfield_list_consume(
+	             &message->field_list,
 	             text, length,
 	             option_flags);
 	             
@@ -551,7 +551,7 @@ ssize_t httpmessage_message_content_write_file(
 	}
 	
 	/* Header */
-	w = httpmessage_header_list_write_file(file, &message->header_list);
+	w = httpmessage_headerfield_list_write_file(file, &message->field_list);
 	
 	if (w < 0)
 	{
@@ -579,7 +579,7 @@ ssize_t httpmessage_message_content_write_buffer(
 		return HTTPMESSAGE_ERROR_INVALID_ARGUMENT;
 	}
 	
-	w = httpmessage_header_list_write_buffer(o, output_size, &message->header_list);
+	w = httpmessage_headerfield_list_write_buffer(o, output_size, &message->field_list);
 	
 	if (w < 0)
 	{
@@ -633,47 +633,47 @@ void httpmessage_request_free(httpmessage_request **request)
 void httpmessage_message_storage_init(
     httpmessage_message *message,
     uint8_t *storage,
-    size_t max_header_count,
-    size_t max_chunk_per_header_value)
+    size_t max_headerfield_count,
+    size_t max_line_per_headerfield_value)
 {
-	httpmessage_header *header;
-	httpmessage_headervalue *value;
+	httpmessage_headerfield *header;
+	httpmessage_headerfield_value *value;
 	uint8_t *p;
 	size_t a, b;
 	
-	--max_header_count;
-	--max_chunk_per_header_value;
+	--max_headerfield_count;
+	--max_line_per_headerfield_value;
 	
 	p = storage;
 	
-	header = &message->header_list;
+	header = &message->field_list;
 	
-	for (a = 0; a < max_header_count; ++a)
+	for (a = 0; a < max_headerfield_count; ++a)
 	{
 		value = &header->value;
 		
-		for (b = 0; b < max_chunk_per_header_value; ++b)
+		for (b = 0; b < max_line_per_headerfield_value; ++b)
 		{
-			value->next_chunk = (httpmessage_headervalue *)p;
-			value = value->next_chunk;
-			httpmessage_headervalue_init(value);
-			p += sizeof(httpmessage_headervalue);
+			value->next_line = (httpmessage_headerfield_value *)p;
+			value = value->next_line;
+			httpmessage_headerfield_value_init(value);
+			p += sizeof(httpmessage_headerfield_value);
 		}
 		
-		header->next_header = (httpmessage_header *)p;
-		header = header->next_header;
-		httpmessage_header_init(header);
-		p += sizeof(httpmessage_header);
+		header->next_field = (httpmessage_headerfield *)p;
+		header = header->next_field;
+		httpmessage_headerfield_init(header);
+		p += sizeof(httpmessage_headerfield);
 	}
 }
 
 httpmessage_request *httpmessage_request_storage_new(
-    size_t max_header_count,
-    size_t max_chunk_per_header_value)
+    size_t max_headerfield_count,
+    size_t max_line_per_headerfield_value)
 {
 	size_t storage_size = sizeof(httpmessage_request)
-	                      + ((max_header_count - 1) * sizeof(httpmessage_header)
-	                         + ((max_chunk_per_header_value - 1) * max_header_count * sizeof(httpmessage_headervalue))
+	                      + ((max_headerfield_count - 1) * sizeof(httpmessage_headerfield)
+	                         + ((max_line_per_headerfield_value - 1) * max_headerfield_count * sizeof(httpmessage_headerfield_value))
 	                        );
 	httpmessage_request *storage = (httpmessage_request *)malloc(storage_size);
 	
@@ -686,18 +686,18 @@ httpmessage_request *httpmessage_request_storage_new(
 	httpmessage_message_storage_init(
 	    &storage->message,
 	    (uint8_t *)(storage + 1),
-	    max_header_count, max_chunk_per_header_value);
+	    max_headerfield_count, max_line_per_headerfield_value);
 	    
 	return storage;
 }
 
 httpmessage_response *httpmessage_response_storage_new(
-    size_t max_header_count,
-    size_t max_chunk_per_header_value)
+    size_t max_headerfield_count,
+    size_t max_line_per_headerfield_value)
 {
 	size_t storage_size = sizeof(httpmessage_response)
-	                      + ((max_header_count - 1) * sizeof(httpmessage_header)
-	                         + ((max_chunk_per_header_value - 1) * max_header_count * sizeof(httpmessage_headervalue))
+	                      + ((max_headerfield_count - 1) * sizeof(httpmessage_headerfield)
+	                         + ((max_line_per_headerfield_value - 1) * max_headerfield_count * sizeof(httpmessage_headerfield_value))
 	                        );
 	httpmessage_response *storage = (httpmessage_response *)malloc(storage_size);
 	
@@ -710,7 +710,7 @@ httpmessage_response *httpmessage_response_storage_new(
 	httpmessage_message_storage_init(
 	    &storage->message,
 	    (uint8_t *)(storage + 1),
-	    max_header_count, max_chunk_per_header_value);
+	    max_headerfield_count, max_line_per_headerfield_value);
 	    
 	return storage;
 }

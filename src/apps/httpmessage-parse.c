@@ -31,20 +31,20 @@ int parse_file(FILE *file);
 
 void print_message(FILE *stream, const httpmessage_message *message)
 {
-	if (message->header_list.field.length)
+	if (message->field_list.name.length)
 	{
-		const httpmessage_header *header = &message->header_list;
+		const httpmessage_headerfield *field = &message->field_list;
 		char value[1024];
 		fprintf(stream, "\tHeaders\n");
 		
-		while (header && header->field.length)
+		while (field && field->name.length)
 		{
-			httpmessage_headervalue_merge_chunks(
-			    value, sizeof(value), &header->value);
+			httpmessage_headerfield_value_merge_lines(
+			    value, sizeof(value), &field->value);
 			fprintf(stream, "\t\t%-16.*s = %s\n",
-			        (int)header->field.length, header->field.text,
+			        (int)field->name.length, field->name.text,
 			        value);
-			header = header->next_header;
+			field = field->next_field;
 		}
 	}
 	

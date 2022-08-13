@@ -11,11 +11,11 @@
  * MetaHeader: foo
  *  bar
  */
-#define MAX_VALUE_CHUNK 2
+#define MAX_VALUE_LINE 2
 
 httpmessage_request *request = httpmessage_request_storage_new(
 			              MAX_HEADER_FIELD,
-			              MAX_VALUE_CHUNK);
+			              MAX_VALUE_LINE);
 
 /*
  * These option flags are MANDATORY to
