@@ -44,7 +44,6 @@ void httpmessage_headervalue_clear(
 	if (option_flags & HTTPMESSAGE_CLEAR_NO_FREE)
 	{
 		httpmessage_headervalue_clear(value->next_chunk, option_flags);
-		value->next_chunk = NULL;
 		return;
 	}
 	
@@ -61,8 +60,6 @@ httpmessage_headervalue *httpmessage_headervalue_new(void)
 	}
 	
 	httpmessage_headervalue_init(value);
-	httpmessage_stringview_clear(&value->chunk);
-	value->next_chunk = NULL;
 	return value;
 }
 
@@ -323,7 +320,6 @@ void httpmessage_header_clear(
 	if (option_flags & HTTPMESSAGE_CLEAR_NO_FREE)
 	{
 		httpmessage_header_clear(header->next_header, option_flags);
-		header->next_header = NULL;
 		return;
 	}
 	
@@ -360,6 +356,24 @@ size_t httpmessage_header_count(httpmessage_header *header_list)
 	}
 	
 	return c;
+}
+
+httpmessage_header *httpmessage_header_find(
+    httpmessage_header *header_list,
+    const char *name,
+    size_t name_length)
+{
+	while (header_list)
+	{
+		if (httpmessage_stringview_caseless_compare_text(&header_list->field, name, name_length) == 0)
+		{
+			return header_list;
+		}
+		
+		header_list = header_list->next_header;
+	}
+	
+	return NULL;
 }
 
 int httpmessage_header_line_consume(
@@ -481,7 +495,8 @@ int httpmessage_header_line_consume(
 
 int httpmessage_header_list_consume(
     httpmessage_header *header_list,
-    const char *text, size_t length)
+    const char *text, size_t length,
+    int option_flags)
 {
 	int consumed = 0;
 	httpmessage_header *new_header = NULL;
@@ -495,7 +510,7 @@ int httpmessage_header_list_consume(
 		                 &new_header,
 		                 current_header,
 		                 text, length,
-		                 0);
+		                 option_flags);
 		                 
 		if (result < 0)
 		{

@@ -20,8 +20,24 @@ for tool in \
 	undefined
 do
 		echo "-- ${tool} ------------------------------"
+
+		cflags=( \
+			-fsanitize=${tool} \
+		)
+		ldflags=( \
+			-fsanitize=${tool} \
+		)
 		
-		clang -fsanitize="${tool}" -x c -E '' - </dev/null  1>/dev/null \
+		case "${tool}" in
+			cfi)
+				cflags=("${cflags[@]}" \
+					-fvisibility= \
+					-flto=full)
+			;;
+		esac
+		
+		clang ${cflags[*]} \
+			-x c -E '' - </dev/null  1>/dev/null \
 			|| continue
 		
 		make -C "${root}/scripts/${os}/gmake2" \
@@ -33,13 +49,6 @@ do
 			&& exitCode=$((${exitCode} + 1)) \
 			&& continue
 			
-		cflags=( \
-			-fsanitize=${tool} \
-		)
-		ldflags=( \
-			-fsanitize=${tool} \
-		)
-		
 		make -C "${root}/scripts/${os}/gmake2" \
 			CFLAGS="${cflags[*]}" \
 			LDFLAGS="${ldflags[*]}" \

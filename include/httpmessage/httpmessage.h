@@ -41,6 +41,16 @@ typedef enum __httpmessage_result_code
 /**
  * @ingroup base
  *
+ * @brief Get the error message associated to the given result code.
+ *
+ * @param code Result code
+ * @return Result message
+ */
+HMAPI const char *httpmessage_result_get_text(int code);
+
+/**
+ * @ingroup base
+ *
  * @ingroup message
  * @brief HTTP message type
  * @see https://datatracker.ietf.org/doc/html/rfc2616#section-4

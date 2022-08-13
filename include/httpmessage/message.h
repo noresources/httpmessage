@@ -217,7 +217,7 @@ HMAPI int httpmessage_message_http_version_consume(
 /**
  * @ingroup message
  *
- * @brief Read hte Request-URI resourcce of a request line
+ * @brief Read the Request-URI resourcce of a request line
  *
  * ```
  * Request-URI    = "*" | absoluteURI | abs_path | authority

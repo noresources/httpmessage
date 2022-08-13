@@ -289,6 +289,23 @@ HMAPI  size_t httpmessage_header_count(httpmessage_header *header_list);
 /**
  * @ingroup header
  *
+ * @brief Find the first header field matching the given field name.
+ *
+ * @param header_list Header field list.
+ * @param name Header field name to find.
+ * @param name_length Header field name length.
+ *
+ * @return Pointer to the first header field with the given field name
+ * or @c NULL if none of the header fields in the list have the exepected field name.
+ */
+HMAPI httpmessage_header *httpmessage_header_find(
+    httpmessage_header *header_list,
+    const char *name,
+    size_t name_length);
+
+/**
+ * @ingroup header
+ *
  * @brief Read header field name and value on a single line
  *  *
  * If the current line starts by a header field name,
@@ -367,6 +384,8 @@ HMAPI ssize_t httpmessage_header_write_buffer(
  * @param header_list Header list to populate
  * @param text Input text
  * @param length Input text length
+ * @param option_flags Option flags. These flags are passed to httpmessage API functions called internally.
+ *
  * @return On success, number of bytes conumed in @c text.
  * On error, one of @c httpmessage_result_code
  *
@@ -374,7 +393,8 @@ HMAPI ssize_t httpmessage_header_write_buffer(
  */
 HMAPI int httpmessage_header_list_consume(
     httpmessage_header *header_list,
-    const char *text, size_t length);
+    const char *text, size_t length,
+    int option_flags);
 
 /**
  * @ingroup header
