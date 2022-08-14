@@ -189,8 +189,9 @@ HMAPI void httpmessage_request_free(httpmessage_request **request);
  *
  * @return A request with pre-allocated header fields.
  *
+ * @attention NEVER call httpmessage_request_init() on the returned object. This will reset the maximum number of header field and value line to 1.
  * @attention Use @c free() to release the object allocated with this function.
- * @attention Always set ::HTTPMESSAGE_CLEAR_NO_FREE and ::HTTPMESSAGE_NO_ALLOCATION
+ * @attention ALWAYS set ::HTTPMESSAGE_CLEAR_NO_FREE and ::HTTPMESSAGE_NO_ALLOCATION
  * whenusing this object with @c *_consume or @c *_clear() functions
  */
 HMAPI httpmessage_request *httpmessage_request_storage_new(
@@ -274,8 +275,9 @@ HMAPI void httpmessage_response_free(httpmessage_response **response);
  *
  * @return A response with pre-allocated header fields.
  *
+ * @attention NEVER call httpmessage_response_init() on the returned object. This will reset the maximum number of header field and value line to 1.
  * @attention Use @c free() to release the object allocated with this function.
- * @attention Always set ::HTTPMESSAGE_CLEAR_NO_FREE and ::HTTPMESSAGE_NO_ALLOCATION
+ * @attention ALWAYS set ::HTTPMESSAGE_CLEAR_NO_FREE and ::HTTPMESSAGE_NO_ALLOCATION
  * whenusing this object with @c *_consume or @c *_clear() functions
  */
 HMAPI httpmessage_response *httpmessage_response_storage_new(
