@@ -140,6 +140,15 @@ typedef struct __httpmessage_request
 /**
  * @ingroup message
  *
+ * @brief Allocate and initialize a new request.
+ *
+ * @return The new request or @c NULL on error.
+ */
+HMAPI httpmessage_request *httpmessage_request_new();
+
+/**
+ * @ingroup message
+ *
  * @brief Initialize a HTTP request descriptor
  *
  * @param request Request descriptor instance
@@ -160,6 +169,14 @@ HMAPI void httpmessage_request_init(httpmessage_request *request);
 HMAPI void httpmessage_request_clear(
     httpmessage_request *request,
     int option_flags);
+
+/**
+ * @ingroup message
+ *
+ * @brief Clear and free a request allocated with httpmessage_request_new()
+ * @param request Request to free
+ */
+HMAPI void httpmessage_request_free(httpmessage_request **request);
 
 /**
  * @ingroup message
@@ -206,6 +223,15 @@ typedef struct __httpmessage_response
 /**
  * @ingroup message
  *
+ * @brief Allocate and initialize a new response.
+ *
+ * @return The new response or @c NULL on error.
+ */
+HMAPI httpmessage_response *httpmessage_response_new();
+
+/**
+ * @ingroup message
+ *
  * @brief Initialize a HTTP response descriptor.
  *
  * @param response Response descriptor instance
@@ -227,6 +253,15 @@ HMAPI void httpmessage_response_clear(
     httpmessage_response *response,
     int option_flags
 );
+
+/**
+ * @ingroup message
+ *
+ * @brief Clear and free a response allocated with httpmessage_response_new()
+ *
+ * @param response Response to free
+ */
+HMAPI void httpmessage_response_free(httpmessage_response **response);
 
 /**
  * @ingroup message

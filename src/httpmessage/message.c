@@ -596,6 +596,13 @@ ssize_t httpmessage_message_content_write_buffer(
 	return (o - (char *)output);
 }
 
+httpmessage_request *httpmessage_request_new()
+{
+	httpmessage_request *request = (httpmessage_request *)malloc(sizeof(httpmessage_request));
+	httpmessage_request_init(request);
+	return request;
+}
+
 void httpmessage_request_init(httpmessage_request *request)
 {
 	httpmessage_stringview_clear(&request->method);
@@ -610,6 +617,17 @@ void httpmessage_request_clear(
 	httpmessage_message_clear(&request->message, option_flags);
 	httpmessage_stringview_clear(&request->method);
 	httpmessage_stringview_clear(&request->request_uri);
+}
+
+void httpmessage_request_free(httpmessage_request **request)
+{
+	if (*request)
+	{
+		httpmessage_request_clear(*request, 0);
+		free(*request);
+	}
+	
+	*request = NULL;
 }
 
 void httpmessage_message_storage_init(
@@ -817,6 +835,13 @@ ssize_t httpmessage_request_write_buffer(
 	return (o - (char *)output);
 }
 
+httpmessage_response *httpmessage_response_new()
+{
+	httpmessage_response *response = (httpmessage_response *)malloc(sizeof(httpmessage_response));
+	httpmessage_response_init(response);
+	return response;
+}
+
 void httpmessage_response_init(httpmessage_response *response)
 {
 	response->status_code = 0;
@@ -831,6 +856,17 @@ void httpmessage_response_clear(
 	httpmessage_message_clear(&response->message, option_flags);
 	httpmessage_stringview_clear(&response->reason_phrase);
 	response->status_code = 0;
+}
+
+void httpmessage_response_free(httpmessage_response **response)
+{
+	if (*response)
+	{
+		httpmessage_response_clear(*response, 0);
+		free(*response);
+	}
+	
+	*response = NULL;
 }
 
 int httpmessage_response_consume(
