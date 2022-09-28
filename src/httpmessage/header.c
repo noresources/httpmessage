@@ -133,6 +133,11 @@ int httpmessage_headerfield_value_merge_lines(
 		output_size -= value->line.length;
 		copied += value->line.length;
 		value = value->next_line;
+		
+		while (value && (value->line.length == 0))
+		{
+			value = value->next_line;
+		}
 	}
 	while (value);
 	

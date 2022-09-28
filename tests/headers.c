@@ -67,7 +67,9 @@ int test_headerfield_consume(int argc, const char **argv)
 		{ " 	Baz \r\n", HTTPMESSAGE_CONSUME_IGNORE_MISSING_CRLF, 8, "Foo", "Bar Baz" },
 		{ "A:", HTTPMESSAGE_CONSUME_IGNORE_MISSING_CRLF, 2, "A", "" },
 		{ "A: B ", HTTPMESSAGE_CONSUME_IGNORE_MISSING_CRLF, 5, "A", "B" },
-		{ "\tC ", HTTPMESSAGE_CONSUME_IGNORE_MISSING_CRLF, 3, "A", "B C" }
+		{ "\tC ", HTTPMESSAGE_CONSUME_IGNORE_MISSING_CRLF, 3, "A", "B C" },
+		{ "\t", HTTPMESSAGE_CONSUME_IGNORE_MISSING_CRLF, 2, "A", "B C" },
+		{ " D", HTTPMESSAGE_CONSUME_IGNORE_MISSING_CRLF, 2, "A", "B C D" }
 	};
 	
 	for (a = 0; a < sizeof(tests) / sizeof(header_test); ++a)
