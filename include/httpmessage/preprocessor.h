@@ -59,13 +59,13 @@
 #		else
 #			define HTTPMESSAGE_POINTER_SIZE 4
 #		endif
-#	elif (defined (__i386) && (__i386))
-|| (defined(__i386__)&& (__i386__))
-|| (defined(__i486)&& (__i486))
-|| (defined(__i486__)&& (__i486__))
-|| (defined(__i686)&& (__i686))
-|| (defined(__i686__)&& (__i686__))
-|| defined(_WIN32)
+#	elif (defined (__i386) && (__i386)) \
+		|| (defined(__i386__)&& (__i386__)) \
+		|| (defined(__i486)&& (__i486)) \
+		|| (defined(__i486__)&& (__i486__)) \
+		|| (defined(__i686)&& (__i686)) \
+		|| (defined(__i686__)&& (__i686__)) \
+		|| defined(_WIN32)
 #		define HTTPMESSAGE_POINTER_SIZE 4
 #	else
 #		error "Unable to detect pointer size"
