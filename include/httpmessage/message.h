@@ -98,6 +98,27 @@ HMAPI int httpmessage_message_append_header(
 
 /**
  * @ingroup message
+ * @brief Append a header to the given message.
+ *
+ * @param message Message to add the header to.
+ * @param name Header field name
+ * #param name_length Header field name length
+ * @param value Header value
+ * #param value_length Header field value length
+ * @param option_flags Option flags. Supported flags are
+ * - ::HTTPMESSAGE_CLEAR_NO_FREE
+ * - ::HTTPMESSAGE_NO_ALLOCATION
+ *
+ * @return HTTPMESSAGE_OK on success. One of httpmessage_result_code error codes on error.
+ */
+HMAPI int httpmessage_message_append_header_with_lengths(
+    httpmessage_message *message,
+    const char *name, size_t name_length,
+    const char *value, size_t value_length,
+    int option_flags);
+
+/**
+ * @ingroup message
  *
  * @brief Get message storage capabilities.
  *

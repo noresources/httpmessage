@@ -433,9 +433,10 @@ void httpmessage_message_clear(
 	message->major_version = message->minor_version = 1;
 }
 
-int httpmessage_message_append_header(
+int httpmessage_message_append_header_with_lengths(
     httpmessage_message *message,
-    const char *name, const char *value,
+    const char *name, size_t name_length,
+    const char *value, size_t value_length,
     int option_flags)
 {
 	httpmessage_headerfield *header = &message->field_list;
@@ -466,9 +467,24 @@ int httpmessage_message_append_header(
 	header = header->next_field;
 	
 httpmessage_message_append_headerfield_ok:
-	httpmessage_stringview_assign(&header->name, name);
-	httpmessage_stringview_assign(&header->value.line, value);
+	header->name.text = name;
+	header->name.length = name_length;
+	header->value.line.text = value;
+	header->value.line.length = value_length;
+	
 	return HTTPMESSAGE_OK;
+}
+
+int httpmessage_message_append_header(
+    httpmessage_message *message,
+    const char *name, const char *value,
+    int option_flags)
+{
+	return httpmessage_message_append_header_with_lengths(
+	           message,
+	           name, strlen(name),
+	           value, strlen(value),
+	           option_flags);
 }
 
 int httpmessage_message_content_consume(
