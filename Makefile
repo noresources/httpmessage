@@ -17,7 +17,7 @@ premake_options += --location=$(location)
 premake_options += --targetdir=$(targetdir)
 
 ifndef action
-	action = gmake2
+	action = gmake
 endif
 
 premake_filepath=scripts/premake/premake5.lua

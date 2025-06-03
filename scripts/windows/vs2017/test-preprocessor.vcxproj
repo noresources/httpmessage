@@ -42,15 +42,15 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <OutDir>..\..\..\dist\Debug\tests\</OutDir>
-    <IntDir>..\..\..\dist\obj\Debug\test-preprocessor\</IntDir>
+    <OutDir>$(ProjectDir)..\..\..\dist\Debug\tests\</OutDir>
+    <IntDir>$(ProjectDir)..\..\..\dist\obj\Debug\test-preprocessor\</IntDir>
     <TargetName>test-preprocessor</TargetName>
     <TargetExt>.exe</TargetExt>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <OutDir>..\..\..\dist\Release\tests\</OutDir>
-    <IntDir>..\..\..\dist\obj\Release\test-preprocessor\</IntDir>
+    <OutDir>$(ProjectDir)..\..\..\dist\Release\tests\</OutDir>
+    <IntDir>$(ProjectDir)..\..\..\dist\obj\Release\test-preprocessor\</IntDir>
     <TargetName>test-preprocessor</TargetName>
     <TargetExt>.exe</TargetExt>
   </PropertyGroup>

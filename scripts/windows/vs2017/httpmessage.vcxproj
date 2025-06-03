@@ -41,14 +41,14 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <OutDir>..\..\..\dist\Debug\lib\</OutDir>
-    <IntDir>..\..\..\dist\obj\Debug\httpmessage\</IntDir>
+    <OutDir>$(ProjectDir)..\..\..\dist\Debug\lib\</OutDir>
+    <IntDir>$(ProjectDir)..\..\..\dist\obj\Debug\httpmessage\</IntDir>
     <TargetName>httpmessage</TargetName>
     <TargetExt>.lib</TargetExt>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <OutDir>..\..\..\dist\Release\lib\</OutDir>
-    <IntDir>..\..\..\dist\obj\Release\httpmessage\</IntDir>
+    <OutDir>$(ProjectDir)..\..\..\dist\Release\lib\</OutDir>
+    <IntDir>$(ProjectDir)..\..\..\dist\obj\Release\httpmessage\</IntDir>
     <TargetName>httpmessage</TargetName>
     <TargetExt>.lib</TargetExt>
   </PropertyGroup>

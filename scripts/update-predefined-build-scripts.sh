@@ -37,19 +37,19 @@ do
 done
 
 os=linux
-for action in gmake2
+for action in gmake
 do
 	generate "${action}" "${os}"  
 done
 
 os=macosx
-for action in gmake2 xcode4
+for action in gmake xcode4
 do
 	generate "${action}" "${os}"  
 done
 
 os=windows
-for action in gmake2 vs2017
+for action in gmake vs2017
 do
 	generate "${action}" "${os}"  
 done

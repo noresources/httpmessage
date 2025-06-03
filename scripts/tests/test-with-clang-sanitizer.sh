@@ -40,7 +40,7 @@ do
 			-x c -E '' - </dev/null  1>/dev/null \
 			|| continue
 		
-		make -C "${root}/scripts/${os}/gmake2" \
+		make -C "${root}/scripts/${os}/gmake" \
 			clean \
 			1>/dev/null
 		
@@ -49,7 +49,7 @@ do
 			&& exitCode=$((${exitCode} + 1)) \
 			&& continue
 			
-		make -C "${root}/scripts/${os}/gmake2" \
+		make -C "${root}/scripts/${os}/gmake" \
 			CFLAGS="${cflags[*]}" \
 			LDFLAGS="${ldflags[*]}" \
 			CC=clang \

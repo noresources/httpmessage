@@ -42,15 +42,15 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <OutDir>..\..\..\dist\Debug\bin\</OutDir>
-    <IntDir>..\..\..\dist\obj\Debug\httpmessage-parse\</IntDir>
+    <OutDir>$(ProjectDir)..\..\..\dist\Debug\bin\</OutDir>
+    <IntDir>$(ProjectDir)..\..\..\dist\obj\Debug\httpmessage-parse\</IntDir>
     <TargetName>httpmessage-parse</TargetName>
     <TargetExt>.exe</TargetExt>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <OutDir>..\..\..\dist\Release\bin\</OutDir>
-    <IntDir>..\..\..\dist\obj\Release\httpmessage-parse\</IntDir>
+    <OutDir>$(ProjectDir)..\..\..\dist\Release\bin\</OutDir>
+    <IntDir>$(ProjectDir)..\..\..\dist\obj\Release\httpmessage-parse\</IntDir>
     <TargetName>httpmessage-parse</TargetName>
     <TargetExt>.exe</TargetExt>
   </PropertyGroup>
