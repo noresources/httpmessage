@@ -1,4 +1,4 @@
---add-brackets
+--add-braces
 --align-pointer=name
 --align-reference=type
 --break-blocks
