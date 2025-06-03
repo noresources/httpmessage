@@ -838,8 +838,8 @@ ssize_t httpmessage_request_write_buffer(
 	                          request->message.major_version, request->message.minor_version)
 	                          
 	w = httpmessage_message_content_write_buffer(o, output_size,
-	        &request->message);
-	        
+	    &request->message);
+	    
 	if (w < 0)
 	{
 		return w;
@@ -996,8 +996,8 @@ ssize_t httpmessage_response_write_buffer(
 	HTTPMESSAGE_TEXT_WRITE_BUFFER(o, output_size, "\r\n", 2)
 	
 	w = httpmessage_message_content_write_buffer(o, output_size,
-	        &response->message);
-	        
+	    &response->message);
+	    
 	if (w < 0)
 	{
 		return w;

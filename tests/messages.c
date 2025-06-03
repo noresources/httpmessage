@@ -93,7 +93,7 @@ typedef struct __request_line_test
 	int major;
 	int minor;
 	
-}request_line_test;
+} request_line_test;
 
 
 int test_request_line(int argc, const char **argv)

@@ -25,11 +25,11 @@ int test_text_pointer_size(int argc, const char **argv)
 	if (HTTPMESSAGE_POINTER_SIZE != pointer_size)
 	{
 		fprintf(stderr, "Invalid value of HTTPMESSAGE_POINTER_SIZE\n"
-		        "\t%-48.48s: %d\n"
-		        "\t%-48.48s: %d\n"
+		                "\t%-48.48s: %d\n"
+		                "\t%-48.48s: %d\n"
 		        ,
-		        "HTTPMESSAGE_POINTER_SIZE", (int) HTTPMESSAGE_POINTER_SIZE,
-		        "pointer_size", (int)pointer_size
+		"HTTPMESSAGE_POINTER_SIZE", (int) HTTPMESSAGE_POINTER_SIZE,
+		"pointer_size", (int)pointer_size
 		       );
 		++exitCode;
 	}
