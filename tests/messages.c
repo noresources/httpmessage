@@ -20,7 +20,7 @@ typedef struct __http_version_test
 	int major;
 	int minor;
 	
-} __attribute__((packed))  http_version_test;
+} http_version_test;
 
 int test_http_version(int argc, const char **argv);
 int test_request_line(int argc, const char **argv);
@@ -93,7 +93,7 @@ typedef struct __request_line_test
 	int major;
 	int minor;
 	
-} __attribute__((packed)) request_line_test;
+}request_line_test;
 
 
 int test_request_line(int argc, const char **argv)

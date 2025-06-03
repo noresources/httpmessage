@@ -19,7 +19,7 @@ typedef struct __compare_test
 	const char *b;
 	int compared;
 	int caseless_compared;
-} __attribute__((packed))  compare_test;
+} compare_test;
 
 int test_text_compare(int argc, const char **argv);
 int test_quoted_string(int argc, const char **argv);
