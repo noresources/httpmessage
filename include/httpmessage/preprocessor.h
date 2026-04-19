@@ -47,11 +47,11 @@
 #if !defined (HTTPMESSAGE_POINTER_SIZE)
 #	if defined(__SIZEOF_POINTER__)
 #		define HTTPMESSAGE_POINTER_SIZE (__SIZEOF_POINTER__)
-#	elif (defined(_WIN64))
-|| (defined(__arm64__)&& (__arm64__))
-|| (defined(_LP64)&& _LP64))
-|| (defined(__x86_64)&& (__x86_64))
-|| (defined(__x86_64__)&& (__x86_64__))
+#	elif (defined(_WIN64)) \
+			|| (defined(__arm64__)&& (__arm64__)) \
+			|| (defined(_LP64)&& _LP64)) \
+			|| (defined(__x86_64)&& (__x86_64)) \
+			|| (defined(__x86_64__)&& (__x86_64__))
 #		define HTTPMESSAGE_POINTER_SIZE 8
 #	elif defined (__ARMEL__) && (__ARMEL__)
 #		if defined(__ARM_ARCH_ISA_A64) && __ARM_ARCH_ISA_A64
