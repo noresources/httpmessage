@@ -68,6 +68,12 @@ httpmessage_headerfield_value *httpmessage_headerfield_value_append_line(
     const char *text, size_t length)
 {
 	httpmessage_headerfield_value *o = (httpmessage_headerfield_value *)malloc(sizeof(httpmessage_headerfield_value));
+	
+	if (!o)
+	{
+		return NULL;
+	}
+	
 	o->line.text = text;
 	o->line.length = length;
 	value->next_line = o;

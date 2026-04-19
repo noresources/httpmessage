@@ -13,6 +13,12 @@
 httpmessage_stringview *httpmessage_stringview_new(void)
 {
 	httpmessage_stringview *o = (httpmessage_stringview *)malloc(sizeof(httpmessage_stringview));
+	
+	if (!o)
+	{
+		return NULL;
+	}
+	
 	o->text = NULL;
 	o->length = 0;
 	return o;

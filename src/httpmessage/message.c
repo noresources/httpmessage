@@ -615,6 +615,12 @@ ssize_t httpmessage_message_content_write_buffer(
 httpmessage_request *httpmessage_request_new()
 {
 	httpmessage_request *request = (httpmessage_request *)malloc(sizeof(httpmessage_request));
+	
+	if (!request)
+	{
+		return request;
+	}
+	
 	httpmessage_request_init(request);
 	return request;
 }
@@ -695,7 +701,7 @@ httpmessage_request *httpmessage_request_storage_new(
 	
 	if (!storage)
 	{
-		return storage;
+		return NULL;
 	}
 	
 	httpmessage_request_init(storage);
@@ -719,7 +725,7 @@ httpmessage_response *httpmessage_response_storage_new(
 	
 	if (!storage)
 	{
-		return storage;
+		return NULL;
 	}
 	
 	httpmessage_response_init(storage);
@@ -854,6 +860,12 @@ ssize_t httpmessage_request_write_buffer(
 httpmessage_response *httpmessage_response_new()
 {
 	httpmessage_response *response = (httpmessage_response *)malloc(sizeof(httpmessage_response));
+	
+	if (!response)
+	{
+		return NULL;
+	}
+	
 	httpmessage_response_init(response);
 	return response;
 }
