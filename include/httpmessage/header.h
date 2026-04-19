@@ -236,16 +236,6 @@ HMAPI void httpmessage_headerfield_free(httpmessage_headerfield **field);
 
 /**
  * @ingroup header
- *
- * @brief Initialize a header descriptor
- *
- * @param field Header descriptor instance
- */
-HMAPI void httpmessage_headerfield_init(httpmessage_headerfield *field);
-
-
-/**
- * @ingroup header
  * @brief Indicates if the given header field name match the expected name.
  *
  * String comparison is case instensitive.
