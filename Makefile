@@ -37,7 +37,7 @@ doc: doxygen $(targetdir)
 
 doxygen: $(location)
 	@echo Generation doxygen configuration file
-	@premake5 --file=$(premake_filepath) $(premake_options) doxygen
+	@premake5 --file=$(premake_filepath) $(premake_options) --require-doxygen doxygen
 	
 $(location):
 	@mkdir -p "$(location)"

@@ -31,3 +31,8 @@ then
 	_OPTIONS["targetdir"] = defaultTarget
 end
 
+newoption {
+	trigger = "require-doxygen",
+	description = "Require doxygen module",
+	default = false
+}

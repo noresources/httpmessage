@@ -3,14 +3,10 @@
 --------------------------------------------
 
 -- Modules
-if not (type(requireopt) == "function") then
-	requireopt = function () premake.warn("This version of premake does not have requireopt function")
-		return false, "requireopt not supported"
-	end
-end 
-if not (requireopt "doxygen")
+if _OPTIONS["require-doxygen"]
 then
-	premake.warn ("doxygen module not available")
+	require "doxygen"
+else
 	doxygen = function () end
 	doxyfile = function () end
 end
