@@ -248,12 +248,77 @@ int test_quoted_string(int argc, const char **argv)
 	return exitCode;
 }
 
+typedef struct __int_test
+{
+	const char *text;
+	size_t length;
+	int result;
+	int value;
+} int_test;
+
+int test_int(int argc, const char **argv)
+{
+	int exitCode = EXIT_SUCCESS;
+	size_t a;
+	
+	static const int_test tests[] =
+	{
+		{ NULL, 2, HTTPMESSAGE_ERROR_INVALID_ARGUMENT, 0x0def },
+		{ "", 0, HTTPMESSAGE_ERROR_INVALID_ARGUMENT, 0x0def },
+		
+		{ "-", 1, HTTPMESSAGE_ERROR_INCOMPLETE, 0x0def },
+		{ "a", 1, HTTPMESSAGE_ERROR_SYNTAX, 0x0def },
+		
+		{ "000", 3, 3, 0 },
+		{ "-00", 3, 3, 0 },
+		
+		
+		{ "123", 3, 3, 123 },
+		{ "067", 3, 3, 67 },
+		{ "-123", 4, 4, -123 },
+		{ "456ignored", 9, 3, 456 }
+	};
+	
+	for (a = 0; a < sizeof (tests) / sizeof (const int_test); ++a)
+	{
+		const int_test *T = &tests[a];
+		int value;
+		int result;
+		
+		fprintf(stdout, "### %d \"%.*s\"\n", (int)(a + 1),
+		        (T->text ? (int)T->length : 0), (T->text ? T->text : ""));
+		        
+		result = httpmessage_int_consume(&value,  T->text,  T->length);
+		
+		if (result != T->result)
+		{
+			fprintf(stderr, "%-15.15s: %d, expected %d\n",
+			        "RESULT", result, T->result);
+			++exitCode;
+		}
+		
+		if (result != HTTPMESSAGE_OK)
+		{
+			continue;
+		}
+		
+		if (value != T->value)
+		{
+			++exitCode;
+		}
+	}
+	
+	
+	return exitCode;
+}
+
 int main(int argc, const char **argv)
 {
 	static const httpmessage_test tests[] =
 	{
 		{"text_compare", test_text_compare },
-		{"quoted_string", test_quoted_string }
+		{"quoted_string", test_quoted_string },
+		{"int", test_int }
 	};
 	
 	return run_tests(tests, sizeof(tests) / sizeof(httpmessage_test),

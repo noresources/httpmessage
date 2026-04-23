@@ -257,3 +257,70 @@ int httpmessage_quoted_string_consume(
 	
 	return HTTPMESSAGE_ERROR_INCOMPLETE;
 }
+
+int httpmessage_int_consume(int *output,
+                            const char *text, size_t length)
+{
+	int value;
+	const char *t;
+	int sign;
+	int digit_count;
+	
+	if (!(text && (length > 0)))
+	{
+		return HTTPMESSAGE_ERROR_INVALID_ARGUMENT;
+	}
+	
+	value = 0;
+	t = text;
+	sign = 1;
+	digit_count = 0;
+	
+	if (*t == '-')
+	{
+		--length;
+		++t;
+		sign = -1;
+	}
+	
+	for (; length; ++t, --length)
+	{
+		int c = *t;
+		
+		if (!httpmessage_text_is_DIGIT(c))
+		{
+			if (digit_count == 0)
+			{
+				return HTTPMESSAGE_ERROR_SYNTAX;
+			}
+			
+			break;
+		}
+		
+		++digit_count;
+		
+		if (value == 0 && c == '0')
+		{
+			continue;
+		}
+		
+		value = (10 * value) + (c - '0');
+		
+		if (value < 0)
+		{
+			return HTTPMESSAGE_ERROR_OVERFLOW;
+		}
+	}
+	
+	if (digit_count == 0)
+	{
+		return HTTPMESSAGE_ERROR_INCOMPLETE;
+	}
+	
+	if (output)
+	{
+		*output = value * sign;
+	}
+	
+	return (int)((t - text) / sizeof(char));
+}

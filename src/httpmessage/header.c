@@ -442,7 +442,7 @@ int httpmessage_headerfield_line_consume(
 			return result;
 		}
 		
-		return (consumed + (size_t)result);
+		return (int)(consumed + (size_t)result);
 	}
 	
 	/* Header field name */

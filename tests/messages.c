@@ -12,6 +12,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <errno.h>
+#include <string.h>
 
 typedef struct __http_version_test
 {
@@ -396,6 +397,7 @@ typedef struct __storage_test
 	size_t header_count;
 	const char *field_name;
 	const char *field_value;
+	const char *body;
 } storage_test;
 
 int test_storage(int argc, const char **argv)
@@ -411,30 +413,42 @@ int test_storage(int argc, const char **argv)
 		{
 			"tests/data/get-lucky.request", HTTPMESSAGE_TYPE_REQUEST,
 			8, 2, 158, 3,
-			"X-Lyrics", "I'm a poor lonesome cowboy. I'm a long long way from home."
+			"X-Lyrics", "I'm a poor lonesome cowboy. I'm a long long way from home.",
+			"This is not Daft Punk!"
 		},
 		/** Failed because X-Lyrics header value is multipline */
 		{
 			"tests/data/get-lucky.request", HTTPMESSAGE_TYPE_REQUEST,
-			8, 1, HTTPMESSAGE_ERROR_ALLOCATION, 3, NULL, NULL
+			8, 1, HTTPMESSAGE_ERROR_ALLOCATION, 3, NULL, NULL,
+			NULL
 		},
 		{
 			"tests/data/head-slash.response", HTTPMESSAGE_TYPE_RESPONSE,
 			8, 2,
 			161, 4, NULL, NULL,
+			NULL
 		},
 		{
 			"tests/data/head-slash.response", HTTPMESSAGE_TYPE_RESPONSE,
 			4, 2,
 			161, 4,
 			"content-type", "text/html; charset=iso-8859-1",
+			NULL
 		},
 		/* No enough header fields */
 		{
 			"tests/data/head-slash.response", HTTPMESSAGE_TYPE_RESPONSE,
 			2, 2,
 			HTTPMESSAGE_ERROR_ALLOCATION, 4,
-			NULL, NULL
+			NULL, NULL,
+			NULL
+		},
+		/* Consider Content-Length header value */
+		{
+			"tests/data/get-hello.request", HTTPMESSAGE_TYPE_REQUEST,
+			8, 2, 95, 3,
+			NULL, NULL,
+			"Hello world"
 		}
 	};
 	
@@ -659,6 +673,42 @@ int test_storage(int argc, const char **argv)
 					++exitCode;
 				}
 			}
+		}
+		
+		if (T->body)
+		{
+			size_t body_length = strlen (T->body);
+			
+			if (!message->body.text)
+			{
+				fprintf(stderr, "%15.15s: %s\n",
+				        "BODY",
+				        "no body found");
+				++exitCode;
+				goto test_storage_test_loop_end;
+			}
+			
+			if (body_length != message->body.length)
+			{
+				fprintf(stderr, "%15.15s: %d, expect %d\n",
+				        "BODY LENGTH",
+				        (int)message->body.length,
+				        (int) body_length);
+				++exitCode;
+			}
+			
+			if (memcmp(message->body.text, T->body, body_length) != 0)
+			{
+				fprintf(stderr, "%15.15s: \"%.*s\", expect \"%s\"\n",
+				        "BODY",
+				        (int) message->body.length, message->body.text,
+				        T->body);
+				++exitCode;
+			}
+			
+			
+			
+			
 		}
 		
 test_storage_test_loop_end:

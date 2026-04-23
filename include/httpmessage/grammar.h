@@ -260,6 +260,20 @@ HMAPI int httpmessage_quoted_string_consume(
     const char *text,
     size_t length);
 
+/**
+ * @ingroup grammar
+ *
+ * @brief Read an integer value from its text representation
+ *
+ * @param output Output value. The parsed integer value will be stored in this variable on success. On error, the value is undefined.
+ * @param text Input text to parse
+ * @param length Input text length
+  * @return On success, the number of bytes consumed in text.
+ * On error, one of the #httpmessage_result_code error codes
+ */
+int httpmessage_int_consume(int *output,
+                            const char *text, size_t length);
+
 HTTPMESSAGE_C_END
 
 #endif /* LIBHTTPMESSAGGE_GRAMMAR_H__ */

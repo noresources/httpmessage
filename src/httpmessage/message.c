@@ -494,6 +494,7 @@ int httpmessage_message_content_consume(
 {
 	int consumed = 0;
 	int result = 0;
+	httpmessage_headerfield *field;
 	httpmessage_headerfield_clear(&message->field_list, option_flags);
 	httpmessage_stringview_clear(&message->body);
 	
@@ -543,13 +544,41 @@ int httpmessage_message_content_consume(
 	length -= 2;
 	consumed += 2;
 	
-	/* Body */
-	
-	if (length)
+	/* Body == 0 */
+	if (length == 0)
 	{
-		message->body.text = text;
-		message->body.length = length;
+		return consumed;
 	}
+	
+	field = httpmessage_headerfield_find(&message->field_list, "Content-Length", 14);
+	
+	if (field)
+	{
+		int value;
+		
+		result = httpmessage_int_consume(&value, field->value.line.text, field->value.line.length);
+		
+		if (result <= 0)
+		{
+			return HTTPMESSAGE_ERROR_SYNTAX;
+		}
+		
+		
+		if (value < 0)
+		{
+			return HTTPMESSAGE_ERROR_SYNTAX;
+		}
+		
+		if ((size_t)value > length)
+		{
+			return HTTPMESSAGE_ERROR_INCOMPLETE;
+		}
+		
+		length = (size_t) value;
+	}
+	
+	message->body.text = text;
+	message->body.length = length;
 	
 	return consumed + (int)length;
 }
