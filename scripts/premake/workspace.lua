@@ -10,6 +10,7 @@ do
 	location (module.location)
 	targetdir (module.targetdir.base)
 	objdir (path.join (module.targetdir.base, "obj"))
+	sanitize(_OPTIONS["sanitize"])
 	
 	filter "configurations:Debug"
 		runtime 'Debug'

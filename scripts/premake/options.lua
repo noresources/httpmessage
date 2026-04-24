@@ -32,6 +32,19 @@ then
 end
 
 newoption {
+	trigger = "sanitize",
+	description = "Build with Clang ASAN tool",
+	value = "tool",
+	allowed = {
+		{ "Address" },
+		{ "Fuzzer" },
+		{ "Thread" },
+		{ "UndefinedBehavior" }
+	}
+	
+}
+
+newoption {
 	trigger = "require-doxygen",
 	description = "Require doxygen module",
 	default = false

@@ -14,24 +14,13 @@ jobs:
         - Release
     steps:
     - name: Checkout
-      uses: actions/checkout@v2
-    - id: configname
-      uses: ASzc/change-string-case-action@v2
-      with:
-        string: ${{ matrix.config }}
-    - name: Build ${{ github.job }} ${{ matrix.config }} (${{ steps.configname.outputs.lowercase }})
-      run: make -C scripts/${{ github.job }}/gmake2 config=${{ steps.configname.outputs.lowercase
-        }}
-    - name: Test configuration and platform detection
-      run: dist/${{ matrix.config }}/tests/test-preprocessor
-    - name: Test text processing functions
-      run: dist/${{ matrix.config }}/tests/test-text
-    - name: Test header processing functions
-      run: dist/${{ matrix.config }}/tests/test-headers
-    - name: Test message processing functions
-      run: dist/${{ matrix.config }}/tests/test-messages
-    - name: Build and test using Address Sanitizer
-      run: ./scripts/tests/test-with-clang-sanitizer.sh
+      uses: actions/checkout@v6
+    - name: Update packages
+      run: sudo apt update --quiet -y
+    - name: Install build dependencies for Premake
+      run: sudo apt install --quiet -y uuid-dev
+    - name: Run test workflow
+      run: ./scripts/tests/workflow.sh
   macosx:
     runs-on: macos-latest
     strategy:
@@ -41,20 +30,6 @@ jobs:
         - Release
     steps:
     - name: Checkout
-      uses: actions/checkout@v2
-    - id: configname
-      uses: ASzc/change-string-case-action@v2
-      with:
-        string: ${{ matrix.config }}
-    - name: Build ${{ github.job }} ${{ matrix.config }} (${{ steps.configname.outputs.lowercase }})
-      run: make -C scripts/${{ github.job }}/gmake2 config=${{ steps.configname.outputs.lowercase
-        }}
-    - name: Test text processing functions
-      run: dist/${{ matrix.config }}/tests/test-text
-    - name: Test header processing functions
-      run: dist/${{ matrix.config }}/tests/test-headers
-    - name: Test message processing functions
-      run: dist/${{ matrix.config }}/tests/test-messages
-    - name: Build and test using Address Sanitizer
-      run: ./scripts/tests/test-with-clang-sanitizer.sh
-      
+      uses: actions/checkout@v6
+    - name: Run test workflow
+      run: ./scripts/tests/workflow.sh

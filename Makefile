@@ -1,3 +1,4 @@
+premake := premake5
 premake_options := 
 make_options :=
 
@@ -37,18 +38,18 @@ doc: doxygen $(targetdir)
 
 doxygen: $(location)
 	@echo Generation doxygen configuration file
-	@premake5 --file=$(premake_filepath) $(premake_options) --require-doxygen doxygen
+	@$(premake) --file=$(premake_filepath) $(premake_options) --require-doxygen doxygen
 	
 $(location):
 	@mkdir -p "$(location)"
 
 preprocess: $(location)
 	@echo Preprocess source files
-	@premake5 --file=$(premake_filepath) $(premake_options) preprocess
+	@$(premake) --file=$(premake_filepath) $(premake_options) preprocess
 	
 premake: $(location) preprocess
 	@echo Generate makefiles
-	@premake5 --file=$(premake_filepath) $(premake_options) $(action)
+	@$(premake) --file=$(premake_filepath) $(premake_options) $(action)
 
 $(targetdir):
 	@mkdir -p "$(targetdir)"

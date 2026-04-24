@@ -2,6 +2,10 @@
 -- httpmessage build environment
 --------------------------------------------
 
+-- Options
+include "options.lua"
+
+
 -- Modules
 if _OPTIONS["require-doxygen"]
 then
@@ -13,8 +17,6 @@ end
 
 local module = require "httpmessage-module"
 
--- Options
-include "options.lua"
 
 -- Actions
 include "actions/preprocess.lua"
