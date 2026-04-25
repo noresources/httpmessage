@@ -5,6 +5,7 @@
 # Eclipse project files
 /.project
 /.cproject
+/.settings
 
 # Github wiki
 /wiki
