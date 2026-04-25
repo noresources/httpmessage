@@ -31,11 +31,6 @@ generate() {
 }
 
 unset os
-for action in preprocess:doxygen doxygen
-do
-	generate "${action}"  
-done
-
 os=linux
 for action in gmake
 do
