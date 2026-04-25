@@ -34,10 +34,10 @@ do
 				},
 				input = table.flatten ({
 					os.matchfiles (path.join (module.location, "doc/wiki/*.h")), 
-					os.matchfiles (path.join (module.location, "doc/*.h")),
+					os.matchfiles (path.join (module.rootdir, "src/doc/*.h")),
 				}),
 				typedef_hides_struct = true,
-				example_path = path.join (module.location, "doc/examples")
+				example_path = path.join (module.rootdir, "src/doc/examples")
 		}
 	end
 

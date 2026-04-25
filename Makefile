@@ -32,11 +32,11 @@ astyle:
 	@echo Apply code style
 	@astyle --options=scripts/astyle/c.style src/apps/*.c src/httpmessage/*.c include/httpmessage/*.h tests/*.c tests/*.h
 	
-doc: doxygen $(targetdir)
+doc: preprocess $(location)/httpmessage.doxyfile $(targetdir)
 	@echo "Generating source documentation"
-	@doxygen scripts/doxygen/httpmessage.doxyfile
+	@doxygen $(location)/httpmessage.doxyfile
 
-doxygen: $(location)
+$(location)/httpmessage.doxyfile: $(location)
 	@echo Generation doxygen configuration file
 	@$(premake) --file=$(premake_filepath) $(premake_options) --require-doxygen doxygen
 	
