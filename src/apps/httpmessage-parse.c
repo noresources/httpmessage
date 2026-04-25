@@ -86,13 +86,13 @@ int parse_response_text(const char *text, size_t length)
 	httpmessage_response response;
 	httpmessage_response_init(&response);
 	
-	int result = httpmessage_response_consume(
+	ssize_t result = httpmessage_response_consume(
 	                 &response, text, length,
 	                 0);
 	                 
 	if (result <= 0)
 	{
-		fprintf(stderr, "Failed to parse response (%d)\n", result);
+		fprintf(stderr, "Failed to parse response (%zd)\n", result);
 		print_response(stderr, &response);
 		return EXIT_FAILURE;
 	}
@@ -106,13 +106,13 @@ int parse_request_text(const char *text, size_t length)
 {
 	httpmessage_request request;
 	httpmessage_request_init(&request);
-	int result = httpmessage_request_consume(
+	ssize_t result = httpmessage_request_consume(
 	                 &request, text, length,
 	                 0);
 	                 
 	if (result <= 0)
 	{
-		fprintf(stderr, "Failed to parse request (%d)\n", result);
+		fprintf(stderr, "Failed to parse request (%zi)\n", result);
 		print_request(stderr, &request);
 		return EXIT_FAILURE;
 	}

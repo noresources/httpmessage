@@ -12,7 +12,7 @@
 #include <stdlib.h>
 #include <errno.h>
 
-int httpmessage_headerfield_name_consume(
+ssize_t httpmessage_headerfield_name_consume(
     const char **name,
     size_t *name_length,
     const char *text,
@@ -163,12 +163,12 @@ void httpmessage_headerfield_value_free(
 	*value = NULL;
 }
 
-int httpmessage_headerfield_value_line_consume(
+ssize_t httpmessage_headerfield_value_line_consume(
     const char **value, size_t *value_length,
     const char *text, size_t length,
     int option_flags)
 {
-	int consumed = 0;
+	ssize_t consumed = 0;
 	size_t vl = 0;
 	*value = NULL;
 	*value_length = 0;
@@ -386,14 +386,14 @@ httpmessage_headerfield *httpmessage_headerfield_find(
 	return NULL;
 }
 
-int httpmessage_headerfield_line_consume(
+ssize_t httpmessage_headerfield_line_consume(
     httpmessage_headerfield **header,
     httpmessage_headerfield *current_header,
     const char *text, size_t length,
     int option_flags)
 {
-	int consumed = 0;
-	int result = 0;
+	ssize_t consumed = 0;
+	ssize_t result = 0;
 	const char *field = NULL;
 	size_t field_length = 0;
 	const char *value = NULL;
@@ -442,7 +442,7 @@ int httpmessage_headerfield_line_consume(
 			return result;
 		}
 		
-		return (int)(consumed + (size_t)result);
+		return (ssize_t)(consumed + (size_t)result);
 	}
 	
 	/* Header field name */
@@ -514,12 +514,12 @@ int httpmessage_headerfield_line_consume(
 }
 
 
-int httpmessage_headerfield_list_consume(
+ssize_t httpmessage_headerfield_list_consume(
     httpmessage_headerfield *headerfield_list,
     const char *text, size_t length,
     int option_flags)
 {
-	int consumed = 0;
+	ssize_t consumed = 0;
 	httpmessage_headerfield *new_header = NULL;
 	httpmessage_headerfield *current_header = headerfield_list;
 	httpmessage_headerfield_clear(headerfield_list,
@@ -527,7 +527,7 @@ int httpmessage_headerfield_list_consume(
 	                              
 	while (length && !httpmessage_text_is_CRLF(text, length))
 	{
-		int result = httpmessage_headerfield_line_consume(
+		ssize_t result = httpmessage_headerfield_line_consume(
 		                 &new_header,
 		                 current_header,
 		                 text, length,

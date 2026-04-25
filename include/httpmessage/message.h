@@ -325,7 +325,7 @@ HMAPI httpmessage_response *httpmessage_response_storage_new(
  *
  * @see httpmessage_result_code
  */
-HMAPI int httpmessage_message_http_version_consume(
+HMAPI ssize_t httpmessage_message_http_version_consume(
     int *major_version,
     int *minor_version,
     const char *text, size_t length);
@@ -351,7 +351,7 @@ HMAPI int httpmessage_message_http_version_consume(
  *
  * @see httpmessage_result_code
  */
-HMAPI int httpmessage_request_request_uri_consume(
+HMAPI ssize_t httpmessage_request_request_uri_consume(
     httpmessage_stringview *request_uri,
     const char *text, size_t length);
 
@@ -381,7 +381,7 @@ HMAPI int httpmessage_request_request_uri_consume(
  * @see httpmessage_option_flags
  *
  */
-HMAPI int httpmessage_request_line_consume(
+HMAPI ssize_t httpmessage_request_line_consume(
     httpmessage_stringview *method,
     httpmessage_stringview *request_uri,
     int *major_version,
@@ -414,7 +414,7 @@ HMAPI int httpmessage_request_line_consume(
  * @see httpmessage_result_code
  * @see httpmessage_option_flags
  */
-HMAPI int httpmessage_status_line_consume(
+HMAPI ssize_t httpmessage_status_line_consume(
     int *major_version,
     int *minor_version,
     int *status_code,
@@ -460,7 +460,7 @@ HMAPI int httpmessage_message_get_type(
  * @see httpmessage_result_code
  * @see httpmessage_option_flags
  */
-HMAPI int httpmessage_message_content_consume(
+HMAPI ssize_t httpmessage_message_content_consume(
     httpmessage_message *message,
     const char *text, size_t length,
     int option_flags);
@@ -519,7 +519,7 @@ HMAPI ssize_t httpmessage_message_content_write_buffer(
  * @see httpmessage_result_code
  * @see httpmessage_option_flags
  */
-HMAPI int httpmessage_request_consume(
+HMAPI ssize_t httpmessage_request_consume(
     httpmessage_request *request,
     const char *text, size_t length,
     int option_flags);
@@ -577,7 +577,7 @@ HMAPI ssize_t httpmessage_request_write_buffer(
  * @see httpmessage_result_code
  * @see httpmessage_option_flags
  */
-HMAPI int httpmessage_response_consume(
+HMAPI ssize_t httpmessage_response_consume(
     httpmessage_response *response,
     const char *text, size_t length,
     int option_flags);

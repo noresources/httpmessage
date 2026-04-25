@@ -201,10 +201,10 @@ HMAPI int httpmessage_text_is_token_char(int c);
  *
  * @see httpmessage_result_code
  */
-HMAPI int httpmessage_token_consume(const char **token,
-                                    size_t *token_length,
-                                    const char *text,
-                                    size_t length);
+HMAPI ssize_t httpmessage_token_consume(const char **token,
+                                        size_t *token_length,
+                                        const char *text,
+                                        size_t length);
 
 /**
  * @ingroup grammar
@@ -254,7 +254,7 @@ HMAPI ssize_t httpmessage_quoted_string_length(
  *
  * @see httpmessage_result_code
  */
-HMAPI int httpmessage_quoted_string_consume(
+HMAPI ssize_t httpmessage_quoted_string_consume(
     char *output,
     size_t output_size,
     const char *text,
@@ -271,8 +271,8 @@ HMAPI int httpmessage_quoted_string_consume(
   * @return On success, the number of bytes consumed in text.
  * On error, one of the #httpmessage_result_code error codes
  */
-int httpmessage_int_consume(int *output,
-                            const char *text, size_t length);
+ssize_t httpmessage_int_consume(int *output,
+                                const char *text, size_t length);
 
 HTTPMESSAGE_C_END
 

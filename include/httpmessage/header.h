@@ -50,7 +50,7 @@ typedef httpmessage_stringview httpmessage_headerfield_name;
  *
  * @see httpmessage_result_code
  */
-HMAPI int httpmessage_headerfield_name_consume(
+HMAPI ssize_t httpmessage_headerfield_name_consume(
     const char **name,
     size_t *name_length,
     const char *text,
@@ -184,7 +184,7 @@ HMAPI void httpmessage_headerfield_value_free(
  * @see httpmessage_result_code
  * @see httpmessage_option_flags
  */
-HMAPI int httpmessage_headerfield_value_line_consume(
+HMAPI ssize_t httpmessage_headerfield_value_line_consume(
     const char **value, size_t *value_length,
     const char *text, size_t length,
     int option_flags);
@@ -321,7 +321,7 @@ HMAPI httpmessage_headerfield *httpmessage_headerfield_find(
  *@see httpmessage_result_code
  * @see httpmessage_option_flags
  */
-HMAPI int httpmessage_headerfield_line_consume(
+HMAPI ssize_t httpmessage_headerfield_line_consume(
     httpmessage_headerfield **field,
     httpmessage_headerfield *current_header,
     const char *text, size_t length,
@@ -382,7 +382,7 @@ HMAPI ssize_t httpmessage_headerfield_write_buffer(
  *
  * @see httpmessage_result_code
  */
-HMAPI int httpmessage_headerfield_list_consume(
+HMAPI ssize_t httpmessage_headerfield_list_consume(
     httpmessage_headerfield *headerfield_list,
     const char *text, size_t length,
     int option_flags);

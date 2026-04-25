@@ -76,10 +76,10 @@ int httpmessage_text_is_CRLF(const char *text, size_t length)
 	       );
 }
 
-int httpmessage_token_consume(const char **token,
-                              size_t *token_length,
-                              const char *text,
-                              size_t length)
+ssize_t httpmessage_token_consume(const char **token,
+                                  size_t *token_length,
+                                  const char *text,
+                                  size_t length)
 {
 	if (!(token && token_length && text && length))
 	{
@@ -106,7 +106,7 @@ int httpmessage_token_consume(const char **token,
 		--length;
 	}
 	
-	return (int) * token_length;
+	return (ssize_t) * token_length;
 }
 
 ssize_t httpmessage_quoted_string_length(
@@ -164,7 +164,7 @@ ssize_t httpmessage_quoted_string_length(
 	return HTTPMESSAGE_ERROR_INCOMPLETE;
 }
 
-int httpmessage_quoted_string_consume(
+ssize_t httpmessage_quoted_string_consume(
     char *output,
     size_t output_size,
     const char *text,
@@ -173,7 +173,7 @@ int httpmessage_quoted_string_consume(
 	int escape = 0;
 	char c;
 	char *s;
-	int consumed = 0;
+	ssize_t consumed = 0;
 	
 	if (!(text && length && output && output_size))
 	{
@@ -258,8 +258,8 @@ int httpmessage_quoted_string_consume(
 	return HTTPMESSAGE_ERROR_INCOMPLETE;
 }
 
-int httpmessage_int_consume(int *output,
-                            const char *text, size_t length)
+ssize_t httpmessage_int_consume(int *output,
+                                const char *text, size_t length)
 {
 	int value;
 	const char *t;
@@ -322,5 +322,5 @@ int httpmessage_int_consume(int *output,
 		*output = value * sign;
 	}
 	
-	return (int)((t - text) / sizeof(char));
+	return (ssize_t)((t - text) / sizeof(char));
 }

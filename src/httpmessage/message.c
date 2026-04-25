@@ -18,12 +18,12 @@ void httpmessage_message_storage_init(
     size_t max_headerfield_count,
     size_t max_line_per_headerfield_value);
 
-int httpmessage_message_http_version_consume(
+ssize_t httpmessage_message_http_version_consume(
     int *major_version,
     int *minor_version,
     const char *text, size_t length)
 {
-	int consumed = 0;
+	ssize_t consumed = 0;
 	size_t digit_count = 0;
 	
 	if (!(text && length))
@@ -85,7 +85,7 @@ int httpmessage_message_http_version_consume(
 	return consumed + (int)digit_count;
 }
 
-int httpmessage_request_request_uri_consume(
+ssize_t httpmessage_request_request_uri_consume(
     httpmessage_stringview *request_uri,
     const char *text, size_t length)
 {
@@ -125,10 +125,10 @@ int httpmessage_request_request_uri_consume(
 		return HTTPMESSAGE_ERROR_SYNTAX;
 	}
 	
-	return (int)request_uri->length;
+	return (ssize_t)request_uri->length;
 }
 
-int httpmessage_request_line_consume(
+ssize_t httpmessage_request_line_consume(
     httpmessage_stringview *method,
     httpmessage_stringview *request_uri,
     int *major_version,
@@ -136,8 +136,8 @@ int httpmessage_request_line_consume(
     const char *text, size_t length,
     int option_flags)
 {
-	int consumed = 0;
-	int result = 0;
+	ssize_t consumed = 0;
+	ssize_t result = 0;
 	
 	if (!(text && length))
 	{
@@ -238,7 +238,7 @@ int httpmessage_request_line_consume(
 	return (consumed + 2);
 }
 
-int httpmessage_status_line_consume(
+ssize_t httpmessage_status_line_consume(
     int *major_version,
     int *minor_version,
     int *status_code,
@@ -246,8 +246,8 @@ int httpmessage_status_line_consume(
     const char *text, size_t length,
     int option_flags)
 {
-	int consumed = 0;
-	int result = 0;
+	ssize_t consumed = 0;
+	ssize_t result = 0;
 	int digit_count = 0;
 	
 	if (!(text && length))
@@ -347,7 +347,8 @@ int httpmessage_message_get_type(
     const char *text, size_t length,
     int option_flags)
 {
-	int M, m, s, result;
+	int M, m, s;
+    ssize_t result;
 	httpmessage_stringview a;
 	httpmessage_stringview b;
 	
@@ -487,13 +488,13 @@ int httpmessage_message_append_header(
 	           option_flags);
 }
 
-int httpmessage_message_content_consume(
+ssize_t httpmessage_message_content_consume(
     httpmessage_message *message,
     const char *text, size_t length,
     int option_flags)
 {
-	int consumed = 0;
-	int result = 0;
+	ssize_t consumed = 0;
+	ssize_t result = 0;
 	httpmessage_headerfield *field;
 	httpmessage_headerfield_clear(&message->field_list, option_flags);
 	httpmessage_stringview_clear(&message->body);
@@ -766,13 +767,13 @@ httpmessage_response *httpmessage_response_storage_new(
 	return storage;
 }
 
-int httpmessage_request_consume(
+ssize_t httpmessage_request_consume(
     httpmessage_request *request,
     const char *text, size_t length,
     int option_flags)
 {
-	int consumed = 0;
-	int result = 0;
+	ssize_t consumed = 0;
+	ssize_t result = 0;
 	result = httpmessage_request_line_consume(
 	             &request->method, &request->request_uri,
 	             &request->message.major_version,
@@ -925,13 +926,13 @@ void httpmessage_response_free(httpmessage_response **response)
 	*response = NULL;
 }
 
-int httpmessage_response_consume(
+ssize_t httpmessage_response_consume(
     httpmessage_response *response,
     const char *text, size_t length,
     int option_flags)
 {
-	int consumed = 0;
-	int result = 0;
+	ssize_t consumed = 0;
+	ssize_t result = 0;
 	
 	result = httpmessage_status_line_consume(&response->message.major_version,
 	         &response->message.minor_version,
