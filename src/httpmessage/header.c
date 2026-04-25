@@ -349,10 +349,10 @@ httpmessage_headerfield *httpmessage_headerfield_new(void)
 	return header;
 }
 
-size_t httpmessage_headerfield_count(httpmessage_headerfield *headerfield_list)
+size_t httpmessage_headerfield_count(const httpmessage_headerfield *headerfield_list)
 {
 	size_t c = 0;
-	httpmessage_headerfield *header = headerfield_list;
+	const httpmessage_headerfield *header = headerfield_list;
 	
 	while (header)
 	{

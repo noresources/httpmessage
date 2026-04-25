@@ -274,7 +274,7 @@ HMAPI void httpmessage_headerfield_clear(
  * @param headerfield_list Header list
  * @return Number of element in @c headerfield_list
  */
-HMAPI  size_t httpmessage_headerfield_count(httpmessage_headerfield *headerfield_list);
+HMAPI  size_t httpmessage_headerfield_count(const httpmessage_headerfield *headerfield_list);
 
 /**
  * @ingroup header
