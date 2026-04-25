@@ -45,7 +45,7 @@ ifeq ($(config),debug)
 TARGETDIR = ../../../dist/Debug/bin
 TARGET = $(TARGETDIR)/httpmessage-parse
 OBJDIR = ../../../dist/obj/Debug/httpmessage-parse
-ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -O0 -g -Wall -Wextra
+ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -O0 -g -Wall -Wextra -std=c89
 ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -O0 -g -Wall -Wextra
 LIBS += ../../../dist/Debug/lib/libhttpmessage.a
 LDDEPS += ../../../dist/Debug/lib/libhttpmessage.a
@@ -55,7 +55,7 @@ else ifeq ($(config),release)
 TARGETDIR = ../../../dist/Release/bin
 TARGET = $(TARGETDIR)/httpmessage-parse
 OBJDIR = ../../../dist/obj/Release/httpmessage-parse
-ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -O3 -Wall -Wextra
+ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -O3 -Wall -Wextra -std=c89
 ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -O3 -Wall -Wextra
 LIBS += ../../../dist/Release/lib/libhttpmessage.a
 LDDEPS += ../../../dist/Release/lib/libhttpmessage.a

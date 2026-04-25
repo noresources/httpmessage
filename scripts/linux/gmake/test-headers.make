@@ -45,7 +45,7 @@ ifeq ($(config),debug)
 TARGETDIR = ../../../dist/Debug/tests
 TARGET = $(TARGETDIR)/test-headers
 OBJDIR = ../../../dist/obj/Debug/test-headers
-ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -O0 -g
+ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -O0 -g -std=c89
 ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -O0 -g
 LIBS += ../../../dist/Debug/lib/libhttpmessage.a
 LDDEPS += ../../../dist/Debug/lib/libhttpmessage.a
@@ -55,7 +55,7 @@ else ifeq ($(config),release)
 TARGETDIR = ../../../dist/Release/tests
 TARGET = $(TARGETDIR)/test-headers
 OBJDIR = ../../../dist/obj/Release/test-headers
-ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -O3
+ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -O3 -std=c89
 ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -O3
 LIBS += ../../../dist/Release/lib/libhttpmessage.a
 LDDEPS += ../../../dist/Release/lib/libhttpmessage.a

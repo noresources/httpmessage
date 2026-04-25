@@ -9,6 +9,7 @@ ifndef verbose
 endif
 
 ifeq ($(config),debug)
+  httpmessage_config_config = debug
   httpmessage_parse_config = debug
   httpmessage_config = debug
   test_headers_config = debug
@@ -17,6 +18,7 @@ ifeq ($(config),debug)
   test_text_config = debug
 
 else ifeq ($(config),release)
+  httpmessage_config_config = release
   httpmessage_parse_config = release
   httpmessage_config = release
   test_headers_config = release
@@ -28,11 +30,17 @@ else
   $(error "invalid configuration $(config)")
 endif
 
-PROJECTS := httpmessage-parse httpmessage test-headers test-messages test-preprocessor test-text
+PROJECTS := httpmessage-config httpmessage-parse httpmessage test-headers test-messages test-preprocessor test-text
 
 .PHONY: all clean help $(PROJECTS) 
 
 all: $(PROJECTS)
+
+httpmessage-config: httpmessage
+ifneq (,$(httpmessage_config_config))
+	@echo "==== Building httpmessage-config ($(httpmessage_config_config)) ===="
+	@${MAKE} --no-print-directory -C . -f httpmessage-config.make config=$(httpmessage_config_config)
+endif
 
 httpmessage-parse: httpmessage
 ifneq (,$(httpmessage_parse_config))
@@ -71,6 +79,7 @@ ifneq (,$(test_text_config))
 endif
 
 clean:
+	@${MAKE} --no-print-directory -C . -f httpmessage-config.make clean
 	@${MAKE} --no-print-directory -C . -f httpmessage-parse.make clean
 	@${MAKE} --no-print-directory -C . -f httpmessage.make clean
 	@${MAKE} --no-print-directory -C . -f test-headers.make clean
@@ -88,6 +97,7 @@ help:
 	@echo "TARGETS:"
 	@echo "   all (default)"
 	@echo "   clean"
+	@echo "   httpmessage-config"
 	@echo "   httpmessage-parse"
 	@echo "   httpmessage"
 	@echo "   test-headers"

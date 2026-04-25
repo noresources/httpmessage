@@ -5,6 +5,9 @@
 		location = "group:httpmessage.xcodeproj">
 	</FileRef>
 	<FileRef
+		location = "group:httpmessage-config.xcodeproj">
+	</FileRef>
+	<FileRef
 		location = "group:httpmessage-parse.xcodeproj">
 	</FileRef>
 	<FileRef

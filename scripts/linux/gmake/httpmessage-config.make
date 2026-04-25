@@ -28,14 +28,12 @@ ifeq ($(origin AR), default)
   AR = ar
 endif
 RESCOMP = windres
-DEFINES +=
+DEFINES += -D_POSIX_SOURCE
 INCLUDES += -I../../../include
 FORCE_INCLUDE +=
 ALL_CPPFLAGS += $(CPPFLAGS) -MD -MP $(DEFINES) $(INCLUDES)
 ALL_RESFLAGS += $(RESFLAGS) $(DEFINES) $(INCLUDES)
-LIBS +=
-LDDEPS +=
-LINKCMD = $(AR) -rcs "$@" $(OBJECTS)
+LINKCMD = $(CC) -o "$@" $(OBJECTS) $(RESOURCES) $(ALL_LDFLAGS) $(LIBS)
 define PREBUILDCMDS
 endef
 define PRELINKCMDS
@@ -44,19 +42,23 @@ define POSTBUILDCMDS
 endef
 
 ifeq ($(config),debug)
-TARGETDIR = ../../../dist/Debug/lib
-TARGET = $(TARGETDIR)/httpmessage.lib
-OBJDIR = ../../../dist/obj/Debug/httpmessage
+TARGETDIR = ../../../dist/Debug/bin
+TARGET = $(TARGETDIR)/httpmessage-config
+OBJDIR = ../../../dist/obj/Debug/httpmessage-config
 ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -O0 -g -Wall -Wextra -std=c89
 ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -O0 -g -Wall -Wextra
+LIBS += ../../../dist/Debug/lib/libhttpmessage.a
+LDDEPS += ../../../dist/Debug/lib/libhttpmessage.a
 ALL_LDFLAGS += $(LDFLAGS)
 
 else ifeq ($(config),release)
-TARGETDIR = ../../../dist/Release/lib
-TARGET = $(TARGETDIR)/httpmessage.lib
-OBJDIR = ../../../dist/obj/Release/httpmessage
+TARGETDIR = ../../../dist/Release/bin
+TARGET = $(TARGETDIR)/httpmessage-config
+OBJDIR = ../../../dist/obj/Release/httpmessage-config
 ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -O3 -Wall -Wextra -std=c89
 ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -O3 -Wall -Wextra
+LIBS += ../../../dist/Release/lib/libhttpmessage.a
+LDDEPS += ../../../dist/Release/lib/libhttpmessage.a
 ALL_LDFLAGS += $(LDFLAGS) -s
 
 endif
@@ -71,14 +73,8 @@ endif
 GENERATED :=
 OBJECTS :=
 
-GENERATED += $(OBJDIR)/grammar.o
-GENERATED += $(OBJDIR)/header.o
-GENERATED += $(OBJDIR)/message.o
-GENERATED += $(OBJDIR)/text.o
-OBJECTS += $(OBJDIR)/grammar.o
-OBJECTS += $(OBJDIR)/header.o
-OBJECTS += $(OBJDIR)/message.o
-OBJECTS += $(OBJDIR)/text.o
+GENERATED += $(OBJDIR)/httpmessage-config.o
+OBJECTS += $(OBJDIR)/httpmessage-config.o
 
 # Rules
 # #############################################
@@ -88,7 +84,7 @@ all: $(TARGET)
 
 $(TARGET): $(GENERATED) $(OBJECTS) $(LDDEPS) | $(TARGETDIR)
 	$(PRELINKCMDS)
-	@echo Linking httpmessage
+	@echo Linking httpmessage-config
 	$(SILENT) $(LINKCMD)
 	$(POSTBUILDCMDS)
 
@@ -109,7 +105,7 @@ else
 endif
 
 clean:
-	@echo Cleaning httpmessage
+	@echo Cleaning httpmessage-config
 ifeq (posix,$(SHELLTYPE))
 	$(SILENT) rm -f  $(TARGET)
 	$(SILENT) rm -rf $(GENERATED)
@@ -142,16 +138,7 @@ endif
 # File Rules
 # #############################################
 
-$(OBJDIR)/grammar.o: ../../../src/httpmessage/grammar.c
-	@echo "$(notdir $<)"
-	$(SILENT) $(CC) $(ALL_CFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
-$(OBJDIR)/header.o: ../../../src/httpmessage/header.c
-	@echo "$(notdir $<)"
-	$(SILENT) $(CC) $(ALL_CFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
-$(OBJDIR)/message.o: ../../../src/httpmessage/message.c
-	@echo "$(notdir $<)"
-	$(SILENT) $(CC) $(ALL_CFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
-$(OBJDIR)/text.o: ../../../src/httpmessage/text.c
+$(OBJDIR)/httpmessage-config.o: ../../../src/apps/httpmessage-config.c
 	@echo "$(notdir $<)"
 	$(SILENT) $(CC) $(ALL_CFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 
