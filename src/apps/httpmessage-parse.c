@@ -146,7 +146,6 @@ int parse_file(FILE *file)
 	char text[ MESSAGE_MAX_LENGTH + 1];
 	int fd = fileno(file);
 	signed char c = EOF;
-	ssize_t read_result = -1;
 	size_t length = 0;
 	
 	if (fd <= 0)
@@ -156,7 +155,7 @@ int parse_file(FILE *file)
 	}
 	
 	while (length < MESSAGE_MAX_LENGTH
-	        && ((read_result = read(fd, &c, (size_t)1)) > (ssize_t)0)
+	        && (read(fd, &c, (size_t)1) > (ssize_t)0)
 	        && (c != EOF))
 	{
 		text[length] = (char)c;

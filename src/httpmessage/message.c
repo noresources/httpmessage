@@ -881,8 +881,7 @@ ssize_t httpmessage_request_write_buffer(
 	}
 	
 	o += w;
-	output_size -= (size_t)w;
-	
+	/* output_size -= (size_t)w; */
 	return (o - (char *)output);
 }
 
@@ -1045,8 +1044,7 @@ ssize_t httpmessage_response_write_buffer(
 	}
 	
 	o += w;
-	output_size -= (size_t)w;
-	
+	/* output_size -= (size_t)w; */
 	return (o - (char *)output);
 }
 
