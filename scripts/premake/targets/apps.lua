@@ -12,6 +12,7 @@ do
 		module.targetdir("bin")
 		kind "ConsoleApp"
 		language "C"
+		cdialect "C89"
 		warnings "Extra"
 		defines {
 			"_POSIX_SOURCE" -- fileno()

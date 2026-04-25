@@ -12,6 +12,7 @@ do
 		module.targetdir("tests")
 		kind "ConsoleApp"
 		language "C"
+		cdialect "C89"
 		includedirs {
 		path.join (module.rootdir, "tests"),
 			path.join (module.rootdir, "include")

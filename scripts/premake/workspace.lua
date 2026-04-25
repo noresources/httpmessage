@@ -23,10 +23,6 @@ do
 		optimize 'Speed'
 	filter {}
 	
-	filter { "system:" .. premake.MACOSX }
-		systemversion "10.6"
-	filter {}
-	
 	if type(doxyfile) == "function" then
 		doxyfile {
 				project_name = "httpmessage",

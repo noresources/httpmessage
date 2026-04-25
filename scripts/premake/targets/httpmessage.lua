@@ -9,6 +9,7 @@ local prj = project "httpmessage"
 	module.targetdir("lib")
 	kind "StaticLib"
 	language "C"
+	cdialect "C89"
 	warnings "Extra"
 	includedirs {
 		path.join (module.rootdir, "include")
