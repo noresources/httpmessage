@@ -98,7 +98,7 @@ size_t httpmessage_headerfield_value_total_length(const httpmessage_headerfield_
 	return total;
 }
 
-int httpmessage_headerfield_value_merge_lines(
+ssize_t httpmessage_headerfield_value_merge_lines(
     char *output,
     size_t output_size,
     const httpmessage_headerfield_value *value)

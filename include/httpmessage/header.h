@@ -150,7 +150,7 @@ HMAPI size_t httpmessage_headerfield_value_total_length(const httpmessage_header
  *
  * @see httpmessage_result_code
  */
-HMAPI int httpmessage_headerfield_value_merge_lines(
+HMAPI ssize_t httpmessage_headerfield_value_merge_lines(
     char *output,
     size_t output_size,
     const httpmessage_headerfield_value *value);
