@@ -148,7 +148,7 @@ ssize_t httpmessage_headerfield_value_merge_lines(
 	while (value);
 	
 	*output = '\0';
-	return (int)copied;
+	return (ssize_t)copied;
 }
 
 void httpmessage_headerfield_value_free(
