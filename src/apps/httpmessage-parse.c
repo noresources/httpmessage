@@ -87,9 +87,9 @@ int parse_response_text(const char *text, size_t length)
 	httpmessage_response_init(&response);
 	
 	ssize_t result = httpmessage_response_consume(
-	                 &response, text, length,
-	                 0);
-	                 
+	                     &response, text, length,
+	                     0);
+	                     
 	if (result <= 0)
 	{
 		fprintf(stderr, "Failed to parse response (%zd)\n", result);
@@ -107,9 +107,9 @@ int parse_request_text(const char *text, size_t length)
 	httpmessage_request request;
 	httpmessage_request_init(&request);
 	ssize_t result = httpmessage_request_consume(
-	                 &request, text, length,
-	                 0);
-	                 
+	                     &request, text, length,
+	                     0);
+	                     
 	if (result <= 0)
 	{
 		fprintf(stderr, "Failed to parse request (%zi)\n", result);

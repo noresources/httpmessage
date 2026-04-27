@@ -154,6 +154,11 @@ ssize_t httpmessage_headerfield_value_merge_lines(
 void httpmessage_headerfield_value_free(
     httpmessage_headerfield_value **value)
 {
+	if (!value)
+	{
+		return;
+	}
+	
 	if ((*value)->next_line)
 	{
 		httpmessage_headerfield_value_free(&(*value)->next_line);
@@ -301,6 +306,11 @@ int httpmessage_headerfield_is(const httpmessage_headerfield *field,
 
 void httpmessage_headerfield_free(httpmessage_headerfield **field)
 {
+	if (!field)
+	{
+		return;
+	}
+	
 	if ((*field)->value.next_line)
 	{
 		httpmessage_headerfield_value_free(&(*field)->value.next_line);
