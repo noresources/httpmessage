@@ -65,7 +65,7 @@ ssize_t httpmessage_message_http_version_consume(
 	/* "/" */
 	++text;
 	--length;
-	consumed += (int)(digit_count + 1);
+	consumed += (ssize_t)(digit_count + 1);
 	
 	digit_count = 0;
 	
@@ -82,7 +82,7 @@ ssize_t httpmessage_message_http_version_consume(
 		return HTTPMESSAGE_ERROR_SYNTAX;
 	}
 	
-	return consumed + (int)digit_count;
+	return consumed + (ssize_t)digit_count;
 }
 
 ssize_t httpmessage_request_request_uri_consume(
@@ -300,7 +300,7 @@ ssize_t httpmessage_status_line_consume(
 		return HTTPMESSAGE_ERROR_SYNTAX;
 	}
 	
-	consumed += (int)digit_count;
+	consumed += (ssize_t)digit_count;
 	
 	/* Reason-Phrase  = *<TEXT, excluding CR, LF> */
 	while (length
@@ -323,7 +323,7 @@ ssize_t httpmessage_status_line_consume(
 		++reason_phrase->length;
 	}
 	
-	consumed += (int)reason_phrase->length;
+	consumed += (ssize_t)reason_phrase->length;
 	
 	if (length == 0)
 	{
@@ -348,7 +348,7 @@ int httpmessage_message_get_type(
     int option_flags)
 {
 	int M, m, s;
-    ssize_t result;
+	ssize_t result;
 	httpmessage_stringview a;
 	httpmessage_stringview b;
 	
@@ -581,7 +581,7 @@ ssize_t httpmessage_message_content_consume(
 	message->body.text = text;
 	message->body.length = length;
 	
-	return consumed + (int)length;
+	return consumed + (ssize_t)length;
 }
 
 ssize_t httpmessage_message_content_write_file(

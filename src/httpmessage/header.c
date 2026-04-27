@@ -197,7 +197,7 @@ ssize_t httpmessage_headerfield_value_line_consume(
 		}
 	}
 	
-	consumed += (int) vl;
+	consumed += (ssize_t) vl;
 	
 	/* Trim trailing white spaces */
 	if (vl)
