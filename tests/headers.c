@@ -13,14 +13,9 @@
 #include <stdlib.h>
 #include <errno.h>
 
-typedef struct _value_line_test
-{
-	const char *text;
-	int option_flags;
-	int result;
-	const char *value;
-	size_t value_length;
-} value_line_test;
+int test_headerfield_consume(int argc, const char **argv);
+int test_value_consume(int argc, const char **argv);
+int test_headerfield_is(int argc, const char **argv);
 
 typedef struct __headerfield_test
 {
@@ -30,9 +25,6 @@ typedef struct __headerfield_test
 	const char *field;
 	const char *value;
 } header_test;
-
-int test_headerfield_consume(int argc, const char **argv);
-int test_value_consume(int argc, const char **argv);
 
 int test_headerfield_consume(int argc, const char **argv)
 {
@@ -138,8 +130,48 @@ int test_headerfield_consume(int argc, const char **argv)
 	
 	httpmessage_headerfield_clear(&header, 0);
 	
+	/* merge_lines error paths */
+	{
+		char small_buf[5];
+		httpmessage_headerfield_value val;
+		ssize_t r;
+		
+		httpmessage_headerfield_value_init(&val);
+		val.line.text = "Hello";
+		val.line.length = 5;
+		
+		fprintf(stdout, "-- merge_lines NULL output -------------------\n");
+		r = httpmessage_headerfield_value_merge_lines(NULL, sizeof(small_buf), &val);
+		
+		if (r != HTTPMESSAGE_ERROR_INVALID_ARGUMENT)
+		{
+			++exitCode;
+			fprintf(stderr, "%10.10s: %d, expected %d\n",
+			        "merge NULL", (int)r, HTTPMESSAGE_ERROR_INVALID_ARGUMENT);
+		}
+		
+		fprintf(stdout, "-- merge_lines output too small --------------\n");
+		r = httpmessage_headerfield_value_merge_lines(small_buf, sizeof(small_buf), &val);
+		
+		if (r != HTTPMESSAGE_ERROR_OVERFLOW)
+		{
+			++exitCode;
+			fprintf(stderr, "%10.10s: %d, expected %d\n",
+			        "merge ovfl", (int)r, HTTPMESSAGE_ERROR_OVERFLOW);
+		}
+	}
+	
 	return exitCode;
 }
+
+typedef struct _value_line_test
+{
+	const char *text;
+	int option_flags;
+	int result;
+	const char *value;
+	size_t value_length;
+} value_line_test;
 
 int test_value_consume(int argc, const char **argv)
 {
@@ -212,12 +244,64 @@ int test_value_consume(int argc, const char **argv)
 	return exitCode;
 }
 
+typedef struct __headerfield_is_test
+{
+	const char *field_name;
+	const char *query;
+	int expected;
+} headerfield_is_test;
+
+int test_headerfield_is(int argc, const char **argv)
+{
+	(void) argc;
+	(void) argv;
+	int exitCode = EXIT_SUCCESS;
+	size_t a;
+	
+	static const headerfield_is_test tests[] =
+	{
+		{ "Content-Type", "Content-Type", 1 },
+		{ "Content-Type", "content-type", 1 },
+		{ "Content-Type", "CONTENT-TYPE", 1 },
+		{ "Content-Type", "Content-Length", 0 },
+		{ "X-Custom", "x-custom", 1 },
+		{ "X-Custom", "X-Other", 0 },
+	};
+	
+	for (a = 0; a < sizeof(tests) / sizeof(headerfield_is_test); ++a)
+	{
+		const headerfield_is_test *T = &tests[a];
+		httpmessage_headerfield field;
+		int result;
+		
+		httpmessage_headerfield_init(&field);
+		field.name.text = T->field_name;
+		field.name.length = strlen(T->field_name);
+		
+		fprintf(stdout, "-- %d \"%s\" vs \"%s\" -------------------\n",
+		        (int)a, T->field_name, T->query);
+		        
+		result = httpmessage_headerfield_is(&field, T->query);
+		
+		if ((T->expected && !result) || (!T->expected && result))
+		{
+			++exitCode;
+			fprintf(stderr, "%10.10s: %d, expected %s\n",
+			        "is", result, (T->expected ? "match" : "no match"));
+		}
+	}
+	
+	return exitCode;
+}
+
 int main(int argc, const char **argv)
 {
 	static const httpmessage_test tests[] =
 	{
 		{ "value_consume", test_value_consume },
-		{"header_consume", test_headerfield_consume }
+		{ "header_consume", test_headerfield_consume },
+		/* Written by Claude Code */
+		{ "headerfield_is", test_headerfield_is }
 	};
 	
 	return run_tests(tests, sizeof(tests) / sizeof(httpmessage_test),

@@ -29,6 +29,7 @@ int test_status_line(int argc, const char **argv);
 int test_line_type(int argc, const char **argv);
 int test_first_line(int argc, const char **argv);
 int test_storage(int argc, const char **argv);
+int test_request_uri_consume(int argc, const char **argv);
 
 int test_http_version(int argc, const char **argv)
 {
@@ -42,6 +43,12 @@ int test_http_version(int argc, const char **argv)
 		{"HTTP/1.1", 8, 1, 1},
 		{"HTTP/10.1", 9, 10, 1},
 		{"HTTP/1.42", 9, 1, 42},
+		/* Error cases */
+		{"HTTPS/1.0", HTTPMESSAGE_ERROR_SYNTAX, 0, 0},
+		{"HTTP/1.x", HTTPMESSAGE_ERROR_SYNTAX, 1, 0},
+		{"HTTP/1.", HTTPMESSAGE_ERROR_SYNTAX, 0, 0},
+		/* Extra chars after minor are ignored */
+		{"HTTP/1.0x", 8, 1, 0},
 	};
 	
 	fprintf(stdout, "## %s ##############################\n",
@@ -220,6 +227,8 @@ int test_status_line(int argc, const char **argv)
 		{"HTTP/1.1 200 OK\r\n", 17, 1, 1, 200, "OK"},
 		{"HTTP/1.1 200\r\n", 14, 1, 1, 200, ""},
 		{"HTTP/1.1 400 Bad Request\r\n", 26, 1, 1, 400, "Bad Request"},
+		{"HTTP/0.9 200 OK\r\n", 17, 0, 9, 200, "OK"},
+		{"HTTP/1.1 301 Moved Permanently\r\n", 32, 1, 1, 301, "Moved Permanently"},
 	};
 	
 	fprintf(stdout, "## %s ##############################\n",
@@ -301,6 +310,47 @@ int test_status_line(int argc, const char **argv)
 			        "Minor", T->minor);
 		}
 		
+	}
+	
+	/* IGNORE_MISSING_CRLF: status line without trailing CRLF */
+	{
+		const char *text = "HTTP/1.1 200 OK";
+		size_t length = strlen(text);
+		httpmessage_stringview reason;
+		int major_version;
+		int minor_version;
+		int status_code;
+		
+		int result = httpmessage_status_line_consume(
+		                 &major_version, &minor_version,
+		                 &status_code, &reason,
+		                 text, length,
+		                 HTTPMESSAGE_CONSUME_IGNORE_MISSING_CRLF);
+		                 
+		fprintf(stdout, "-- IGNORE_MISSING_CRLF -----------------------\n");
+		fprintf(stdout, "Status line: ");
+		print_line(stdout, text, length);
+		fprintf(stdout,
+		        "\t%10.10s: %d\n"
+		        "\t%10.10s: %d\n"
+		        ,
+		        "Result", result,
+		        "Status", status_code
+		       );
+		       
+		if (result != (int)length)
+		{
+			++exitCode;
+			fprintf(stderr, "\t%10.10s: %d expected\n",
+			        "Result", (int)length);
+		}
+		
+		if (status_code != 200)
+		{
+			++exitCode;
+			fprintf(stderr, "\t%10.10s: %d expected\n",
+			        "Status", 200);
+		}
 	}
 	
 	return exitCode;
@@ -727,6 +777,89 @@ test_storage_test_loop_end:
 	return exitCode;
 }
 
+/***************************************************/
+
+typedef struct __request_uri_test
+{
+	const char *text;
+	size_t length;
+	ssize_t result;
+	const char *uri;
+	size_t uri_length;
+} request_uri_test;
+
+int test_request_uri_consume(int argc, const char **argv)
+{
+	(void) argc;
+	(void) argv;
+	int exitCode = EXIT_SUCCESS;
+	size_t a;
+	
+	static const request_uri_test tests[] =
+	{
+		{ NULL, 0, HTTPMESSAGE_ERROR_INVALID_ARGUMENT, NULL, 0 },
+		{ "/foo", 0, HTTPMESSAGE_ERROR_INVALID_ARGUMENT, NULL, 0 },
+		{ " /foo", 5, HTTPMESSAGE_ERROR_SYNTAX, NULL, 0 },
+		{ "*", 1, 1, "*", 1 },
+		{ "* ", 2, 1, "*", 1 },
+		{ "/ ", 2, 1, "/", 1 },
+		{ "/foo/bar ", 9, 8, "/foo/bar", 8 },
+		{ "http://example.com/ ", 20, 19, "http://example.com/", 19 },
+		{ "/?q=1 ", 6, 5, "/?q=1", 5 },
+	};
+	
+	fprintf(stdout, "## %s ##############################\n",
+	        "request_uri_consume");
+	        
+	for (a = 0; a < sizeof(tests) / sizeof(request_uri_test); ++a)
+	{
+		const request_uri_test *T = &tests[a];
+		httpmessage_stringview request_uri;
+		ssize_t result;
+		
+		fprintf(stdout, "-- %d ----------------------------------------\n", (int)a);
+		fprintf(stdout, "URI: ");
+		print_line(stdout, (T->text ? T->text : ""), T->length);
+		
+		result = httpmessage_request_uri_consume(
+		             &request_uri,
+		             T->text, T->length);
+		             
+		fprintf(stdout, "\t%10.10s: %d\n", "Result", (int)result);
+		
+		if (result != T->result)
+		{
+			++exitCode;
+			fprintf(stderr, "\t%10.10s: %d expected\n",
+			        "Result", (int)T->result);
+		}
+		
+		if (T->result < 0)
+		{
+			continue;
+		}
+		
+		if (request_uri.length != T->uri_length)
+		{
+			++exitCode;
+			fprintf(stderr, "\t%10.10s: %d expected %d\n",
+			        "URI length", (int)request_uri.length, (int)T->uri_length);
+		}
+		
+		if (T->uri && T->uri_length
+		        && strncmp(request_uri.text, T->uri, T->uri_length) != 0)
+		{
+			++exitCode;
+			fprintf(stderr, "\t%10.10s: [%.*s] expected [%s]\n",
+			        "URI",
+			        (int)request_uri.length, request_uri.text,
+			        T->uri);
+		}
+	}
+	
+	return exitCode;
+}
+
 int main(int argc, const char **argv)
 {
 	static const httpmessage_test tests[] =
@@ -736,7 +869,9 @@ int main(int argc, const char **argv)
 		{ "request_line", test_request_line },
 		{ "first_line", test_first_line },
 		{ "line_type", test_line_type },
-		{ "storage", test_storage }
+		{ "storage", test_storage },
+		/* Written by Claude Code */
+		{ "request_uri_consume", test_request_uri_consume }
 	};
 	
 	return run_tests(tests, sizeof(tests) / sizeof(httpmessage_test),
