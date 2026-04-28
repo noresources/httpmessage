@@ -351,7 +351,7 @@ HMAPI ssize_t httpmessage_message_http_version_consume(
  *
  * @see httpmessage_result_code
  */
-HMAPI ssize_t httpmessage_request_request_uri_consume(
+HMAPI ssize_t httpmessage_request_uri_consume(
     httpmessage_stringview *request_uri,
     const char *text, size_t length);
 

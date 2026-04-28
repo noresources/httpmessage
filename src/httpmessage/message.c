@@ -85,7 +85,7 @@ ssize_t httpmessage_message_http_version_consume(
 	return consumed + (ssize_t)digit_count;
 }
 
-ssize_t httpmessage_request_request_uri_consume(
+ssize_t httpmessage_request_uri_consume(
     httpmessage_stringview *request_uri,
     const char *text, size_t length)
 {
@@ -173,7 +173,7 @@ ssize_t httpmessage_request_line_consume(
 	++consumed;
 	
 	/* Request-URI */
-	result = httpmessage_request_request_uri_consume(
+	result = httpmessage_request_uri_consume(
 	             request_uri,
 	             text, length);
 	             
