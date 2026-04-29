@@ -35,7 +35,7 @@ int test_http_version(int argc, const char **argv)
 {
 	(void) argc;
 	(void) argv;
-	int exitCode = EXIT_SUCCESS;
+	int exit_code = EXIT_SUCCESS;
 	size_t a;
 	
 	static const http_version_test tests[] =
@@ -71,23 +71,23 @@ int test_http_version(int argc, const char **argv)
 		if (result != T->consumed)
 		{
 			fprintf(stderr, "\tConsumed = %d != %d\n", result, T->consumed);
-			++exitCode;
+			++exit_code;
 		}
 		
 		if (major_version != T->major)
 		{
 			fprintf(stderr, "\tMajor = %d != %d\n", major_version, T->major);
-			++exitCode;
+			++exit_code;
 		}
 		
 		if (minor_version != T->minor)
 		{
 			fprintf(stderr, "\tMinor = %d != %d\n", minor_version, T->minor);
-			++exitCode;
+			++exit_code;
 		}
 	}
 	
-	return exitCode;
+	return exit_code;
 }
 
 /*************************************************/
@@ -108,7 +108,7 @@ int test_request_line(int argc, const char **argv)
 {
 	(void) argc;
 	(void) argv;
-	int exitCode = EXIT_SUCCESS;
+	int exit_code = EXIT_SUCCESS;
 	size_t a;
 	
 	static const request_line_test tests[] =
@@ -158,7 +158,7 @@ int test_request_line(int argc, const char **argv)
 		       
 		if (result != T->result)
 		{
-			++exitCode;
+			++exit_code;
 			fprintf(stderr, "\t%10.10s: %d expected\n",
 			        "Result", T->result);
 		}
@@ -170,14 +170,14 @@ int test_request_line(int argc, const char **argv)
 		
 		if (strncmp(method.text, T->method, method.length))
 		{
-			++exitCode;
+			++exit_code;
 			fprintf(stderr, "\t%10.10s: [%s] expected\n",
 			        "Method", T->method);
 		}
 		
 		if (strncmp(request_uri.text, T->request_uri, request_uri.length))
 		{
-			++exitCode;
+			++exit_code;
 			fprintf(stderr, "\t%10.10s: [%s] expected\n",
 			        "Resource", T->request_uri);
 		}
@@ -185,21 +185,21 @@ int test_request_line(int argc, const char **argv)
 		
 		if (major_version != T->major)
 		{
-			++exitCode;
+			++exit_code;
 			fprintf(stderr, "\t%10.10s: %d expected\n",
 			        "Major", T->major);
 		}
 		
 		if (minor_version != T->minor)
 		{
-			++exitCode;
+			++exit_code;
 			fprintf(stderr, "\t%10.10s: %d expected\n",
 			        "Minor", T->minor);
 		}
 		
 	}
 	
-	return exitCode;
+	return exit_code;
 }
 
 /**********************************************/
@@ -219,7 +219,7 @@ int test_status_line(int argc, const char **argv)
 {
 	(void) argc;
 	(void) argv;
-	int exitCode = EXIT_SUCCESS;
+	int exit_code = EXIT_SUCCESS;
 	size_t a;
 	
 	static const status_line_test tests[] =
@@ -272,7 +272,7 @@ int test_status_line(int argc, const char **argv)
 		       
 		if (result != T->result)
 		{
-			++exitCode;
+			++exit_code;
 			fprintf(stderr, "\t%10.10s: %d expected\n",
 			        "Result", T->result);
 		}
@@ -284,28 +284,28 @@ int test_status_line(int argc, const char **argv)
 		
 		if (status_code != T->status_code)
 		{
-			++exitCode;
+			++exit_code;
 			fprintf(stderr, "\t%10.10s: %d expected\n",
 			        "Status", T->status_code);
 		}
 		
 		if (strncmp(reason.text, T->reason, reason.length))
 		{
-			++exitCode;
+			++exit_code;
 			fprintf(stderr, "\t%10.10s: [%s] expected\n",
 			        "Reason", T->reason);
 		}
 		
 		if (major_version != T->major)
 		{
-			++exitCode;
+			++exit_code;
 			fprintf(stderr, "\t%10.10s: %d expected\n",
 			        "Major", T->major);
 		}
 		
 		if (minor_version != T->minor)
 		{
-			++exitCode;
+			++exit_code;
 			fprintf(stderr, "\t%10.10s: %d expected\n",
 			        "Minor", T->minor);
 		}
@@ -340,20 +340,20 @@ int test_status_line(int argc, const char **argv)
 		       
 		if (result != (int)length)
 		{
-			++exitCode;
+			++exit_code;
 			fprintf(stderr, "\t%10.10s: %d expected\n",
 			        "Result", (int)length);
 		}
 		
 		if (status_code != 200)
 		{
-			++exitCode;
+			++exit_code;
 			fprintf(stderr, "\t%10.10s: %d expected\n",
 			        "Status", 200);
 		}
 	}
 	
-	return exitCode;
+	return exit_code;
 }
 
 /**********************************************/
@@ -370,7 +370,7 @@ int test_line_type(int argc, const char **argv)
 {
 	(void) argc;
 	(void) argv;
-	int exitCode = EXIT_SUCCESS;
+	int exit_code = EXIT_SUCCESS;
 	size_t a;
 	static const line_type_test tests[] =
 	{
@@ -415,13 +415,13 @@ int test_line_type(int argc, const char **argv)
 		       
 		if (result != T->type)
 		{
-			++exitCode;
+			++exit_code;
 			fprintf(stderr, "\t%10.10s: %d expected\n",
 			        "Result", T->type);
 		}
 	}
 	
-	return exitCode;
+	return exit_code;
 }
 
 /***************************************************/
@@ -430,9 +430,9 @@ int test_first_line(int argc, const char **argv)
 {
 	(void) argc;
 	(void) argv;
-	int exitCode = EXIT_SUCCESS;
+	int exit_code = EXIT_SUCCESS;
 	
-	return exitCode;
+	return exit_code;
 }
 
 /*******************************************************************/
@@ -454,7 +454,7 @@ int test_storage(int argc, const char **argv)
 {
 	(void) argc;
 	(void) argv;
-	int exitCode = EXIT_SUCCESS;
+	int exit_code = EXIT_SUCCESS;
 	size_t a;
 	size_t text_length;
 	
@@ -544,7 +544,7 @@ int test_storage(int argc, const char **argv)
 			        "TYPE",
 			        4, (const char *)&type,
 			        4, (const char *)&T->type);
-			++exitCode;
+			++exit_code;
 			goto test_storage_test_loop_end;
 		}
 		
@@ -567,7 +567,7 @@ int test_storage(int argc, const char **argv)
 		{
 			fprintf(stderr, "Failed to allocate storage %d/%d\n",
 			        (int)T->max_headerfield_count, (int)T->max_line_per_value);
-			++exitCode;
+			++exit_code;
 			goto test_storage_test_loop_end;
 		}
 		
@@ -587,7 +587,7 @@ int test_storage(int argc, const char **argv)
 			fprintf(stderr, "%15.15s: %d, expect %d\n",
 			        "MAX HEADERS",
 			        (int)max_headerfield_count, (int)T->max_headerfield_count);
-			++exitCode;
+			++exit_code;
 		}
 		
 		if (max_line_per_value != T->max_line_per_value)
@@ -596,7 +596,7 @@ int test_storage(int argc, const char **argv)
 			        "MAX LINES",
 			        (int)max_line_per_value,
 			        (int)T->max_line_per_value);
-			++exitCode;
+			++exit_code;
 		}
 		
 		if (type == HTTPMESSAGE_TYPE_REQUEST)
@@ -627,7 +627,7 @@ int test_storage(int argc, const char **argv)
 			        ((result <= 0) ? httpmessage_result_get_text(result) : ""),
 			        T->result,
 			        ((T->result <= 0) ? httpmessage_result_get_text(T->result) : ""));
-			++exitCode;
+			++exit_code;
 		}
 		
 		httpmessage_message_get_storage_infos(&max_headerfield_count, &max_line_per_value, message);
@@ -637,7 +637,7 @@ int test_storage(int argc, const char **argv)
 			fprintf(stderr, "%15.15s: %d, expect %d\n",
 			        "MAX HEADERS",
 			        (int)max_headerfield_count, (int)T->max_headerfield_count);
-			++exitCode;
+			++exit_code;
 		}
 		
 		if (max_line_per_value != T->max_line_per_value)
@@ -646,7 +646,7 @@ int test_storage(int argc, const char **argv)
 			        "MAX LINES",
 			        (int)max_line_per_value,
 			        (int)T->max_line_per_value);
-			++exitCode;
+			++exit_code;
 		}
 		
 		if (result <= 0)
@@ -691,7 +691,7 @@ int test_storage(int argc, const char **argv)
 				fprintf(stderr, "%15.15s: %s NOT FOUND\n",
 				        "FIELD",
 				        T->field_name);
-				++exitCode;
+				++exit_code;
 			}
 			
 			if (T->field_value && header)
@@ -711,7 +711,7 @@ int test_storage(int argc, const char **argv)
 					}
 					else
 					{
-						++exitCode;
+						++exit_code;
 					}
 				}
 				else
@@ -720,7 +720,7 @@ int test_storage(int argc, const char **argv)
 					        "VALUE LENGTH",
 					        s,
 					        (int) value_length);
-					++exitCode;
+					++exit_code;
 				}
 			}
 		}
@@ -734,7 +734,7 @@ int test_storage(int argc, const char **argv)
 				fprintf(stderr, "%15.15s: %s\n",
 				        "BODY",
 				        "no body found");
-				++exitCode;
+				++exit_code;
 				goto test_storage_test_loop_end;
 			}
 			
@@ -744,7 +744,7 @@ int test_storage(int argc, const char **argv)
 				        "BODY LENGTH",
 				        (int)message->body.length,
 				        (int) body_length);
-				++exitCode;
+				++exit_code;
 			}
 			
 			if (memcmp(message->body.text, T->body, body_length) != 0)
@@ -753,7 +753,7 @@ int test_storage(int argc, const char **argv)
 				        "BODY",
 				        (int) message->body.length, message->body.text,
 				        T->body);
-				++exitCode;
+				++exit_code;
 			}
 			
 			
@@ -774,7 +774,7 @@ test_storage_test_loop_end:
 	}
 	
 	
-	return exitCode;
+	return exit_code;
 }
 
 /***************************************************/
@@ -792,7 +792,7 @@ int test_request_uri_consume(int argc, const char **argv)
 {
 	(void) argc;
 	(void) argv;
-	int exitCode = EXIT_SUCCESS;
+	int exit_code = EXIT_SUCCESS;
 	size_t a;
 	
 	static const request_uri_test tests[] =
@@ -829,7 +829,7 @@ int test_request_uri_consume(int argc, const char **argv)
 		
 		if (result != T->result)
 		{
-			++exitCode;
+			++exit_code;
 			fprintf(stderr, "\t%10.10s: %d expected\n",
 			        "Result", (int)T->result);
 		}
@@ -841,7 +841,7 @@ int test_request_uri_consume(int argc, const char **argv)
 		
 		if (request_uri.length != T->uri_length)
 		{
-			++exitCode;
+			++exit_code;
 			fprintf(stderr, "\t%10.10s: %d expected %d\n",
 			        "URI length", (int)request_uri.length, (int)T->uri_length);
 		}
@@ -849,7 +849,7 @@ int test_request_uri_consume(int argc, const char **argv)
 		if (T->uri && T->uri_length
 		        && strncmp(request_uri.text, T->uri, T->uri_length) != 0)
 		{
-			++exitCode;
+			++exit_code;
 			fprintf(stderr, "\t%10.10s: [%.*s] expected [%s]\n",
 			        "URI",
 			        (int)request_uri.length, request_uri.text,
@@ -857,7 +857,7 @@ int test_request_uri_consume(int argc, const char **argv)
 		}
 	}
 	
-	return exitCode;
+	return exit_code;
 }
 
 int main(int argc, const char **argv)

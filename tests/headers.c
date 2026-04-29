@@ -31,7 +31,7 @@ int test_headerfield_consume(int argc, const char **argv)
 	(void) argc;
 	(void) argv;
 	size_t a = 0;
-	int exitCode = EXIT_SUCCESS;
+	int exit_code = EXIT_SUCCESS;
 	char value[512];
 	httpmessage_headerfield header;
 	httpmessage_headerfield_init(&header);
@@ -92,7 +92,7 @@ int test_headerfield_consume(int argc, const char **argv)
 			if (result != T->result)
 			{
 				fprintf(stdout, "%10.10s: %d\n", "EXPECTED", T->result);
-				exitCode = 1;
+				exit_code = 1;
 			}
 			
 			
@@ -106,7 +106,7 @@ int test_headerfield_consume(int argc, const char **argv)
 		if (result < 0)
 		{
 			fprintf(stdout, "%10.10s: %d\n", "Merge", result);
-			exitCode = 1;
+			exit_code = 1;
 		}
 		
 		fprintf(stdout, "%10.10s: %.*s\n",
@@ -124,7 +124,7 @@ int test_headerfield_consume(int argc, const char **argv)
 			        "Value",
 			        (int) strlen(T->value),
 			        T->value);
-			++exitCode;
+			++exit_code;
 		}
 	}
 	
@@ -133,35 +133,35 @@ int test_headerfield_consume(int argc, const char **argv)
 	/* merge_lines error paths */
 	{
 		char small_buf[5];
-		httpmessage_headerfield_value val;
-		ssize_t r;
+		httpmessage_headerfield_value value;
+		ssize_t result;
 		
-		httpmessage_headerfield_value_init(&val);
-		val.line.text = "Hello";
-		val.line.length = 5;
+		httpmessage_headerfield_value_init(&value);
+		value.line.text = "Hello";
+		value.line.length = 5;
 		
 		fprintf(stdout, "-- merge_lines NULL output -------------------\n");
-		r = httpmessage_headerfield_value_merge_lines(NULL, sizeof(small_buf), &val);
+		result = httpmessage_headerfield_value_merge_lines(NULL, sizeof(small_buf), &value);
 		
-		if (r != HTTPMESSAGE_ERROR_INVALID_ARGUMENT)
+		if (result != HTTPMESSAGE_ERROR_INVALID_ARGUMENT)
 		{
-			++exitCode;
+			++exit_code;
 			fprintf(stderr, "%10.10s: %d, expected %d\n",
-			        "merge NULL", (int)r, HTTPMESSAGE_ERROR_INVALID_ARGUMENT);
+			        "merge NULL", (int)result, HTTPMESSAGE_ERROR_INVALID_ARGUMENT);
 		}
 		
 		fprintf(stdout, "-- merge_lines output too small --------------\n");
-		r = httpmessage_headerfield_value_merge_lines(small_buf, sizeof(small_buf), &val);
+		result = httpmessage_headerfield_value_merge_lines(small_buf, sizeof(small_buf), &value);
 		
-		if (r != HTTPMESSAGE_ERROR_OVERFLOW)
+		if (result != HTTPMESSAGE_ERROR_OVERFLOW)
 		{
-			++exitCode;
+			++exit_code;
 			fprintf(stderr, "%10.10s: %d, expected %d\n",
-			        "merge ovfl", (int)r, HTTPMESSAGE_ERROR_OVERFLOW);
+			        "merge ovfl", (int)result, HTTPMESSAGE_ERROR_OVERFLOW);
 		}
 	}
 	
-	return exitCode;
+	return exit_code;
 }
 
 typedef struct _value_line_test
@@ -178,7 +178,7 @@ int test_value_consume(int argc, const char **argv)
 	(void) argc;
 	(void) argv;
 	size_t a = 0;
-	int exitCode = EXIT_SUCCESS;
+	int exit_code = EXIT_SUCCESS;
 	
 	static const value_line_test tests[] =
 	{
@@ -219,7 +219,7 @@ int test_value_consume(int argc, const char **argv)
 		if (result != T->result)
 		{
 			fprintf(stderr, "%10.10s: %d != %d\n", "result", result, T->result);
-			exitCode = EXIT_FAILURE;
+			exit_code = EXIT_FAILURE;
 		}
 		
 		if (T->result < 0)
@@ -230,18 +230,18 @@ int test_value_consume(int argc, const char **argv)
 		if (length != T->value_length)
 		{
 			fprintf(stderr, "%10.10s: %d != %d\n", "length", (int)length, (int)T->value_length);
-			exitCode = EXIT_FAILURE;
+			exit_code = EXIT_FAILURE;
 		}
 		
 		if (memcmp(value, T->value, T->value_length) != 0)
 		{
 			fprintf(stderr, "%10.10s: \n", "EXPECCTED");
 			print_line(stderr, T->value, T->value_length);
-			exitCode = EXIT_FAILURE;
+			exit_code = EXIT_FAILURE;
 		}
 	}
 	
-	return exitCode;
+	return exit_code;
 }
 
 typedef struct __headerfield_is_test
@@ -255,7 +255,7 @@ int test_headerfield_is(int argc, const char **argv)
 {
 	(void) argc;
 	(void) argv;
-	int exitCode = EXIT_SUCCESS;
+	int exit_code = EXIT_SUCCESS;
 	size_t a;
 	
 	static const headerfield_is_test tests[] =
@@ -285,13 +285,13 @@ int test_headerfield_is(int argc, const char **argv)
 		
 		if ((T->expected && !result) || (!T->expected && result))
 		{
-			++exitCode;
+			++exit_code;
 			fprintf(stderr, "%10.10s: %d, expected %s\n",
 			        "is", result, (T->expected ? "match" : "no match"));
 		}
 	}
 	
-	return exitCode;
+	return exit_code;
 }
 
 int main(int argc, const char **argv)

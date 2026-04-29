@@ -19,7 +19,7 @@ int test_text_pointer_size(int argc, const char **argv)
 {
 	(void) argc;
 	(void) argv;
-	int exitCode = EXIT_SUCCESS;
+	int exit_code = EXIT_SUCCESS;
 	size_t pointer_size = sizeof(void *);
 	
 	if (HTTPMESSAGE_POINTER_SIZE != pointer_size)
@@ -31,10 +31,10 @@ int test_text_pointer_size(int argc, const char **argv)
 		                "HTTPMESSAGE_POINTER_SIZE", (int) HTTPMESSAGE_POINTER_SIZE,
 		                "pointer_size", (int)pointer_size
 		       );
-		++exitCode;
+		++exit_code;
 	}
 	
-	return exitCode;
+	return exit_code;
 }
 
 int main(int argc, const char **argv)

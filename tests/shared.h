@@ -63,7 +63,7 @@ int run_tests(const httpmessage_test *tests, size_t count,
 	int test_argc;
 	const char **test_argv;
 	int exitCode = EXIT_SUCCESS;
-	int testExitCode;
+	int test_exit_code;
 	
 	for (t = 0; t < count; ++t)
 	{
@@ -87,16 +87,16 @@ int run_tests(const httpmessage_test *tests, size_t count,
 		
 run_tests_run_test:
 		fprintf(stdout, "## %s ################################\n", T->name);
-		testExitCode = (*T->test)(test_argc, test_argv);
+		test_exit_code = (*T->test)(test_argc, test_argv);
 		
-		if (testExitCode != 0)
+		if (test_exit_code != 0)
 		{
 			fprintf(stderr,
 			        "## %s error %d ######################\n",
-			        T->name, testExitCode);
+			        T->name, test_exit_code);
 		}
 		
-		exitCode += testExitCode;
+		exitCode += test_exit_code;
 	}
 	
 	return exitCode;

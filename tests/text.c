@@ -31,7 +31,7 @@ int test_text_compare(int argc, const char **argv)
 {
 	(void) argc;
 	(void) argv;
-	int exitCode = EXIT_SUCCESS;
+	int exit_code = EXIT_SUCCESS;
 	size_t a;
 	
 	static const compare_test tests[] =
@@ -68,7 +68,7 @@ int test_text_compare(int argc, const char **argv)
 		        
 		if (!same_sign(T->compared, compared))
 		{
-			++exitCode;
+			++exit_code;
 			fprintf(stdout, " <=-> expected %d\n", T->compared);
 		}
 		
@@ -79,7 +79,7 @@ int test_text_compare(int argc, const char **argv)
 		        
 		if (!same_sign(T->caseless_compared, caseless_compared))
 		{
-			++exitCode;
+			++exit_code;
 			fprintf(stdout, " <=-> expected %d\n", T->caseless_compared);
 		}
 		
@@ -88,7 +88,7 @@ int test_text_compare(int argc, const char **argv)
 		
 	}
 	
-	return exitCode;
+	return exit_code;
 }
 
 typedef struct __quoted_string_test
@@ -102,7 +102,7 @@ typedef struct __quoted_string_test
 
 int test_quoted_string(int argc, const char **argv)
 {
-	int exitCode = EXIT_SUCCESS;
+	int exit_code = EXIT_SUCCESS;
 	size_t a;
 	
 	static const quoted_string_test tests [] =
@@ -201,7 +201,7 @@ int test_quoted_string(int argc, const char **argv)
 			fprintf(stderr, "%-10.10s: EXPECTED %d\n",
 			        "length",
 			        (int)T->quoted_string_length);
-			++exitCode;
+			++exit_code;
 		}
 		
 		if (T->consumed_8 != consumed_8)
@@ -209,7 +209,7 @@ int test_quoted_string(int argc, const char **argv)
 			fprintf(stderr, "%-10.10s: EXPECTED %d\n",
 			        "Conumed/8",
 			        (int)T->consumed_8);
-			++exitCode;
+			++exit_code;
 		}
 		
 		if (T->consumed_24 != consumed_24)
@@ -217,7 +217,7 @@ int test_quoted_string(int argc, const char **argv)
 			fprintf(stderr, "%-10.10s: EXPECTED %d\n",
 			        "Consumed/24",
 			        (int)T->consumed_24);
-			++exitCode;
+			++exit_code;
 		}
 		
 		if (quoted_string_length >= 0
@@ -227,14 +227,14 @@ int test_quoted_string(int argc, const char **argv)
 			{
 				fprintf(stderr, "%-10.10s: EXPECTED <%s>\n",
 				        "String", T->quoted_string);
-				++exitCode;
+				++exit_code;
 			}
 			
 			if (output[quoted_string_length] != '\0')
 			{
 				fprintf(stderr, "%-10.10s: MISSING NULL TERMINATION\n",
 				        "String");
-				++exitCode;
+				++exit_code;
 			}
 			
 			char after = output[quoted_string_length + 1];
@@ -243,12 +243,12 @@ int test_quoted_string(int argc, const char **argv)
 			{
 				fprintf(stderr, "%-10.10s: 0x%02x EXPECTED 0x%02x\n",
 				        "After data", after, 0xFF);
-				++exitCode;
+				++exit_code;
 			}
 		}
 	}
 	
-	return exitCode;
+	return exit_code;
 }
 
 typedef struct __int_test
@@ -261,7 +261,7 @@ typedef struct __int_test
 
 int test_int(int argc, const char **argv)
 {
-	int exitCode = EXIT_SUCCESS;
+	int exit_code = EXIT_SUCCESS;
 	size_t a;
 	
 	static const int_test tests[] =
@@ -297,7 +297,7 @@ int test_int(int argc, const char **argv)
 		{
 			fprintf(stderr, "%-15.15s: %d, expected %d\n",
 			        "RESULT", result, T->result);
-			++exitCode;
+			++exit_code;
 		}
 		
 		if (result != HTTPMESSAGE_OK)
@@ -307,12 +307,12 @@ int test_int(int argc, const char **argv)
 		
 		if (value != T->value)
 		{
-			++exitCode;
+			++exit_code;
 		}
 	}
 	
 	
-	return exitCode;
+	return exit_code;
 }
 
 int test_token_consume(int argc, const char **argv);
@@ -321,37 +321,37 @@ int test_is_char(int argc, const char **argv)
 {
 	(void) argc;
 	(void) argv;
-	int exitCode = EXIT_SUCCESS;
+	int exit_code = EXIT_SUCCESS;
 	
 	fprintf(stdout, "-- is_CHAR ----------------------------\n");
 	
 	if (!httpmessage_text_is_CHAR('a'))
 	{
-		++exitCode;
+		++exit_code;
 		fprintf(stderr, "is_CHAR 'a' should be true\n");
 	}
 	
 	if (!httpmessage_text_is_CHAR('\0'))
 	{
-		++exitCode;
+		++exit_code;
 		fprintf(stderr, "is_CHAR '\\0' should be true\n");
 	}
 	
 	if (!httpmessage_text_is_CHAR('\x7F'))
 	{
-		++exitCode;
+		++exit_code;
 		fprintf(stderr, "is_CHAR 0x7F should be true\n");
 	}
 	
 	if (httpmessage_text_is_CHAR('\x80'))
 	{
-		++exitCode;
+		++exit_code;
 		fprintf(stderr, "is_CHAR 0x80 should be false\n");
 	}
 	
 	if (httpmessage_text_is_CHAR(-1))
 	{
-		++exitCode;
+		++exit_code;
 		fprintf(stderr, "is_CHAR -1 should be false\n");
 	}
 	
@@ -359,25 +359,25 @@ int test_is_char(int argc, const char **argv)
 	
 	if (!httpmessage_text_is_UPALPHA('A'))
 	{
-		++exitCode;
+		++exit_code;
 		fprintf(stderr, "is_UPALPHA 'A' should be true\n");
 	}
 	
 	if (!httpmessage_text_is_UPALPHA('Z'))
 	{
-		++exitCode;
+		++exit_code;
 		fprintf(stderr, "is_UPALPHA 'Z' should be true\n");
 	}
 	
 	if (httpmessage_text_is_UPALPHA('a'))
 	{
-		++exitCode;
+		++exit_code;
 		fprintf(stderr, "is_UPALPHA 'a' should be false\n");
 	}
 	
 	if (httpmessage_text_is_UPALPHA('0'))
 	{
-		++exitCode;
+		++exit_code;
 		fprintf(stderr, "is_UPALPHA '0' should be false\n");
 	}
 	
@@ -385,25 +385,25 @@ int test_is_char(int argc, const char **argv)
 	
 	if (!httpmessage_text_is_LUALPHA('a'))
 	{
-		++exitCode;
+		++exit_code;
 		fprintf(stderr, "is_LUALPHA 'a' should be true\n");
 	}
 	
 	if (!httpmessage_text_is_LUALPHA('z'))
 	{
-		++exitCode;
+		++exit_code;
 		fprintf(stderr, "is_LUALPHA 'z' should be true\n");
 	}
 	
 	if (httpmessage_text_is_LUALPHA('A'))
 	{
-		++exitCode;
+		++exit_code;
 		fprintf(stderr, "is_LUALPHA 'A' should be false\n");
 	}
 	
 	if (httpmessage_text_is_LUALPHA('0'))
 	{
-		++exitCode;
+		++exit_code;
 		fprintf(stderr, "is_LUALPHA '0' should be false\n");
 	}
 	
@@ -411,25 +411,25 @@ int test_is_char(int argc, const char **argv)
 	
 	if (!httpmessage_text_is_ALPHA('a'))
 	{
-		++exitCode;
+		++exit_code;
 		fprintf(stderr, "is_ALPHA 'a' should be true\n");
 	}
 	
 	if (!httpmessage_text_is_ALPHA('Z'))
 	{
-		++exitCode;
+		++exit_code;
 		fprintf(stderr, "is_ALPHA 'Z' should be true\n");
 	}
 	
 	if (httpmessage_text_is_ALPHA('0'))
 	{
-		++exitCode;
+		++exit_code;
 		fprintf(stderr, "is_ALPHA '0' should be false\n");
 	}
 	
 	if (httpmessage_text_is_ALPHA('!'))
 	{
-		++exitCode;
+		++exit_code;
 		fprintf(stderr, "is_ALPHA '!' should be false\n");
 	}
 	
@@ -437,25 +437,25 @@ int test_is_char(int argc, const char **argv)
 	
 	if (!httpmessage_text_is_DIGIT('0'))
 	{
-		++exitCode;
+		++exit_code;
 		fprintf(stderr, "is_DIGIT '0' should be true\n");
 	}
 	
 	if (!httpmessage_text_is_DIGIT('9'))
 	{
-		++exitCode;
+		++exit_code;
 		fprintf(stderr, "is_DIGIT '9' should be true\n");
 	}
 	
 	if (httpmessage_text_is_DIGIT('a'))
 	{
-		++exitCode;
+		++exit_code;
 		fprintf(stderr, "is_DIGIT 'a' should be false\n");
 	}
 	
 	if (httpmessage_text_is_DIGIT('/'))
 	{
-		++exitCode;
+		++exit_code;
 		fprintf(stderr, "is_DIGIT '/' should be false\n");
 	}
 	
@@ -463,31 +463,31 @@ int test_is_char(int argc, const char **argv)
 	
 	if (!httpmessage_text_is_CTL('\0'))
 	{
-		++exitCode;
+		++exit_code;
 		fprintf(stderr, "is_CTL '\\0' should be true\n");
 	}
 	
 	if (!httpmessage_text_is_CTL('\x1F'))
 	{
-		++exitCode;
+		++exit_code;
 		fprintf(stderr, "is_CTL 0x1F should be true\n");
 	}
 	
 	if (!httpmessage_text_is_CTL('\x7F'))
 	{
-		++exitCode;
+		++exit_code;
 		fprintf(stderr, "is_CTL 0x7F should be true\n");
 	}
 	
 	if (httpmessage_text_is_CTL(' '))
 	{
-		++exitCode;
+		++exit_code;
 		fprintf(stderr, "is_CTL ' ' should be false\n");
 	}
 	
 	if (httpmessage_text_is_CTL('a'))
 	{
-		++exitCode;
+		++exit_code;
 		fprintf(stderr, "is_CTL 'a' should be false\n");
 	}
 	
@@ -495,31 +495,31 @@ int test_is_char(int argc, const char **argv)
 	
 	if (!httpmessage_text_is_LWS(' '))
 	{
-		++exitCode;
+		++exit_code;
 		fprintf(stderr, "is_LWS ' ' should be true\n");
 	}
 	
 	if (!httpmessage_text_is_LWS('\t'))
 	{
-		++exitCode;
+		++exit_code;
 		fprintf(stderr, "is_LWS '\\t' should be true\n");
 	}
 	
 	if (httpmessage_text_is_LWS('\r'))
 	{
-		++exitCode;
+		++exit_code;
 		fprintf(stderr, "is_LWS '\\r' should be false\n");
 	}
 	
 	if (httpmessage_text_is_LWS('\n'))
 	{
-		++exitCode;
+		++exit_code;
 		fprintf(stderr, "is_LWS '\\n' should be false\n");
 	}
 	
 	if (httpmessage_text_is_LWS('a'))
 	{
-		++exitCode;
+		++exit_code;
 		fprintf(stderr, "is_LWS 'a' should be false\n");
 	}
 	
@@ -527,25 +527,25 @@ int test_is_char(int argc, const char **argv)
 	
 	if (!httpmessage_text_is_CRLF("\r\n", 2))
 	{
-		++exitCode;
+		++exit_code;
 		fprintf(stderr, "is_CRLF \"\\r\\n\" len=2 should be true\n");
 	}
 	
 	if (httpmessage_text_is_CRLF("\r\n", 1))
 	{
-		++exitCode;
+		++exit_code;
 		fprintf(stderr, "is_CRLF \"\\r\\n\" len=1 should be false\n");
 	}
 	
 	if (httpmessage_text_is_CRLF("\r ",  2))
 	{
-		++exitCode;
+		++exit_code;
 		fprintf(stderr, "is_CRLF \"\\r \" should be false\n");
 	}
 	
 	if (httpmessage_text_is_CRLF("\n\r", 2))
 	{
-		++exitCode;
+		++exit_code;
 		fprintf(stderr, "is_CRLF \"\\n\\r\" should be false\n");
 	}
 	
@@ -558,7 +558,7 @@ int test_is_char(int argc, const char **argv)
 		{
 			if (!httpmessage_text_is_separator(separators[i]))
 			{
-				++exitCode;
+				++exit_code;
 				fprintf(stderr, "is_separator '%c' (0x%02x) should be true\n",
 				        separators[i], (unsigned char)separators[i]);
 			}
@@ -567,13 +567,13 @@ int test_is_char(int argc, const char **argv)
 	
 	if (httpmessage_text_is_separator('a'))
 	{
-		++exitCode;
+		++exit_code;
 		fprintf(stderr, "is_separator 'a' should be false\n");
 	}
 	
 	if (httpmessage_text_is_separator('0'))
 	{
-		++exitCode;
+		++exit_code;
 		fprintf(stderr, "is_separator '0' should be false\n");
 	}
 	
@@ -581,47 +581,47 @@ int test_is_char(int argc, const char **argv)
 	
 	if (!httpmessage_text_is_token_char('a'))
 	{
-		++exitCode;
+		++exit_code;
 		fprintf(stderr, "is_token_char 'a' should be true\n");
 	}
 	
 	if (!httpmessage_text_is_token_char('Z'))
 	{
-		++exitCode;
+		++exit_code;
 		fprintf(stderr, "is_token_char 'Z' should be true\n");
 	}
 	
 	if (!httpmessage_text_is_token_char('0'))
 	{
-		++exitCode;
+		++exit_code;
 		fprintf(stderr, "is_token_char '0' should be true\n");
 	}
 	
 	if (!httpmessage_text_is_token_char('-'))
 	{
-		++exitCode;
+		++exit_code;
 		fprintf(stderr, "is_token_char '-' should be true\n");
 	}
 	
 	if (httpmessage_text_is_token_char('('))
 	{
-		++exitCode;
+		++exit_code;
 		fprintf(stderr, "is_token_char '(' should be false\n");
 	}
 	
 	if (httpmessage_text_is_token_char(' '))
 	{
-		++exitCode;
+		++exit_code;
 		fprintf(stderr, "is_token_char ' ' should be false\n");
 	}
 	
 	if (httpmessage_text_is_token_char('\r'))
 	{
-		++exitCode;
+		++exit_code;
 		fprintf(stderr, "is_token_char '\\r' should be false\n");
 	}
 	
-	return exitCode;
+	return exit_code;
 }
 
 typedef struct __token_test
@@ -636,7 +636,7 @@ int test_token_consume(int argc, const char **argv)
 {
 	(void) argc;
 	(void) argv;
-	int exitCode = EXIT_SUCCESS;
+	int exit_code = EXIT_SUCCESS;
 	size_t a;
 	
 	static const token_test tests[] =
@@ -667,7 +667,7 @@ int test_token_consume(int argc, const char **argv)
 		                                   
 		if (result != T->result)
 		{
-			++exitCode;
+			++exit_code;
 			fprintf(stderr, "%10.10s: %d, expected %d\n",
 			        "result", (int)result, (int)T->result);
 		}
@@ -679,7 +679,7 @@ int test_token_consume(int argc, const char **argv)
 		
 		if (token_length != T->token_length)
 		{
-			++exitCode;
+			++exit_code;
 			fprintf(stderr, "%10.10s: %d, expected %d\n",
 			        "length", (int)token_length, (int)T->token_length);
 		}
@@ -687,7 +687,7 @@ int test_token_consume(int argc, const char **argv)
 		if (token && T->token_length
 		        && strncmp(token, T->text, T->token_length) != 0)
 		{
-			++exitCode;
+			++exit_code;
 			fprintf(stderr, "%10.10s: [%.*s] expected [%.*s]\n",
 			        "token",
 			        (int)token_length, token,
@@ -695,7 +695,7 @@ int test_token_consume(int argc, const char **argv)
 		}
 	}
 	
-	return exitCode;
+	return exit_code;
 }
 
 int main(int argc, const char **argv)
