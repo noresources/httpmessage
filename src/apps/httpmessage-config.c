@@ -15,27 +15,31 @@
 int main(int argc, const char **argv)
 {
 	int exit_code = 0;
-	int a;
+	int a, start;
 	size_t n;
+	static const char *valid[] =
+	{
+		"semver", "number", "major", "minor", "patch"
+	};
+	
+	start = 1;
 	
 	if (argc == 1)
 	{
-		fprintf(stdout, "semver: %s\n", HTTPMESSAGE_VERSION_STRING);
-		fprintf(stdout, "major: %d\n", HTTPMESSAGE_VERSION_MAJOR);
-		fprintf(stdout, "minor: %d\n", HTTPMESSAGE_VERSION_MINOR);
-		fprintf(stdout, "patch: %d\n", HTTPMESSAGE_VERSION_PATCH);
-		return exit_code;
+		start = 0;
+		argv = valid;
+		argc = (int)(sizeof(valid) / sizeof(const char *));
 	}
 	
-	static const char *valid[] =
-	{
-		"semver", "major", "minor", "patch", "number"
-	};
-	
-	for (a = 1; a < argc; ++a)
+	for (a = start; a < argc; ++a)
 	{
 		const char *name = argv[a];
 		int v = 0;
+		
+		if (argc == 1)
+		{
+			goto main_process;
+		}
 		
 		for (n = 0; n < (sizeof(valid) / sizeof(const char *)); ++n)
 		{
@@ -53,6 +57,8 @@ int main(int argc, const char **argv)
 			break;
 		}
 		
+main_process:
+
 		if (argc > 2)
 		{
 			fprintf(stdout, "%s: ", name);
@@ -62,24 +68,17 @@ int main(int argc, const char **argv)
 		{
 			fprintf(stdout, "%s\n", HTTPMESSAGE_VERSION_STRING);
 		}
-		else if (strcmp(name, "semver") == 0)
+		else if (strcmp(name, "major") == 0)
 		{
 			fprintf(stdout, "%d\n", HTTPMESSAGE_VERSION_MAJOR);
 		}
-		else if (strcmp(name, "major") == 0)
-		{
-			fprintf(stdout, "%d\n", HTTPMESSAGE_VERSION_MINOR);
-			
-		}
 		else if (strcmp(name, "minor") == 0)
 		{
-			fprintf(stdout, "%d\n", HTTPMESSAGE_VERSION_PATCH);
-			
+			fprintf(stdout, "%d\n", HTTPMESSAGE_VERSION_MINOR);
 		}
 		else if (strcmp(name, "patch") == 0)
 		{
 			fprintf(stdout, "%d\n", HTTPMESSAGE_VERSION_PATCH);
-			
 		}
 		else if (strcmp(name, "number") == 0)
 		{
