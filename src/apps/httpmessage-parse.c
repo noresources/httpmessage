@@ -148,7 +148,7 @@ int parse_file(FILE *file)
 	signed char c = EOF;
 	size_t length = 0;
 	
-	if (fd <= 0)
+	if (fd < 0)
 	{
 		fprintf(stderr, "Failed to get file descriptor (%d)\n", fd);
 		return EXIT_FAILURE;
@@ -175,6 +175,7 @@ int parse_file(FILE *file)
 int main(int argc, const char **argv)
 {
 	size_t command_line_message_count = 0;
+	int result;
 	int a;
 	
 	for (a = 1; a < argc; ++a)
@@ -189,8 +190,13 @@ int main(int argc, const char **argv)
 		}
 		
 		++command_line_message_count;
-		parse_file(file);
+		result = parse_file(file);
 		fclose(file);
+		
+		if (result != 0)
+		{
+			return result;
+		}
 	}
 	
 	if (command_line_message_count)
@@ -200,6 +206,4 @@ int main(int argc, const char **argv)
 	
 	fflush(stdout);
 	return parse_file(stdin);
-	
-	return EXIT_SUCCESS;
 }
