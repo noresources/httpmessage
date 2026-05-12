@@ -27,16 +27,16 @@
 /**
  * @brief httpmessage library patch version number
  */
-#define HTTPMESSAGE_VERSION_PATCH 0
+#define HTTPMESSAGE_VERSION_PATCH 1
 /**
  * @brief httpmessage library version number
  * Computed as @f[ (major * 10000) + (minor * 100) + patch @f]
  */
-#define HTTPMESSAGE_VERSION_NUMBER 900
+#define HTTPMESSAGE_VERSION_NUMBER 901
 /**
  * @brief httpmessage library version string
  */
-#define HTTPMESSAGE_VERSION_STRING "0.9.0"
+#define HTTPMESSAGE_VERSION_STRING "0.9.1"
 
 #endif /* LIBHTTPMESSAGGE_VERSION_H__ */
 
