@@ -145,7 +145,7 @@ HMAPI int httpmessage_text_is_CRLF(const char *text, size_t length);
  *
  * @return Non-zero value if character match the TEXT rule
  */
-int httpmessage_text_is_TEXT(int c);
+HMAPI int httpmessage_text_is_TEXT(int c);
 
 /**
  * @ingroup grammar
@@ -272,8 +272,8 @@ HMAPI ssize_t httpmessage_quoted_string_consume(
  * @return On success, the number of bytes consumed in text.
  * On error, one of the #httpmessage_result_code error codes
  */
-ssize_t httpmessage_int_consume(int *output,
-                                const char *text, size_t length);
+HMAPI ssize_t httpmessage_int_consume(int *output,
+                                      const char *text, size_t length);
 
 HTTPMESSAGE_C_END
 

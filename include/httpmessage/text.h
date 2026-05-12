@@ -43,7 +43,7 @@ typedef struct __httpmessage_stringview
  *
  * @return The newly created string view or @c NULL on error.
  */
-httpmessage_stringview *httpmessage_stringview_new(void);
+HMAPI httpmessage_stringview *httpmessage_stringview_new(void);
 
 /**
  * @ingroup text
