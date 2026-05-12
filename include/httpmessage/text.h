@@ -71,7 +71,7 @@ HMAPI void httpmessage_stringview_clear(httpmessage_stringview *string);
  * @brief Free a string view.
  *
  * Release string view memory allocated with
- * @c httpmessage_stringview_new()` and set the
+ * @c httpmessage_stringview_new() and set the
  * pointer to @c NULL
  *
  * @param string String view to free.
@@ -87,7 +87,7 @@ HMAPI void httpmessage_stringview_free(httpmessage_stringview **string);
  * @param a First string view
  * @param b Second string view
  *
- * @return < 0 if (a < 0). 0 if (a == b) and > 0 if (a > b)
+ * @return < 0 if (a < b). 0 if (a == b) and > 0 if (a > b)
  */
 HMAPI int httpmessage_stringview_compare(const httpmessage_stringview *a,
         const httpmessage_stringview *b);
@@ -122,7 +122,7 @@ HMAPI int httpmessage_stringview_caseless_compare(
  * @ingroup text
  * @brief Compare a string view to a text, ignoring case.
  *
-  * @param a String view to compare with text
+ * @param a String view to compare with text
  * @param text Text
  * @param length Text length
  *

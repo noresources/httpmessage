@@ -25,7 +25,7 @@ HTTPMESSAGE_C_BEGIN
 /**
  * @ingroup base
  *
- * httpmessage function result codes
+ * @brief httpmessage function result codes
  */
 typedef enum __httpmessage_result_code
 {
@@ -33,9 +33,9 @@ typedef enum __httpmessage_result_code
 	HTTPMESSAGE_ERROR_INVALID_ARGUMENT = -1000,	/**< One or more function arguments are invalid */
 	HTTPMESSAGE_ERROR_OVERFLOW = -1100,        	/**< Output buffer will overflow */
 	HTTPMESSAGE_ERROR_WRITE = -1101, 			/**< I/O Write error */
-	HTTPMESSAGE_ERROR_ALLOCATION = -1102,		/**< A object failed to be allocated due to memory issue or allocation option rules */
+	HTTPMESSAGE_ERROR_ALLOCATION = -1102,		/**< An object failed to be allocated due to memory issue or allocation option rules */
 	HTTPMESSAGE_ERROR_SYNTAX = -1200,        	/**< The text given in argument does not match the expected syntax */
-	HTTPMESSAGE_ERROR_INCOMPLETE = -1201, 		/**< */
+	HTTPMESSAGE_ERROR_INCOMPLETE = -1201, 		/**< Input text is incomplete; more data is required */
 } httpmessage_result_code;
 
 /**
@@ -50,8 +50,6 @@ HMAPI const char *httpmessage_result_get_text(int code);
 
 /**
  * @ingroup base
- *
- * @ingroup message
  * @brief HTTP message type
  * @see https://datatracker.ietf.org/doc/html/rfc2616#section-4
  */
@@ -77,15 +75,15 @@ typedef enum
 	HTTPMESSAGE_CONSUME_IGNORE_MISSING_CRLF = (1 << 0),
 	
 	/**
-	 * Instead of freeing structure members,
-	 * set them to a value that mark them as unused.
+	 * @brief Instead of freeing structure members,
+	 * set them to a value that marks them as unused.
 	 *
 	 * Ex. Set header value sublines length to zero.
 	 */
 	HTTPMESSAGE_CLEAR_NO_FREE = (1 << 1),
 	
 	/**
-	 * Do not allocate new objects during function process.
+	 * @brief Do not allocate new objects during function process.
 	 *
 	 * If the function needs to allocate something,
 	 * a ::HTTPMESSAGE_ERROR_ALLOCATION error code

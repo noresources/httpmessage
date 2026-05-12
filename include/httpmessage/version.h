@@ -17,24 +17,24 @@
 #define LIBHTTPMESSAGGE_VERSION_H__
 
 /**
- * @brief httpmessage libaray major version number
+ * @brief httpmessage library major version number
  */
 #define HTTPMESSAGE_VERSION_MAJOR 0
 /**
- * @brief httpmessage libaray minor version number
+ * @brief httpmessage library minor version number
  */
 #define HTTPMESSAGE_VERSION_MINOR 9
 /**
- * @brief httpmessage libaray patch version number
+ * @brief httpmessage library patch version number
  */
 #define HTTPMESSAGE_VERSION_PATCH 0
 /**
- * @brief httpmessage libaray version number
- * Computeed as @f[ (major * 10000) + (minor * 100) + patch @f]
+ * @brief httpmessage library version number
+ * Computed as @f[ (major * 10000) + (minor * 100) + patch @f]
  */
 #define HTTPMESSAGE_VERSION_NUMBER 900
 /**
- * @brief httpmessage libaray version string
+ * @brief httpmessage library version string
  */
 #define HTTPMESSAGE_VERSION_STRING "0.9.0"
 

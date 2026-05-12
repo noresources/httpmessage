@@ -30,7 +30,7 @@
  */
 #	define HTTPMESSAGE_C_BEGIN 	extern "C" {
 /**
- * @brief End exter C block
+ * @brief End extern C block
  */
 #	define HTTPMESSAGE_C_END 	}
 #else
@@ -39,7 +39,7 @@
  */
 #	define HTTPMESSAGE_C_BEGIN
 /**
- * @brief End exter C block
+ * @brief End extern C block
  */
 #	define HTTPMESSAGE_C_END
 #endif
@@ -73,7 +73,19 @@
 #endif
 
 #if (HTTPMESSAGE_POINTER_SIZE == 8)
+/**
+ * @brief Insert a padding field active only on 64-bit targets.
+ *
+ * @param variable Padding member name
+ * @param size     Number of bytes to pad
+ */
 #	define HTTPMESSAGE_PAD64(variable, size) char variable[size];
+/**
+ * @brief Insert a padding field active only on 32-bit targets.
+ *
+ * @param variable Padding member name
+ * @param size     Number of bytes to pad
+ */
 #	define HTTPMESSAGE_PAD32(variable, size)
 #elif (HTTPMESSAGE_POINTER_SIZE == 4)
 #	define HTTPMESSAGE_PAD64(variable, size)
@@ -109,7 +121,8 @@
 
 /**
  * @brief Write arbitrary text to a buffer.
- * update I/O buffer pointer and length
+ *
+ * @note Updates the I/O buffer pointer and remaining length.
  */
 #define HTTPMESSAGE_TEXT_WRITE_BUFFER(_output, _output_size, _text, _length) { \
 	if ((size_t)(_output_size) < (size_t)(_length)) return HTTPMESSAGE_ERROR_OVERFLOW; \
@@ -118,8 +131,9 @@
 }
 
 /**
- * @brief Format a text and write it to a buffer.
- * update I/O buffer pointer and length
+ * @brief Format text and write it to a buffer.
+ *
+ * @note Updates the I/O buffer pointer and remaining length.
  */
 #define HTTPMESSAGE_PRINTF_BUFFER(_output, _output_size, ...) { \
 	int _result = snprintf (_output, _output_size, __VA_ARGS__); \

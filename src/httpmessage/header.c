@@ -538,11 +538,11 @@ ssize_t httpmessage_headerfield_list_consume(
 	while (length && !httpmessage_text_is_CRLF(text, length))
 	{
 		ssize_t result = httpmessage_headerfield_line_consume(
-		                 &new_header,
-		                 current_header,
-		                 text, length,
-		                 option_flags);
-		                 
+		                     &new_header,
+		                     current_header,
+		                     text, length,
+		                     option_flags);
+		                     
 		if (result < 0)
 		{
 			return result;

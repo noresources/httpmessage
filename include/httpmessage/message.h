@@ -102,9 +102,9 @@ HMAPI int httpmessage_message_append_header(
  *
  * @param message Message to add the header to.
  * @param name Header field name
- * #param name_length Header field name length
+ * @param name_length Header field name length
  * @param value Header value
- * #param value_length Header field value length
+ * @param value_length Header field value length
  * @param option_flags Option flags. Supported flags are
  * - ::HTTPMESSAGE_CLEAR_NO_FREE
  * - ::HTTPMESSAGE_NO_ALLOCATION
@@ -153,7 +153,7 @@ typedef struct __httpmessage_request
 	/** HTTP method */
 	httpmessage_stringview method;
 	
-	/** Request request_uri path */
+	/** Request URI */
 	httpmessage_stringview request_uri;
 	
 } httpmessage_request;
@@ -182,7 +182,7 @@ HMAPI void httpmessage_request_init(httpmessage_request *request);
  * @brief Clear request message content
  *
  * @param request Request to clear.
-  * @param option_flags Option flags. Supported flags are
+ * @param option_flags Option flags. Supported flags are
  * - ::HTTPMESSAGE_CLEAR_NO_FREE
  *
  * @see httpmessage_option_flags
@@ -213,7 +213,7 @@ HMAPI void httpmessage_request_free(httpmessage_request **request);
  * @attention NEVER call httpmessage_request_init() on the returned object. This will reset the maximum number of header field and value line to 1.
  * @attention Use @c free() to release the object allocated with this function.
  * @attention ALWAYS set ::HTTPMESSAGE_CLEAR_NO_FREE and ::HTTPMESSAGE_NO_ALLOCATION
- * whenusing this object with @c *_consume or @c *_clear() functions
+ * when using this object with @c *_consume or @c *_clear() functions
  */
 HMAPI httpmessage_request *httpmessage_request_storage_new(
     size_t max_headerfield_count,
@@ -266,7 +266,7 @@ HMAPI void httpmessage_response_init(httpmessage_response *response);
  * @brief Clear response message.
  *
  * @param response Response to clear.
-  * @param option_flags Option flags. Supported flags are
+ * @param option_flags Option flags. Supported flags are
  * - ::HTTPMESSAGE_CLEAR_NO_FREE
  *
  * @see httpmessage_option_flags
@@ -299,7 +299,7 @@ HMAPI void httpmessage_response_free(httpmessage_response **response);
  * @attention NEVER call httpmessage_response_init() on the returned object. This will reset the maximum number of header field and value line to 1.
  * @attention Use @c free() to release the object allocated with this function.
  * @attention ALWAYS set ::HTTPMESSAGE_CLEAR_NO_FREE and ::HTTPMESSAGE_NO_ALLOCATION
- * whenusing this object with @c *_consume or @c *_clear() functions
+ * when using this object with @c *_consume or @c *_clear() functions
  */
 HMAPI httpmessage_response *httpmessage_response_storage_new(
     size_t max_headerfield_count,
@@ -319,7 +319,7 @@ HMAPI httpmessage_response *httpmessage_response_storage_new(
  * @param major_version Output major version
  * @param minor_version Output minor version
  * @param text Input text
- * @param length Input text lengh
+ * @param length Input text length
  * @return On success, number of bytes consumed in @c text.
  * On error, one of httpmessage_result_code
  *
@@ -333,7 +333,7 @@ HMAPI ssize_t httpmessage_message_http_version_consume(
 /**
  * @ingroup message
  *
- * @brief Read the Request-URI resourcce of a request line
+ * @brief Read the Request-URI resource of a request line
  *
  * ```
  * Request-URI    = "*" | absoluteURI | abs_path | authority
@@ -344,7 +344,7 @@ HMAPI ssize_t httpmessage_message_http_version_consume(
  * @param request_uri Output string view
  * @param text Input text
  * @param length Input text length
- * @return On success, number of bytes consumed in @c text. On error, on of httpmessage_result_code.
+ * @return On success, number of bytes consumed in @c text. On error, one of httpmessage_result_code.
  *
  * @see https://datatracker.ietf.org/doc/html/rfc2616#section-5.1.2
  * @todo Better URI parsing
@@ -367,7 +367,7 @@ HMAPI ssize_t httpmessage_request_uri_consume(
  *
  * @param method Output request method
  * @param request_uri Output request URI
- * @param major_version Output HTTP majour version
+ * @param major_version Output HTTP major version
  * @param minor_version Output HTTP minor version
  * @param text Input text
  * @param length Input text length
@@ -375,7 +375,7 @@ HMAPI ssize_t httpmessage_request_uri_consume(
  * - ::HTTPMESSAGE_CONSUME_IGNORE_MISSING_CRLF
  *
  * @return On success, number of bytes consumed in @c text.
- * On error, on of httpmessage_reult_code.
+ * On error, one of httpmessage_result_code.
  *
  * @see httpmessage_result_code
  * @see httpmessage_option_flags
@@ -392,7 +392,7 @@ HMAPI ssize_t httpmessage_request_line_consume(
 /**
  * @ingroup message
  *
- * @brief Read HTTM message status line
+ * @brief Read HTTP message status line
  *
  * ```
  * Status-Line = HTTP-Version SP Status-Code SP Reason-Phrase CRLF
@@ -451,7 +451,7 @@ HMAPI int httpmessage_message_get_type(
  * @param message Output message descriptor
  * @param text Input text
  * @param length Input text length
-* @param option_flags Option flags. Supported flags are
+ * @param option_flags Option flags. Supported flags are
  * - ::HTTPMESSAGE_CONSUME_IGNORE_MISSING_CRLF
  *
  * @return On success, number of bytes consumed in @c text.
@@ -474,7 +474,7 @@ HMAPI ssize_t httpmessage_message_content_consume(
  * @param message HTTP message content to write
  *
  * @return On success, the number of bytes written.
- * On error, one of httpmessage_result_type
+ * On error, one of httpmessage_result_code
  *
  * @see httpmessage_result_code
  */
@@ -494,8 +494,8 @@ HMAPI ssize_t httpmessage_message_content_write_file(
  * @attention NULL termination character may not be written at end of string
  * if the buffer is too small.
  *
- * @return On success, the number of bytes written (excludint the null-termination character).
- * On error, one of httpmessage_result_type
+ * @return On success, the number of bytes written (excluding the null-termination character).
+ * On error, one of httpmessage_result_code
  *
  * @see httpmessage_result_code
  */
@@ -532,8 +532,8 @@ HMAPI ssize_t httpmessage_request_consume(
  * @param file Output file
  * @param request Request to write
  *
- * @return On success, the number of bytes written (excludint the null-termination character).
- * On error, one of httpmessage_result_type
+ * @return On success, the number of bytes written (excluding the null-termination character).
+ * On error, one of httpmessage_result_code
  *
  * @see httpmessage_result_code
  */
@@ -551,8 +551,8 @@ HMAPI ssize_t httpmessage_request_write_file(
  * @attention NULL termination character may not be written at end of string
  * if the buffer is too small.
  *
- * @return On success, the number of bytes written (excludint the null-termination character).
- * On error, one of httpmessage_result_type
+ * @return On success, the number of bytes written (excluding the null-termination character).
+ * On error, one of httpmessage_result_code
  *
  * @see httpmessage_result_code
  */
@@ -565,7 +565,7 @@ HMAPI ssize_t httpmessage_request_write_buffer(
  *  @ingroup message
  *  @brief Read a HTTP response message.
  *
- * @param response Output request
+ * @param response Output response
  * @param text Input text
  * @param length Input text length
  * @param option_flags Option flags. Supported flags are
@@ -589,8 +589,8 @@ HMAPI ssize_t httpmessage_response_consume(
  * @param file Output file.
  * @param response Response to write
  *
- * @return On success, the number of bytes written (excludint the null-termination character).
- * On error, one of httpmessage_result_type
+ * @return On success, the number of bytes written (excluding the null-termination character).
+ * On error, one of httpmessage_result_code
  *
  * @see httpmessage_result_code
  */
@@ -609,8 +609,8 @@ HMAPI ssize_t httpmessage_response_write_file(
  * @attention NULL termination character may not be written at end of string
  * if the buffer is too small.
  *
- * @return On success, the number of bytes written (excludint the null-termination character).
- * On error, one of httpmessage_result_type
+ * @return On success, the number of bytes written (excluding the null-termination character).
+ * On error, one of httpmessage_result_code
  *
  * @see httpmessage_result_code
  */

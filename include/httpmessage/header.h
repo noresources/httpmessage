@@ -27,7 +27,7 @@ HTTPMESSAGE_C_BEGIN
 /**
  * @ingroup header
  *
- * @brief Headef field name text reference
+ * @brief Header field name text reference
  */
 typedef httpmessage_stringview httpmessage_headerfield_name;
 
@@ -63,7 +63,7 @@ HMAPI ssize_t httpmessage_headerfield_name_consume(
  *
  * @extends httpmessage_stringview
  *
- * A headef value MAY be splittd on multiple line.
+ * A header value MAY be split across multiple lines.
  * In this case, the @c next_line member of @c httpmessage_headerfield_value
  * will point on another httpmessage_headerfield_value representing
  * the next line of text for the value.
@@ -74,14 +74,16 @@ typedef struct __httpmessage_headerfield_value
 	/** First line of value */
 	httpmessage_stringview line;
 	
-	/** Reference the the next header field value line */
+	/** Reference to the next header field value line */
 	struct __httpmessage_headerfield_value *next_line;
 } httpmessage_headerfield_value;
 
 /**
+ * @ingroup header
+ *
  * @brief Initialize a header field value
  *
- * Ensure all structure member are initialize
+ * Ensure all structure members are initialized
  * with a meaningful value.
  *
  * @param value Header field value to initialize
@@ -133,7 +135,7 @@ HMAPI httpmessage_headerfield_value *httpmessage_headerfield_value_append_line(
  * @brief Get the total length of the header value text
  *
  * @param value Header value
- * @return Sum of all header value line lenght
+ * @return Sum of all header value line lengths
  */
 HMAPI size_t httpmessage_headerfield_value_total_length(const httpmessage_headerfield_value *value);
 
@@ -177,7 +179,7 @@ HMAPI void httpmessage_headerfield_value_free(
  * @param option_flags Option flags. Supported flags are
  * - @c ::HTTPMESSAGE_CONSUME_IGNORE_MISSING_CRLF
  *
- * @return On success, the number of bytes of @c text consumed. This MAY be greated than the value
+ * @return On success, the number of bytes of @c text consumed. This MAY be greater than the value
  * stored in @c value_length since leading white space and trailing CRLF and white space are not counted in @c value_length.
  * On error, one of the httpmessage_result_code
  *
@@ -238,7 +240,7 @@ HMAPI void httpmessage_headerfield_free(httpmessage_headerfield **field);
  * @ingroup header
  * @brief Indicates if the given header field name match the expected name.
  *
- * String comparison is case instensitive.
+ * String comparison is case insensitive.
  *
  * @param field Header to test field name
  * @param name Name to match. The string MUST be null-terminated
@@ -286,7 +288,7 @@ HMAPI  size_t httpmessage_headerfield_count(const httpmessage_headerfield *heade
  * @param name_length Header field name length.
  *
  * @return Pointer to the first header field with the given field name
- * or @c NULL if none of the header fields in the list have the exepected field name.
+ * or @c NULL if none of the header fields in the list have the expected field name.
  */
 HMAPI httpmessage_headerfield *httpmessage_headerfield_find(
     httpmessage_headerfield *headerfield_list,
@@ -297,13 +299,13 @@ HMAPI httpmessage_headerfield *httpmessage_headerfield_find(
  * @ingroup header
  *
  * @brief Read header field name and value on a single line
- *  *
+ *
  * If the current line starts by a header field name,
  * a new header is created assigned as next header of @c current_header
  * and @c header will point to it.
  *
- * If the current line starts with a white psace, the content of the
- * line is added the the @c current_header value
+ * If the current line starts with a white space, the content of the
+ * line is added to the @c current_header value
  * and @c header will point to @c current_header
  *
  * @param field The new header
@@ -315,10 +317,10 @@ HMAPI httpmessage_headerfield *httpmessage_headerfield_find(
  * - ::HTTPMESSAGE_CLEAR_NO_FREE
  * - ::HTTPMESSAGE_NO_ALLOCATION
  *
- * @return On success, the numbre of bytes consumed (the current line length).
+ * @return On success, the number of bytes consumed (the current line length).
  * On error, one of httpmessage_result_code
  *
- *@see httpmessage_result_code
+ * @see httpmessage_result_code
  * @see httpmessage_option_flags
  */
 HMAPI ssize_t httpmessage_headerfield_line_consume(
@@ -337,8 +339,8 @@ HMAPI ssize_t httpmessage_headerfield_line_consume(
  * @attention NULL termination character may not be written at end of string
  * if the buffer is too small.
  *
- * @return On success, the number of bytes written (excludint the null-termination character).
- * On error, one of httpmessage_result_type
+ * @return On success, the number of bytes written (excluding the null-termination character).
+ * On error, one of httpmessage_result_code
  *
  * @see httpmessage_result_code
  */
@@ -357,8 +359,8 @@ HMAPI ssize_t httpmessage_headerfield_write_file(
  * @attention NULL termination character may not be written at end of string
  * if the buffer is too small.
  *
- * @return On success, the number of bytes written (excludint the null-termination character).
- * On error, one of httpmessage_result_type
+ * @return On success, the number of bytes written (excluding the null-termination character).
+ * On error, one of httpmessage_result_code
  *
  * @see httpmessage_result_code
  */
@@ -377,7 +379,7 @@ HMAPI ssize_t httpmessage_headerfield_write_buffer(
  * @param length Input text length
  * @param option_flags Option flags. These flags are passed to httpmessage API functions called internally.
  *
- * @return On success, number of bytes conumed in @c text.
+ * @return On success, number of bytes consumed in @c text.
  * On error, one of @c httpmessage_result_code
  *
  * @see httpmessage_result_code
@@ -394,8 +396,8 @@ HMAPI ssize_t httpmessage_headerfield_list_consume(
  * @param file Output file
  * @param headerfield_list List of header to write
  *
- * @return On success, the number of bytes written (excludint the null-termination character).
- * On error, one of httpmessage_result_type
+ * @return On success, the number of bytes written (excluding the null-termination character).
+ * On error, one of httpmessage_result_code
  *
  * @see httpmessage_result_code
  */
@@ -414,8 +416,8 @@ HMAPI ssize_t httpmessage_headerfield_list_write_file(
  * @attention NULL termination character may not be written at end of string
  * if the buffer is too small.
  *
- * @return On success, the number of bytes written (excludint the null-termination character).
- * On error, one of httpmessage_result_type
+ * @return On success, the number of bytes written (excluding the null-termination character).
+ * On error, one of httpmessage_result_code
  *
  * @see httpmessage_result_code
  */

@@ -29,7 +29,7 @@ HTTPMESSAGE_C_BEGIN
  *
  * @param c Character to test
  *
- * * @return Non-zero value if @c is a character.
+ * @return Non-zero value if @c is a character.
  */
 HMAPI int httpmessage_text_is_CHAR(int c);
 
@@ -42,7 +42,7 @@ HMAPI int httpmessage_text_is_CHAR(int c);
  *
  * @param c Character to test
  *
- * * @return Non-zero value if @c is an uppercase letter.
+ * @return Non-zero value if @c is an uppercase letter.
  */
 HMAPI int httpmessage_text_is_UPALPHA(int c);
 
@@ -55,20 +55,20 @@ HMAPI int httpmessage_text_is_UPALPHA(int c);
  *
  * @param c Character to test
  *
- * * @return Non-zero value if @c is lowercase letter.
+ * @return Non-zero value if @c is a lowercase letter.
  */
 HMAPI int httpmessage_text_is_LUALPHA(int c);
 
 /**
  * @ingroup grammar
  *
- * @brief Indicates if the given character is a ASCII letter.
+ * @brief Indicates if the given character is an ASCII letter.
  *
  * @see  https://datatracker.ietf.org/doc/html/rfc2616#section-2.2
  *
  * @param c Character to test
  *
- * * @return Non-zero value if @c is a letter.
+ * @return Non-zero value if @c is a letter.
  */
 HMAPI int httpmessage_text_is_ALPHA(int c);
 
@@ -88,7 +88,7 @@ HMAPI int httpmessage_text_is_DIGIT(int c);
 /**
  * @ingroup grammar
  *
- * @brief Indicases if the given character is a control character
+ * @brief Indicates if the given character is a control character
  *
  * ```
  * CTL            = <any US-ASCII control character
@@ -124,7 +124,7 @@ HMAPI int httpmessage_text_is_LWS(int c);
  * ```
  *
  * @see https://datatracker.ietf.org/doc/html/rfc2616#section-2.2
-
+ *
  * @param text Text to test
  * @param length Text length
  *
@@ -134,7 +134,7 @@ HMAPI int httpmessage_text_is_CRLF(const char *text, size_t length);
 
 /**
  * @ingroup grammar
- * @brief Indicates if the given character mathc the TEXT rule
+ * @brief Indicates if the given character matches the TEXT rule
  *
  * ```
  * TEXT           = <any OCTET except CTLs,
@@ -247,7 +247,7 @@ HMAPI ssize_t httpmessage_quoted_string_length(
  * @param output Unescaped text output buffer
  * @param output_size Output buffer size
  * @param text Quoted string input text
- * @param length Ouoted string input text length
+ * @param length Quoted string input text length
  *
  * @return On success, the number of bytes consumed in text.
  * On error, one of the #httpmessage_result_code error codes
@@ -263,12 +263,13 @@ HMAPI ssize_t httpmessage_quoted_string_consume(
 /**
  * @ingroup grammar
  *
- * @brief Read an integer value from its text representation
+ * @brief Read an integer value from its decimal text representation
  *
  * @param output Output value. The parsed integer value will be stored in this variable on success. On error, the value is undefined.
  * @param text Input text to parse
  * @param length Input text length
-  * @return On success, the number of bytes consumed in text.
+ *
+ * @return On success, the number of bytes consumed in text.
  * On error, one of the #httpmessage_result_code error codes
  */
 ssize_t httpmessage_int_consume(int *output,
